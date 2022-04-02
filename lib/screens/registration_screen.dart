@@ -93,7 +93,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 //              登録ボタン
               RaisedButton(
                 child: Text(
-                  'ログイン',
+                  '登録',
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
                 textColor: Colors.white,
