@@ -10,12 +10,9 @@
 
 class Event {
   final String title;
-  // final DateTime date;
+  final DateTime? date;
 
-  // Event({required this.title, this.date});
-  Event({required this.title});
+  Event({required this.title,this.date});
 
   String toString() => this.title;
-// DateTime toDateTime() => this.date;
-
 }
