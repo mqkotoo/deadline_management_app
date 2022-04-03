@@ -1,13 +1,5 @@
 //このページをFIRESTOREに対応させたEVENTモデルにする
 
-// class Event {
-//   final String title;
-//
-//   Event({required this.title});
-//
-//   String toString() => this.title;
-// }
-
 class Event {
   final String title;
   final DateTime? date;
