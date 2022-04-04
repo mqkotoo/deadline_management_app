@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_deadline_management/screens/registration_screen.dart';
+import '../component/rounded_button.dart';
 import 'login_screen.dart';
 
 class WelcomeScreen extends StatelessWidget {
@@ -28,37 +29,21 @@ class WelcomeScreen extends StatelessWidget {
 
 
             // LOGIN
-            RaisedButton(
-              child: Text(
-                'ログイン',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
+            RoundedButton(
               textColor: Colors.white,
               color: Colors.blue,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              onPressed: () {
-                Navigator.pushNamed(context, LoginScreen.id);
-              },
+              title: 'ログイン',
+              onPressed: () => Navigator.pushNamed(context, LoginScreen.id),
             ),
 
             // REGISTRATION
-            RaisedButton(
-                child: Text('アカウントを作成する',
-                  style: TextStyle(fontWeight: FontWeight.bold),),
-                textColor: Colors.blue,
-                color: Colors.blue[50],
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-
-                // ボタンクリック後にアカウント作成用の画面の遷移する。
-                onPressed: (){
-                  Navigator.pushNamed(context, RegistrationScreen.id);
-                }
-
+            RoundedButton(
+              textColor: Colors.blue,
+              color: Colors.blue[50],
+              title: 'アカウントを作成する',
+              onPressed: () => Navigator.pushNamed(context, RegistrationScreen.id),
             ),
+
           ],
         ),
       ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import '../component/rounded_button.dart';
 import '../constants.dart';
 import 'calendar_screen.dart';
 
@@ -39,6 +40,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   @override
   Widget build(BuildContext context) {
 
+    // 入力処理の時に使う奴ら
     final _passwordFocusNode = FocusNode();
     final _formKey = GlobalKey<FormState>();
 
@@ -110,7 +112,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   ),
                   // パスワード入力フォームに飛ばせるたえのやつ
                   focusNode: _passwordFocusNode,
-//                  バリデーション実装
+                    //バリデーション実装
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'パスワードを入力してください';
@@ -128,18 +130,30 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 ),
 
 //              登録ボタン
-                RaisedButton(
-                  child: Text(
-                    '登録',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
+//                 RaisedButton(
+//                   child: Text(
+//                     '登録',
+//                     style: TextStyle(fontWeight: FontWeight.bold),
+//                   ),
+//                   textColor: Colors.white,
+//                   color: Colors.blue,
+//                   shape: RoundedRectangleBorder(
+//                     borderRadius: BorderRadius.circular(10),
+//                   ),
+//
+//                   // バリデーションを突破したらクリエイトユーザーする
+//                   onPressed: () {
+//                     if (_formKey.currentState!.validate()) {
+//                       createUserFromEmail();
+//                     }
+//                     print(email);
+//                     print(password);
+//                   },
+//                 ),
+                RoundedButton(
                   textColor: Colors.white,
                   color: Colors.blue,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-
-                  // バリデーションを突破したらクリエイトユーザーする
+                  title: '登録',
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
                       createUserFromEmail();
