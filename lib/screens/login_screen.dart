@@ -11,8 +11,7 @@ class LoginScreen extends StatefulWidget {
   _LoginScreenState createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen>{
-
+class _LoginScreenState extends State<LoginScreen> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   bool isLoad = false;
   String email = '';
@@ -21,7 +20,6 @@ class _LoginScreenState extends State<LoginScreen>{
   String errorMessage = '';
 
   Future<void> loginUserFromEmail() async {
-
     setState(() {
       isLoad = true;
     });
@@ -39,17 +37,21 @@ class _LoginScreenState extends State<LoginScreen>{
       setState(() {
         isLoad = false;
       });
-
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-disabled') {
-        print('そのメールアドレスは利用できません');
+        // print('そのメールアドレスは利用できません');
+        errorMessage = 'そのメールアドレスは利用できません';
       } else if (e.code == 'invalid-email') {
-        print('メールアドレスのフォーマットが正しくありません');
+        // print('メールアドレスのフォーマットが正しくありません');
+        errorMessage = 'メールアドレスのフォーマットが正しくありません';
       } else if (e.code == 'user-not-found') {
         print('ユーザーが見つかりません');
+        errorMessage = 'ユーザーが見つかりません';
       } else if (e.code == 'wrong-password') {
         print('パスワードが違います');
+        errorMessage = 'パスワードが違います';
       }
+      setState(() {});
     }
     // エラー後にロードを解除する
     setState(() {
@@ -59,7 +61,6 @@ class _LoginScreenState extends State<LoginScreen>{
 
   @override
   Widget build(BuildContext context) {
-
     // 入力処理の時に使う奴ら
     final _passwordFocusNode = FocusNode();
     final _formKey = GlobalKey<FormState>();
@@ -67,7 +68,8 @@ class _LoginScreenState extends State<LoginScreen>{
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text('ログイン',
+        title: Text(
+          'ログイン',
         ),
       ),
       body: ModalProgressHUD(
@@ -81,7 +83,8 @@ class _LoginScreenState extends State<LoginScreen>{
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
                 Flexible(
-                  child: Text("ログイン↓↓",
+                  child: Text(
+                    "ログイン↓↓",
                     style: TextStyle(
                       color: Colors.grey,
                       fontSize: 45.0,
@@ -109,7 +112,8 @@ class _LoginScreenState extends State<LoginScreen>{
 
                   // NEXTを押したらパスワード入力フォームにフォーカスさせる
                   onFieldSubmitted: (_) {
-                    FocusScope.of(context).requestFocus(_passwordFocusNode); // 変更
+                    FocusScope.of(context)
+                        .requestFocus(_passwordFocusNode); // 変更
                   },
 
 //                  バリデーション実装
@@ -126,17 +130,17 @@ class _LoginScreenState extends State<LoginScreen>{
 
                 // パスワードの入力フォーム
                 TextFormField(
-                  obscureText: true,
-                  onChanged: (value) {
-                    //Do something with the user input.
-                    password = value;
-                  },
-                  decoration: kTextFieldDecoration.copyWith(
-                    hintText: 'パスワードを入力してください',
-                  ),
+                    obscureText: true,
+                    onChanged: (value) {
+                      //Do something with the user input.
+                      password = value;
+                    },
+                    decoration: kTextFieldDecoration.copyWith(
+                      hintText: 'パスワードを入力してください',
+                    ),
 
-                  // パスワード入力フォームに飛ばせるたえのやつ
-                  focusNode: _passwordFocusNode,
+                    // パスワード入力フォームに飛ばせるたえのやつ
+                    focusNode: _passwordFocusNode,
 
                     //バリデーション実装
                     validator: (value) {
@@ -147,14 +151,22 @@ class _LoginScreenState extends State<LoginScreen>{
                         return 'パスワードは6文字以上です';
                       }
                       return null;
-                    }
-                ),
+                    }),
                 SizedBox(
-                  height: 5.0,
+                  height: 8.0,
                 ),
 
                 // FIREBASEからのエラー表示
-                Center(child: Text(errorMessage),),
+                Center(
+                  child: Text(
+                    errorMessage,
+                    style: TextStyle(
+                      color: Colors.red,
+                      decoration: TextDecoration.underline,
+                      decorationColor: Colors.red,
+                    ),
+                  ),
+                ),
 
                 SizedBox(
                   height: 24.0,
@@ -167,8 +179,8 @@ class _LoginScreenState extends State<LoginScreen>{
                   title: 'ログイン',
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
-                        loginUserFromEmail();
-                      }
+                      loginUserFromEmail();
+                    }
                     print(email);
                     print(password);
                   },

@@ -16,7 +16,7 @@ class WelcomeScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Text(
-              "締め切り管理アプリ（仮）",
+              "app name",
               style: TextStyle(
                 color: Colors.grey,
                 fontSize: 45.0,
