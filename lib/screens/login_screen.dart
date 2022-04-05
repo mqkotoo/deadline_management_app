@@ -15,8 +15,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
   bool isLoad = false;
-  late String email;
-  late String password;
+  String email = '';
+  String password = '';
 
   Future<void> loginUserFromEmail() async {
 
@@ -41,6 +41,10 @@ class _LoginScreenState extends State<LoginScreen> {
     } catch (e) {
       print(e);
     }
+    // エラー後にロードを解除する
+    setState(() {
+      isLoad = false;
+    });
   }
 
   @override

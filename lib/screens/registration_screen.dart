@@ -15,8 +15,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
   bool isLoad = false;
-  late String email;
-  late String password;
+  String email = '';
+  String password = '';
 
   Future<void> createUserFromEmail() async {
     setState(() {
@@ -34,6 +34,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     } catch (e) {
       print(e);
     }
+    // エラー後にロードを解除する
+    setState(() {
+      isLoad = false;
+    });
   }
 
 
@@ -124,32 +128,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     }
                 ),
 
-                // パスワードのフィールド⏫
                 SizedBox(
                   height: 24.0,
                 ),
 
-//              登録ボタン
-//                 RaisedButton(
-//                   child: Text(
-//                     '登録',
-//                     style: TextStyle(fontWeight: FontWeight.bold),
-//                   ),
-//                   textColor: Colors.white,
-//                   color: Colors.blue,
-//                   shape: RoundedRectangleBorder(
-//                     borderRadius: BorderRadius.circular(10),
-//                   ),
-//
-//                   // バリデーションを突破したらクリエイトユーザーする
-//                   onPressed: () {
-//                     if (_formKey.currentState!.validate()) {
-//                       createUserFromEmail();
-//                     }
-//                     print(email);
-//                     print(password);
-//                   },
-//                 ),
+                // 登録ボタン
                 RoundedButton(
                   textColor: Colors.white,
                   color: Colors.blue,
