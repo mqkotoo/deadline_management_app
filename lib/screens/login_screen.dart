@@ -11,35 +11,45 @@ class LoginScreen extends StatefulWidget {
   _LoginScreenState createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginScreenState extends State<LoginScreen>{
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
   bool isLoad = false;
   String email = '';
   String password = '';
+  // firebaseからのエラーメッセージを表示するための変数
+  String errorMessage = '';
 
   Future<void> loginUserFromEmail() async {
-
-    final newUser = await _auth.signInWithEmailAndPassword(
-        email: email, password: password);
 
     setState(() {
       isLoad = true;
     });
 
     try {
+      // newUserに値を入れる
+      final newUser = await _auth.signInWithEmailAndPassword(
+          email: email, password: password);
+
       // ユーザが確認できたら
       if (newUser != null) {
         Navigator.pushNamed(context, CalendarScreen.id);
         print("ログインに成功しました");
       }
-      // ユーザがいなかったら
-
       setState(() {
         isLoad = false;
       });
-    } catch (e) {
-      print(e);
+
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-disabled') {
+        print('そのメールアドレスは利用できません');
+      } else if (e.code == 'invalid-email') {
+        print('メールアドレスのフォーマットが正しくありません');
+      } else if (e.code == 'user-not-found') {
+        print('ユーザーが見つかりません');
+      } else if (e.code == 'wrong-password') {
+        print('パスワードが違います');
+      }
     }
     // エラー後にロードを解除する
     setState(() {
@@ -138,8 +148,14 @@ class _LoginScreenState extends State<LoginScreen> {
                       }
                       return null;
                     }
-
                 ),
+                SizedBox(
+                  height: 5.0,
+                ),
+
+                // FIREBASEからのエラー表示
+                Center(child: Text(errorMessage),),
+
                 SizedBox(
                   height: 24.0,
                 ),
@@ -151,8 +167,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   title: 'ログイン',
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
-                      loginUserFromEmail();
-                    }
+                        loginUserFromEmail();
+                      }
                     print(email);
                     print(password);
                   },

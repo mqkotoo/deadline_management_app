@@ -31,8 +31,16 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       setState(() {
         isLoad = false;
       });
-    } catch (e) {
-      print(e);
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'email-already-in-use') {
+        print('指定したメールアドレスは登録済みです');
+      } else if (e.code == 'invalid-email') {
+        print('メールアドレスのフォーマットが正しくありません');
+      } else if (e.code == 'operation-not-allowed') {
+        print('指定したメールアドレス・パスワードは現在使用できません');
+      } else if (e.code == 'weak-password') {
+        print('パスワードは６文字以上にしてください');
+      }
     }
     // エラー後にロードを解除する
     setState(() {
