@@ -20,7 +20,11 @@ class SettingScreen extends StatelessWidget {
         child: Text('ログアウト'),
         onPressed: () {
           _auth.signOut();
-          Navigator.pushNamed(context, WelcomeScreen.id);
+
+          // 全画面ポップしてWELCOME画面を表示する
+          Navigator.of(context).pushNamedAndRemoveUntil(
+              WelcomeScreen.id, (route) => false);
+
           print("ログアウトしました");
         },
       ),

@@ -31,7 +31,11 @@ class _LoginScreenState extends State<LoginScreen> {
 
       // ユーザが確認できたら
       if (newUser != null) {
-        Navigator.pushNamed(context, CalendarScreen.id);
+
+        // 全画面ポップしてCALENDAR画面を表示する(カレンダーページだけがスタックに存在する)
+        Navigator.of(context)
+            .pushNamedAndRemoveUntil(CalendarScreen.id, (route) => false);
+
         print("ログインに成功しました");
       }
       setState(() {
@@ -39,10 +43,8 @@ class _LoginScreenState extends State<LoginScreen> {
       });
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-disabled') {
-        // print('そのメールアドレスは利用できません');
         errorMessage = 'そのメールアドレスは利用できません';
       } else if (e.code == 'invalid-email') {
-        // print('メールアドレスのフォーマットが正しくありません');
         errorMessage = 'メールアドレスのフォーマットが正しくありません';
       } else if (e.code == 'user-not-found') {
         print('ユーザーが見つかりません');

@@ -60,7 +60,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
       body: Column(
         children: [
           SizedBox(
-            height: 440,
+            height: 410,
             child: TableCalendar(
               locale: 'ja_JP',
               shouldFillViewport: true,
@@ -214,7 +214,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                 padding: EdgeInsets.only(left: 17.5),
                 child: ListTile(
                   title: Text(
-                    "● " + event.title,
+                    event.title,
                     style: TextStyle(
                       fontSize: 20,
                     ),
@@ -227,10 +227,9 @@ class _CalendarScreenState extends State<CalendarScreen> {
       ),
 
       // タスク作成ボタン
-      floatingActionButton: FloatingActionButton.extended(
+      floatingActionButton: FloatingActionButton(
         onPressed: () => _showAddDialog(),
-        label: Text("作成"),
-        icon: Icon(Icons.add),
+        child : Icon(Icons.add),
       ),
     );
   }

@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      // initialRoute: CalendarScreen.id,
+      debugShowCheckedModeBanner: false,
       routes: <String, WidgetBuilder> {
         WelcomeScreen.id: (BuildContext context) => WelcomeScreen(),
         LoginScreen.id: (BuildContext context) => LoginScreen(),
@@ -31,6 +31,8 @@ class MyApp extends StatelessWidget {
         CalendarScreen.id: (BuildContext context) => CalendarScreen(),
         SettingScreen.id: (BuildContext context) => SettingScreen(),
       },
+
+      // ログインしているかしていないかで最初に表示するページを変える処理
       home: StreamBuilder<User?>(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
