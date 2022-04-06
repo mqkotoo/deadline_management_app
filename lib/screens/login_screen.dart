@@ -32,7 +32,7 @@ class _LoginScreenState extends State<LoginScreen> {
       // ユーザが確認できたら
       if (newUser != null) {
 
-        // 全画面ポップしてCALENDAR画面を表示する(カレンダーページだけがスタックに存在する)
+        // 全画面ポップしてCALENDAR画面を表示する(カレンダーページだけがスタックに存在する
         Navigator.of(context)
             .pushNamedAndRemoveUntil(CalendarScreen.id, (route) => false);
 
@@ -47,13 +47,11 @@ class _LoginScreenState extends State<LoginScreen> {
       } else if (e.code == 'invalid-email') {
         errorMessage = 'メールアドレスのフォーマットが正しくありません';
       } else if (e.code == 'user-not-found') {
-        print('ユーザーが見つかりません');
         errorMessage = 'ユーザーが見つかりません';
       } else if (e.code == 'wrong-password') {
-        print('パスワードが違います');
         errorMessage = 'パスワードが違います';
       }
-      setState(() {});
+      // setState(() {});
     }
     // エラー後にロードを解除する
     setState(() {
