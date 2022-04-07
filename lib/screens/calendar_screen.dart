@@ -61,7 +61,15 @@ class _CalendarScreenState extends State<CalendarScreen> {
         children: [
           SizedBox(
             height: 410,
+            // テーブルカレンダーを実装
             child: TableCalendar(
+              calendarBuilders: CalendarBuilders(
+                markerBuilder: (context, date, event) {
+                  if (event.isNotEmpty) {
+                    return _buildEventsMarker(date, event);
+                  }
+                },
+              ),
               locale: 'ja_JP',
               shouldFillViewport: true,
               firstDay: DateTime.utc(2010, 10, 16),
@@ -97,6 +105,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
               daysOfWeekStyle: dayStyle,
               // カレンダーの上の部分のスタイル
               headerStyle: calendarHeadStyle,
+
+
             ),
           ),
 
@@ -298,3 +308,30 @@ class _CalendarScreenState extends State<CalendarScreen> {
     );
   }
 }
+
+// イベントの数を数字で表示するためのウィジェット
+Widget _buildEventsMarker(DateTime date, List event) {
+  return Positioned(
+    right: 5,
+    bottom: 5,
+    child: AnimatedContainer(
+      duration: const Duration(milliseconds: 300),
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: Colors.red[300],
+      ),
+      width: 16.0,
+      height: 16.0,
+      child: Center(
+        child: Text(
+          '${event.length}',
+          style: TextStyle().copyWith(
+            color: Colors.white,
+            fontSize: 12.0,
+          ),
+        ),
+      ),
+    ),
+  );
+}
+
