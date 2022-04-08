@@ -16,16 +16,15 @@ class CalendarScreen extends StatefulWidget {
 class _CalendarScreenState extends State<CalendarScreen> {
   late Map<DateTime, List<Event>> selectedEvents;
 
-
   CalendarFormat _calendarFormat = CalendarFormat.month;
   DateTime _focusedDay = DateTime.now();
   DateTime _selectedDay = DateTime.now();
+  final now = DateTime.now();
 
   TextEditingController _eventController = TextEditingController();
 
   // タスクを編集するとき用のTextEditingController
   TextEditingController? _editController;
-
 
   @override
   void initState() {
@@ -43,10 +42,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
     super.dispose();
   }
 
-
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
@@ -64,16 +61,16 @@ class _CalendarScreenState extends State<CalendarScreen> {
             // テーブルカレンダーを実装
             child: TableCalendar(
               calendarBuilders: CalendarBuilders(
-                markerBuilder: (context, date, event) {
-                  if (event.isNotEmpty) {
-                    return _buildEventsMarker(date, event);
+                markerBuilder: (context, date, events) {
+                  if (events.isNotEmpty) {
+                    return _buildEventsMarker(date, events);
                   }
                 },
               ),
               locale: 'ja_JP',
               shouldFillViewport: true,
-              firstDay: DateTime.utc(2010, 10, 16),
-              lastDay: DateTime.utc(2030, 3, 14),
+              firstDay: DateTime.utc(now.year - 1, 1, 1),
+              lastDay: DateTime.utc(now.year + 1, 12, 31),
               focusedDay: _focusedDay,
               calendarFormat: _calendarFormat,
               selectedDayPredicate: (day) {
@@ -105,16 +102,17 @@ class _CalendarScreenState extends State<CalendarScreen> {
               daysOfWeekStyle: dayStyle,
               // カレンダーの上の部分のスタイル
               headerStyle: calendarHeadStyle,
-
-
             ),
+          ),
+          SizedBox(
+            height: 11,
           ),
 
           // 今選択している日付をリストの上に表示する
           selectedDay(selectedDay: _selectedDay),
 
           ..._getEventsfromDay(_selectedDay).map(
-                (Event event) => Slidable(
+            (Event event) => Slidable(
               endActionPane: ActionPane(
                 motion: ScrollMotion(),
                 children: [
@@ -134,10 +132,11 @@ class _CalendarScreenState extends State<CalendarScreen> {
                               title: Text("タスク編集"),
                               content: TextFormField(
                                 // イニシャルバリューを指定↓
-                                controller: _editController = TextEditingController(text: event.title),
+                                controller: _editController =
+                                    TextEditingController(text: event.title),
                                 autofocus: true,
                                 decoration: InputDecoration(
-                                  suffixIcon:IconButton(
+                                  suffixIcon: IconButton(
                                     icon: Icon(Icons.close),
                                     onPressed: () => _editController!.clear(),
                                   ),
@@ -159,7 +158,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                     setState(() {
                                       // 無理矢理値アップデート
                                       // 今あるやつ削除
-                                      selectedEvents[_selectedDay]!.remove(event);
+                                      selectedEvents[_selectedDay]!
+                                          .remove(event);
                                       // 追加
                                       selectedEvents[_selectedDay]!.add(
                                         Event(title: _editController!.text),
@@ -231,6 +231,24 @@ class _CalendarScreenState extends State<CalendarScreen> {
                   ),
                 ),
               ),
+
+
+              // // スクロールできるリストビューにしたい↓　↓
+              // child: Padding(
+              //   padding: EdgeInsets.only(left: 17.5),
+              //   child: ListView.builder(
+              //     shrinkWrap: true,
+              //     itemCount: selectedEvents[_selectedDay]?.length,
+              //     itemBuilder: (context, index) {
+              //       final eventTitle = selectedEvents[_selectedDay]?[index];
+              //       return ListTile(
+              //         title: Text(eventTitle!.title),
+              //       );
+              //     },
+              //   ),
+              // ),
+
+
             ),
           ),
         ],
@@ -239,15 +257,10 @@ class _CalendarScreenState extends State<CalendarScreen> {
       // タスク作成ボタン
       floatingActionButton: FloatingActionButton(
         onPressed: () => _showAddDialog(),
-        child : Icon(Icons.add),
+        child: Icon(Icons.add),
       ),
     );
   }
-
-
-
-
-
 
   // イベント追加の際のモーダル
   _showAddDialog() {
@@ -310,7 +323,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
 }
 
 // イベントの数を数字で表示するためのウィジェット
-Widget _buildEventsMarker(DateTime date, List event) {
+Widget _buildEventsMarker(DateTime date, List events) {
   return Positioned(
     right: 5,
     bottom: 5,
@@ -324,7 +337,7 @@ Widget _buildEventsMarker(DateTime date, List event) {
       height: 16.0,
       child: Center(
         child: Text(
-          '${event.length}',
+          '${events.length}',
           style: TextStyle().copyWith(
             color: Colors.white,
             fontSize: 12.0,
@@ -334,4 +347,3 @@ Widget _buildEventsMarker(DateTime date, List event) {
     ),
   );
 }
-

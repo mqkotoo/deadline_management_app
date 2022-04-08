@@ -51,7 +51,6 @@ class _LoginScreenState extends State<LoginScreen> {
       } else if (e.code == 'wrong-password') {
         errorMessage = 'パスワードが違います';
       }
-      // setState(() {});
     }
     // エラー後にロードを解除する
     setState(() {
