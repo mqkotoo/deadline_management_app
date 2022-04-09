@@ -82,6 +82,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                     _selectedDay = selectedDay;
                     _focusedDay = focusedDay;
                   });
+                  _getEventsfromDay(_selectedDay);
                 }
               },
               onFormatChanged: (format) {
@@ -111,8 +112,13 @@ class _CalendarScreenState extends State<CalendarScreen> {
           // 今選択している日付をリストの上に表示する
           selectedDay(selectedDay: _selectedDay),
 
-          ..._getEventsfromDay(_selectedDay).map(
-            (Event event) => Slidable(
+      // タスクのリストを表示する
+      Expanded(
+        child: Padding(
+          padding: EdgeInsets.only(left: 17.5),
+          child: ListView(
+            children: _getEventsfromDay(_selectedDay)
+                .map((event) => Slidable(
               endActionPane: ActionPane(
                 motion: ScrollMotion(),
                 children: [
@@ -218,39 +224,15 @@ class _CalendarScreenState extends State<CalendarScreen> {
                   ),
                 ],
               ),
-
-              // イベントのタスクのリスト
-              child: Padding(
-                padding: EdgeInsets.only(left: 17.5),
-                child: ListTile(
-                  title: Text(
-                    event.title,
-                    style: TextStyle(
-                      fontSize: 20,
-                    ),
-                  ),
-                ),
-              ),
-
-
-              // // スクロールできるリストビューにしたい↓　↓
-              // child: Padding(
-              //   padding: EdgeInsets.only(left: 17.5),
-              //   child: ListView.builder(
-              //     shrinkWrap: true,
-              //     itemCount: selectedEvents[_selectedDay]?.length,
-              //     itemBuilder: (context, index) {
-              //       final eventTitle = selectedEvents[_selectedDay]?[index];
-              //       return ListTile(
-              //         title: Text(eventTitle!.title),
-              //       );
-              //     },
-              //   ),
-              // ),
-
-
+                  child: ListTile(
+              title: Text(event.title),
             ),
-          ),
+
+                ))
+                .toList()),
+
+        ),
+      ),
         ],
       ),
 
