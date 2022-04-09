@@ -114,8 +114,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
       // タスクのリストを表示する
       Expanded(
-        child: Padding(
-          padding: EdgeInsets.only(left: 17.5),
+        // child: Padding(
+        //   padding: EdgeInsets.only(left: 17.5),
           child: ListView(
             children: _getEventsfromDay(_selectedDay)
                 .map((event) => Slidable(
@@ -171,8 +171,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                         Event(title: _editController!.text),
                                       );
 
-                                      // 値アップデート
-                                      // selectedEvents[_selectedDay]![0] =
+                                      // // 値アップデート
+                                      // selectedEvents[_selectedDay]![index] =
                                       //   Event(title: _eventController.text);
                                     });
                                     print(_editController!.text);
@@ -224,14 +224,24 @@ class _CalendarScreenState extends State<CalendarScreen> {
                   ),
                 ],
               ),
-                  child: ListTile(
-              title: Text(event.title),
+                  child: Container(
+                    child: ListTile(
+              title: Text(' ' + event.title,style: TextStyle(fontSize: 20),),
             ),
+                    decoration: BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(
+                          color: Colors.grey,
+                          width: 0.85,
+                        ),
+                      ),
+                    ),
+                  ),
 
                 ))
                 .toList()),
 
-        ),
+        // ),
       ),
         ],
       ),
