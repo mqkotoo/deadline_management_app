@@ -3,7 +3,7 @@ import 'package:flutter_deadline_management/screens/setting_screen.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../component/constants.dart';
 import '../component/selectedDay.dart';
-import '../event.dart';
+import '../model/event.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
 class CalendarScreen extends StatefulWidget {
