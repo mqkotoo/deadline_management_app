@@ -8,14 +8,14 @@ class Event {
 
   String toString() => this.title;
 
-  Map<String, dynamic> toMap() {
-    return {
-      'eventTitle': title,
-      'eventDate': date,
-    };
-  }
-
-  Event.fromFirestore(Map<String, dynamic> firestore)
-      : title = firestore['eventTitle'],
-        date = firestore['eventDate'].toDate();
+  // Map<String, dynamic> toMap() {
+  //   return {
+  //     'eventTitle': title,
+  //     'eventDate': date,
+  //   };
+  // }
+  //
+  // Event.fromFirestore(Map<String, dynamic> firestore)
+  //     : title = firestore['eventTitle'],
+  //       date = firestore['eventDate'].toDate();
 }
