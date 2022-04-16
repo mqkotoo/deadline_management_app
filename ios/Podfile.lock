@@ -1,9 +1,16 @@
 PODS:
+  - cloud_firestore (3.1.12):
+    - Firebase/Firestore (= 8.14.0)
+    - firebase_core
+    - Flutter
   - Firebase/Auth (8.14.0):
     - Firebase/CoreOnly
     - FirebaseAuth (~> 8.14.0)
   - Firebase/CoreOnly (8.14.0):
     - FirebaseCore (= 8.14.0)
+  - Firebase/Firestore (8.14.0):
+    - Firebase/CoreOnly
+    - FirebaseFirestore (~> 8.14.0)
   - firebase_auth (3.3.12):
     - Firebase/Auth (= 8.14.0)
     - firebase_core
@@ -25,6 +32,14 @@ PODS:
     - GoogleUtilities/Environment (~> 7.7)
     - GoogleUtilities/Logger (~> 7.7)
     - nanopb (~> 2.30908.0)
+  - FirebaseFirestore (8.14.0):
+    - FirebaseFirestore/AutodetectLeveldb (= 8.14.0)
+  - FirebaseFirestore/AutodetectLeveldb (8.14.0):
+    - FirebaseFirestore/Base
+    - FirebaseFirestore/WithLeveldb
+  - FirebaseFirestore/Base (8.14.0)
+  - FirebaseFirestore/WithLeveldb (8.14.0):
+    - FirebaseFirestore/Base
   - Flutter (1.0.0)
   - GoogleDataTransport (9.1.2):
     - GoogleUtilities/Environment (~> 7.2)
@@ -56,8 +71,10 @@ PODS:
   - PromisesObjC (2.0.0)
 
 DEPENDENCIES:
+  - cloud_firestore (from `.symlinks/plugins/cloud_firestore/ios`)
   - firebase_auth (from `.symlinks/plugins/firebase_auth/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
+  - FirebaseFirestore (from `https://github.com/invertase/firestore-ios-sdk-frameworks.git`, tag `8.14.0`)
   - Flutter (from `Flutter`)
   - modal_progress_hud_nsn (from `.symlinks/plugins/modal_progress_hud_nsn/ios`)
 
@@ -74,22 +91,34 @@ SPEC REPOS:
     - PromisesObjC
 
 EXTERNAL SOURCES:
+  cloud_firestore:
+    :path: ".symlinks/plugins/cloud_firestore/ios"
   firebase_auth:
     :path: ".symlinks/plugins/firebase_auth/ios"
   firebase_core:
     :path: ".symlinks/plugins/firebase_core/ios"
+  FirebaseFirestore:
+    :git: https://github.com/invertase/firestore-ios-sdk-frameworks.git
+    :tag: 8.14.0
   Flutter:
     :path: Flutter
   modal_progress_hud_nsn:
     :path: ".symlinks/plugins/modal_progress_hud_nsn/ios"
 
+CHECKOUT OPTIONS:
+  FirebaseFirestore:
+    :git: https://github.com/invertase/firestore-ios-sdk-frameworks.git
+    :tag: 8.14.0
+
 SPEC CHECKSUMS:
+  cloud_firestore: 6894050fe57f80e72d84d5d6c57392f3d1615c19
   Firebase: 7e8fe528c161b9271d365217a74c16aaf834578e
   firebase_auth: 363370737d33bad09a838cd109f7589bc48533cd
   firebase_core: b0b382f1497ab407aceb25e41e3036c8798c1609
   FirebaseAuth: c5fde343630090253d3af7e2d35697b414b40202
   FirebaseCore: b84a44ee7ba999e0f9f76d198a9c7f60a797b848
   FirebaseCoreDiagnostics: fd0c8490f34287229c1d6c103d3a55f81ec85712
+  FirebaseFirestore: dc1455307e2478af30dcd4c3020ba52654c6b62d
   Flutter: 50d75fe2f02b26cc09d224853bb45737f8b3214a
   GoogleDataTransport: 629c20a4d363167143f30ea78320d5a7eb8bd940
   GoogleUtilities: e0913149f6b0625b553d70dae12b49fc62914fd1
@@ -98,6 +127,6 @@ SPEC CHECKSUMS:
   nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96
   PromisesObjC: 68159ce6952d93e17b2dfe273b8c40907db5ba58
 
-PODFILE CHECKSUM: fe0e1ee7f3d1f7d00b11b474b62dd62134535aea
+PODFILE CHECKSUM: d9a1045d8f1e47c7b14c4e647b1454611b0d9635
 
 COCOAPODS: 1.11.2
