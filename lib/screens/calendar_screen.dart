@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_deadline_management/screens/setting_screen.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -253,8 +254,28 @@ class _CalendarScreenState extends State<CalendarScreen> {
       ),
 
       // タスク作成ボタン
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () => _showAddDialog(),
+      //   child: Icon(Icons.add),
+      // ),
+
+//      イベント追加テスト用
       floatingActionButton: FloatingActionButton(
-        onPressed: () => _showAddDialog(),
+        onPressed: () {
+          final db = FirebaseFirestore.instance;
+          db.collection('AppPackage').doc('v1')
+          .set({
+            'events': {
+              _selectedDay.toString() : {
+                '0' : {
+                  'eventTitle' : '遠足',
+                  'description' : '7am'
+                }
+              }
+            },
+
+          });
+        },
         child: Icon(Icons.add),
       ),
     );
