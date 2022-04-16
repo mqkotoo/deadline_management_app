@@ -73,6 +73,12 @@ class _CalendarScreenState extends State<CalendarScreen> {
               lastDay: DateTime.utc(now.year + 1, 12, 31),
               focusedDay: _focusedDay,
               calendarFormat: _calendarFormat,
+
+                // カレンダーのフォーマットを月毎にしかできなくする
+                availableCalendarFormats: const {
+                  CalendarFormat.month: 'Month',
+                },
+
               selectedDayPredicate: (day) {
                 return isSameDay(_selectedDay, day);
               },
