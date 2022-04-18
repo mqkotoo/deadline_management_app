@@ -1,22 +1,23 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_deadline_management/model/calendar_model.dart';
 import 'package:flutter_deadline_management/screens/setting_screen.dart';
-import 'package:intl/intl.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:table_calendar/table_calendar.dart';
+
 import '../component/constants.dart';
 import '../component/selectedDay.dart';
-import '../model/event.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
 
-class CalendarScreen extends StatefulWidget {
+class CalendarScreen extends StatefulHookConsumerWidget {
   static const String id = 'calendar';
 
   @override
   _CalendarScreenState createState() => _CalendarScreenState();
 }
 
-class _CalendarScreenState extends State<CalendarScreen> {
-  late Map<DateTime, List<Event>> selectedEvents;
+class _CalendarScreenState extends ConsumerState<CalendarScreen> {
+  //日にち分けしたときに一時的に予定が入るリスト
+  List selectDatEvents = [];
 
   CalendarFormat _calendarFormat = CalendarFormat.month;
   DateTime _focusedDay = DateTime.now();
@@ -30,12 +31,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
   @override
   void initState() {
-    selectedEvents = {};
     super.initState();
-  }
-
-  List<Event> _getEventsfromDay(DateTime date) {
-    return selectedEvents[date] ?? [];
   }
 
   @override
@@ -46,6 +42,28 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
   @override
   Widget build(BuildContext context) {
+    //calendarモデルのeventsListを常に監視
+    final events = ref.watch(calendarProvider).eventsList;
+
+    //events
+    //0:{"at":Timestamp2022年04月18日}
+    //1:{"at":Timestamp2022年04月01日}
+    //2:{"at":Timestamp2022年04月30日}
+    List _getEventsfromDay(DateTime date) {
+      List contents = [];
+      for (var i = 0; i < events.length; i++) {
+        //TimeStampをDateTimeに変換
+        DateTime isDay = events[i]['at'].toDate();
+        //DateTimeとDateTimeの比較
+        if (DateTime(date.year, date.month, date.day)
+            .isAtSameMomentAs(DateTime(isDay.year, isDay.month, isDay.day))) {
+          //4月18日と4月18日のように日にちが同じだったらcontentsに追加
+          contents.add(events[i]);
+        }
+      }
+      return contents;
+    }
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
@@ -76,10 +94,10 @@ class _CalendarScreenState extends State<CalendarScreen> {
               focusedDay: _focusedDay,
               calendarFormat: _calendarFormat,
 
-                // カレンダーのフォーマットを月毎にしかできなくする
-                availableCalendarFormats: const {
-                  CalendarFormat.month: 'Month',
-                },
+              // カレンダーのフォーマットを月毎にしかできなくする
+              availableCalendarFormats: const {
+                CalendarFormat.month: 'Month',
+              },
 
               selectedDayPredicate: (day) {
                 return isSameDay(_selectedDay, day);
@@ -113,144 +131,149 @@ class _CalendarScreenState extends State<CalendarScreen> {
               headerStyle: calendarHeadStyle,
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 11,
           ),
-
           // 今選択している日付をリストの上に表示する
           selectedDay(selectedDay: _selectedDay),
 
-      // タスクのリストを表示する
-      Expanded(
-        // child: Padding(
-        //   padding: EdgeInsets.only(left: 17.5),
-          child: ListView(
-            children: _getEventsfromDay(_selectedDay)
-                .map((event) => Slidable(
-              endActionPane: ActionPane(
-                motion: ScrollMotion(),
-                children: [
-                  SlidableAction(
-                    backgroundColor: Colors.blue,
-                    icon: Icons.edit,
-                    label: '編集',
-                    // 編集ボタン押したときの処理
-                    onPressed: (value) {
-                      showDialog(
-                        barrierDismissible: false,
-                        context: context,
-                        builder: (context) => Column(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            AlertDialog(
-                              title: Text("タスク編集"),
-                              content: TextFormField(
-                                // イニシャルバリューを指定↓
-                                controller: _editController =
-                                    TextEditingController(text: event.title),
-                                autofocus: true,
-                                decoration: InputDecoration(
-                                  suffixIcon: IconButton(
-                                    icon: Icon(Icons.close),
-                                    onPressed: () => _editController!.clear(),
-                                  ),
+          // タスクのリストを表示する
+          Expanded(
+            // child: Padding(
+            //   padding: EdgeInsets.only(left: 17.5),
+            child: ListView(
+                children: _getEventsfromDay(_selectedDay)
+                    .map((event) => Slidable(
+                          endActionPane: ActionPane(
+                            motion: ScrollMotion(),
+                            children: [
+                              SlidableAction(
+                                backgroundColor: Colors.blue,
+                                icon: Icons.edit,
+                                label: '編集',
+                                // 編集ボタン押したときの処理
+                                onPressed: (value) {
+                                  showDialog(
+                                    barrierDismissible: false,
+                                    context: context,
+                                    builder: (context) => Column(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        AlertDialog(
+                                          title: Text("タスク編集"),
+                                          content: TextFormField(
+                                            // イニシャルバリューを指定↓
+                                            controller: _editController =
+                                                TextEditingController(
+                                                    text: event.title),
+                                            autofocus: true,
+                                            decoration: InputDecoration(
+                                              suffixIcon: IconButton(
+                                                icon: Icon(Icons.close),
+                                                onPressed: () =>
+                                                    _editController!.clear(),
+                                              ),
+                                            ),
+                                          ),
+                                          actions: [
+                                            // キャンセルボタン
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                                _editController!.clear();
+                                              },
+                                              child: Text('キャンセル'),
+                                            ),
+
+                                            // 更新ボタン
+                                            TextButton(
+                                              onPressed: () {
+                                                setState(() {
+                                                  // 無理矢理値アップデート
+                                                  // 今あるやつ削除
+                                                  // selectedEvents[_selectedDay]!
+                                                  //     .remove(event);
+                                                  // // 追加
+                                                  // selectedEvents[_selectedDay]!.add(
+                                                  //     // Event(title: _editController!.text),
+                                                  //     );
+
+                                                  // // 値アップデート
+                                                  // selectedEvents[_selectedDay]![index] =
+                                                  //   Event(title: _eventController.text);
+                                                });
+                                                print(_editController!.text);
+                                                Navigator.pop(context);
+                                                _editController!.clear();
+                                              },
+                                              child: Text('更新'),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                },
+                              ),
+                              SlidableAction(
+                                onPressed: (value) {
+                                  // 削除する前にダイアログを出す
+                                  showDialog(
+                                    barrierDismissible: false,
+                                    context: context,
+                                    builder: (context) => AlertDialog(
+                                      title: Text("タスク削除"),
+                                      content: Text('"${event.title}"を削除しますか？'),
+                                      actions: [
+                                        // キャンセルボタン
+                                        TextButton(
+                                          onPressed: () =>
+                                              Navigator.pop(context),
+                                          child: Text('キャンセル'),
+                                        ),
+                                        // 追加ボタン
+                                        TextButton(
+                                          onPressed: () {
+                                            // selectedEvents[_selectedDay]!
+                                            //     .remove(event);
+                                            // ref
+                                            //     .read(calendarProvider)
+                                            //     .delete(_selectedDay, event);
+                                            // Navigator.pop(context);
+                                          },
+                                          child: Text('OK'),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                },
+                                backgroundColor: Colors.red,
+                                icon: Icons.delete,
+                                label: '削除',
+                              ),
+                            ],
+                          ),
+                          child: Container(
+                            child: ListTile(
+                              title: Text(
+                                event["title"].toString(),
+                                style: TextStyle(fontSize: 20),
+                              ),
+                            ),
+                            decoration: BoxDecoration(
+                              border: Border(
+                                bottom: BorderSide(
+                                  color: Colors.grey,
+                                  width: 0.85,
                                 ),
                               ),
-                              actions: [
-                                // キャンセルボタン
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                    _editController!.clear();
-                                  },
-                                  child: Text('キャンセル'),
-                                ),
-
-                                // 更新ボタン
-                                TextButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      // 無理矢理値アップデート
-                                      // 今あるやつ削除
-                                      selectedEvents[_selectedDay]!
-                                          .remove(event);
-                                      // 追加
-                                      selectedEvents[_selectedDay]!.add(
-                                        Event(title: _editController!.text),
-                                      );
-
-                                      // // 値アップデート
-                                      // selectedEvents[_selectedDay]![index] =
-                                      //   Event(title: _eventController.text);
-                                    });
-                                    print(_editController!.text);
-                                    Navigator.pop(context);
-                                    _editController!.clear();
-                                  },
-                                  child: Text('更新'),
-                                ),
-                              ],
                             ),
-                          ],
-                        ),
-                      );
-                    },
-                  ),
-                  SlidableAction(
-                    onPressed: (value) {
-                      // 削除する前にダイアログを出す
-                      showDialog(
-                        barrierDismissible: false,
-                        context: context,
-                        builder: (context) => AlertDialog(
-                          title: Text("タスク削除"),
-                          content: Text('"${event.title}"を削除しますか？'),
-                          actions: [
-                            // キャンセルボタン
-                            TextButton(
-                              onPressed: () => Navigator.pop(context),
-                              child: Text('キャンセル'),
-                            ),
-                            // 追加ボタン
-                            TextButton(
-                              onPressed: () {
-                                setState(() {
-                                  // 削除の処理を書く
-                                  selectedEvents[_selectedDay]!.remove(event);
-                                });
-                                Navigator.pop(context);
-                              },
-                              child: Text('OK'),
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                    backgroundColor: Colors.red,
-                    icon: Icons.delete,
-                    label: '削除',
-                  ),
-                ],
-              ),
-                  child: Container(
-                    child: ListTile(
-              title: Text(' ' + event.title,style: TextStyle(fontSize: 20),),
-            ),
-                    decoration: BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(
-                          color: Colors.grey,
-                          width: 0.85,
-                        ),
-                      ),
-                    ),
-                  ),
+                          ),
+                        ))
+                    .toList()),
 
-                ))
-                .toList()),
-
-        // ),
-      ),
+            // ),
+          ),
         ],
       ),
 
@@ -316,15 +339,9 @@ class _CalendarScreenState extends State<CalendarScreen> {
                 onPressed: () {
                   if (_eventController.text.isEmpty) {
                   } else {
-                    if (selectedEvents[_selectedDay] != null) {
-                      selectedEvents[_selectedDay]!.add(
-                        Event(title: _eventController.text),
-                      );
-                    } else {
-                      selectedEvents[_selectedDay] = [
-                        Event(title: _eventController.text)
-                      ];
-                    }
+                    ref
+                        .read(calendarProvider)
+                        .post(_selectedDay, _eventController.text, "詳細");
                   }
                   print(_eventController.text);
                   Navigator.pop(context);

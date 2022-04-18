@@ -1,9 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_deadline_management/start_up.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+
 import '../component/rounded_button.dart';
 import '../constants.dart';
-import 'calendar_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   static const String id = 'login';
@@ -31,10 +32,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
       // ユーザが確認できたら
       if (newUser != null) {
-
         // 全画面ポップしてCALENDAR画面を表示する(カレンダーページだけがスタックに存在する
         Navigator.of(context)
-            .pushNamedAndRemoveUntil(CalendarScreen.id, (route) => false);
+            .pushNamedAndRemoveUntil(StartUpPage.id, (route) => false);
 
         print("ログインに成功しました");
       }

@@ -1,62 +1,63 @@
 //モデルの作成
-class EventModel{
-  EventModel(this.date,this.event);
-  String date;
-  List event;
-}
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_deadline_management/model/fireauth.dart';
+import 'package:flutter_deadline_management/model/firestore.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+final calendarProvider = Provider((ref) => CalendarModel(ref.read));
 
 //storeProviderはFirestoreの
-class CalendarModel{
+class CalendarModel {
   CalendarModel(this._read);
   final Reader _read;
-  //とってきた値を入れる
-  Map? event;
-  //mapから変換
-  late List event_list;
-  //さらに型変換
-  Map<DateTime, List?> eventsList = {};
+  List eventsList = [];
 
   //以下追加処理
-  Future get()async{
+  Future get() async {
     final store = _read(storeProvider);
-    final db = await store.collection("AppPackage").doc("v1").get();
-    event = db.data()!["event"];
-    event_list = event!.entries.map((e) => EventModel(e.key, e.value)).toList();
-    for(int i = 0;i<event_list.length;i++){
-      final map = <DateTime,List?>{
-        DateTime.parse(event_list[i].date):event_list[i].event
-      };
-      eventsList.addAll(map);
-    }
+    final uid = _read(authProvider).currentUser!.uid;
+    final db = await store
+        .collection("AppPackage")
+        .doc("v1")
+        .collection("users")
+        .doc(uid)
+        .get();
+    eventsList = db.data()?['events'] ?? [];
+    print(eventsList);
   }
 
   //以下投稿処理
-  Future post(date,title,detail)async{
+  Future post(date, title, description) async {
     final store = _read(storeProvider);
-    final db = store.collection("AppPackage").doc("v1");
-    event!.addAll(<String,List<dynamic>>{
-      date:[title,detail]
-    });
-    await db.update({
-      "event":event,
-    });
-    event_list = event!.entries.map((e) => EventModel(e.key, e.value)).toList();
-    final map = <DateTime,List?>{
-      DateTime.parse(event_list.last.date):event_list.last.event
+    final uid = _read(authProvider).currentUser!.uid;
+    final db = await store
+        .collection("AppPackage")
+        .doc("v1")
+        .collection("users")
+        .doc(uid);
+    final post = {
+      "at": Timestamp.fromDate(date),
+      "title": title,
+      "detail": description,
     };
-    eventsList.addAll(map);
+    eventsList.add(post);
+    await db.update({
+      "events": eventsList,
+    });
   }
 
   //以下削除処理
-  Future delete(String date)async{
+  Future delete(date, event) async {
     final store = _read(storeProvider);
-    final db = store.collection("AppPackage").doc("v1");
-    event!.remove(date);
+    final uid = _read(authProvider).currentUser!.uid;
+    final db = await store
+        .collection("AppPackage")
+        .doc("v1")
+        .collection("users")
+        .doc(uid);
+    eventsList[date]!.remove(event);
     await db.update({
-      "event":event,
+      "events": eventsList,
     });
-    event_list = event!.entries.map((e) => EventModel(e.key, e.value)).toList();
-    eventsList.remove(DateTime.parse(date));
   }
 }
