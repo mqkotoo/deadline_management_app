@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_deadline_management/model/calendar_model.dart';
 import 'package:flutter_deadline_management/screens/setting_screen.dart';
@@ -17,7 +16,6 @@ class CalendarScreen extends StatefulHookConsumerWidget {
 }
 
 class _CalendarScreenState extends ConsumerState<CalendarScreen> {
-  List events = [];
   List selectDatEvents = [];
 
   CalendarFormat _calendarFormat = CalendarFormat.month;
@@ -32,7 +30,6 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
 
   @override
   void initState() {
-    events = ref.read(calendarProvider).eventsList;
     super.initState();
   }
 
@@ -44,6 +41,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final events = ref.watch(calendarProvider).eventsList;
     List _getEventsfromDay(DateTime date) {
       List contents = [];
       for (var i = 0; i < events.length; i++) {
@@ -331,12 +329,6 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                 onPressed: () {
                   if (_eventController.text.isEmpty) {
                   } else {
-                    final post = {
-                      "at": Timestamp.fromDate(_selectedDay),
-                      "title": _eventController.text,
-                      "detail": "詳細",
-                    };
-                    events.add(post);
                     ref
                         .read(calendarProvider)
                         .post(_selectedDay, _eventController.text, "詳細");
