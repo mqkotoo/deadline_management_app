@@ -58,6 +58,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
   @override
   Widget build(BuildContext context) {
     List _getEventsfromDay(DateTime date) {
+      change(date);
       return selectDatEvents;
     }
 
@@ -105,7 +106,6 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                     _selectedDay = selectedDay;
                     _focusedDay = focusedDay;
                   });
-                  change(_selectedDay);
                   _getEventsfromDay(_selectedDay);
                 }
               },
