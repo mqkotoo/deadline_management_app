@@ -16,6 +16,7 @@ class CalendarScreen extends StatefulHookConsumerWidget {
 }
 
 class _CalendarScreenState extends ConsumerState<CalendarScreen> {
+  //日にち分けしたときに一時的に予定が入るリスト
   List selectDatEvents = [];
 
   CalendarFormat _calendarFormat = CalendarFormat.month;
@@ -41,13 +42,22 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
 
   @override
   Widget build(BuildContext context) {
+    //calendarモデルのeventsListを常に監視
     final events = ref.watch(calendarProvider).eventsList;
+
+    //events
+    //0:{"at":Timestamp2022年04月18日}
+    //1:{"at":Timestamp2022年04月01日}
+    //2:{"at":Timestamp2022年04月30日}
     List _getEventsfromDay(DateTime date) {
       List contents = [];
       for (var i = 0; i < events.length; i++) {
-        DateTime day = events[i]['at'].toDate();
+        //TimeStampをDateTimeに変換
+        DateTime isDay = events[i]['at'].toDate();
+        //DateTimeとDateTimeの比較
         if (DateTime(date.year, date.month, date.day)
-            .isAtSameMomentAs(DateTime(day.year, day.month, day.day))) {
+            .isAtSameMomentAs(DateTime(isDay.year, isDay.month, isDay.day))) {
+          //4月18日と4月18日のように日にちが同じだったらcontentsに追加
           contents.add(events[i]);
         }
       }

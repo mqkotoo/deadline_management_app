@@ -9,12 +9,14 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class StartUpPage extends HookConsumerWidget {
+  static const String id = 'start';
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     useEffect(() {
       Future(() async {
         await ref.read(calendarProvider).get();
-        unawaited(Navigator.pushNamed(context, CalendarScreen.id));
+        unawaited(Navigator.of(context)
+            .pushNamedAndRemoveUntil(CalendarScreen.id, (route) => false));
       });
       return null;
     }, const []);

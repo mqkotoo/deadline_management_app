@@ -30,24 +30,13 @@ class MyApp extends StatelessWidget {
         RegistrationScreen.id: (BuildContext context) => RegistrationScreen(),
         CalendarScreen.id: (BuildContext context) => CalendarScreen(),
         SettingScreen.id: (BuildContext context) => SettingScreen(),
+        StartUpPage.id: (BuildContext context) => StartUpPage(),
       },
 
       // ログインしているかしていないかで最初に表示するページを変える処理
-      home: StreamBuilder<User?>(
-        stream: FirebaseAuth.instance.authStateChanges(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            // 繋がるまでの間の処理
-            return CircularProgressIndicator();
-          }
-          if (snapshot.hasData) {
-            // User が null でなない、つまりサインイン済みのホーム画面へ
-            return StartUpPage();
-          }
-          // User が null である、つまり未サインインのサインイン画面へ
-          return WelcomeScreen();
-        },
-      ),
+      home: FirebaseAuth.instance.currentUser != null
+          ? StartUpPage()
+          : WelcomeScreen(),
     );
   }
 }
