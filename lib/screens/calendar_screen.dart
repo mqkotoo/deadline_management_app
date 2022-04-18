@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_deadline_management/model/calendar_model.dart';
 import 'package:flutter_deadline_management/screens/setting_screen.dart';
@@ -41,25 +42,18 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
     super.dispose();
   }
 
-  void change(DateTime date) {
-    for (var i = 0; i < events.length; i++) {
-      DateTime day = events[i]['at'].toDate();
-      if (DateTime(date.year, date.month, date.day)
-          .isAtSameMomentAs(DateTime(day.year, day.month, day.day))) {
-        selectDatEvents.add(events[i]);
-      } else {
-        selectDatEvents.clear();
-      }
-    }
-    print("イベント:" + selectDatEvents.toString());
-    return;
-  }
-
   @override
   Widget build(BuildContext context) {
     List _getEventsfromDay(DateTime date) {
-      change(date);
-      return selectDatEvents;
+      List contents = [];
+      for (var i = 0; i < events.length; i++) {
+        DateTime day = events[i]['at'].toDate();
+        if (DateTime(date.year, date.month, date.day)
+            .isAtSameMomentAs(DateTime(day.year, day.month, day.day))) {
+          contents.add(events[i]);
+        }
+      }
+      return contents;
     }
 
     return Scaffold(
@@ -338,7 +332,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                   if (_eventController.text.isEmpty) {
                   } else {
                     final post = {
-                      "at": _selectedDay,
+                      "at": Timestamp.fromDate(_selectedDay),
                       "title": _eventController.text,
                       "detail": "詳細",
                     };

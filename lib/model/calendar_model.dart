@@ -1,4 +1,5 @@
 //モデルの作成
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_deadline_management/model/fireauth.dart';
 import 'package:flutter_deadline_management/model/firestore.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -48,7 +49,7 @@ class CalendarModel {
         .collection("users")
         .doc(uid);
     final post = {
-      "at": date,
+      "at": Timestamp.fromDate(date),
       "title": title,
       "detail": description,
     };
