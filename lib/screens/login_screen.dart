@@ -32,7 +32,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
       // ユーザが確認できたら
       if (newUser != null) {
-        // 全画面ポップしてCALENDAR画面を表示する(カレンダーページだけがスタックに存在する
+        // 全画面ポップしてスタートあっぷ画面に飛ぶ(スタートアップだけがスタックに存在する
         Navigator.of(context)
             .pushNamedAndRemoveUntil(StartUpPage.id, (route) => false);
 
