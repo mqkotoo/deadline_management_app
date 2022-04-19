@@ -14,6 +14,7 @@ class StartUpPage extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     useEffect(() {
       //何も返さないならなんでFUTUREをつかってる？
+      //takuma:Futureを使って非同期処理を行うため。しかし、awaitがあるからCALENDARPROVIDERの中身を取得するまで先に進まない。
       Future(() async {
         //CALENDARPROVIDERの中身を取得する
         await ref.read(calendarProvider).get();
