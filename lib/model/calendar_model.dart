@@ -70,6 +70,18 @@ class CalendarModel {
   }
 
   //以下更新処理
+  //final うえ = {
+  //       "at": 4月18日,
+  //       "title": "a",
+  //       "detail": "詳細",
+  //     };
+  //final した = {
+  //       "at": 4月18日,
+  //       "title": "a",
+  //       "detail": "詳細",
+  //     };
+  //title = a
+
   Future update(event, title, description) async {
     final store = _read(storeProvider);
     final uid = _read(authProvider).currentUser!.uid;
@@ -82,14 +94,19 @@ class CalendarModel {
         .doc(uid);
 
     //POSTの形を作る
+    //編集後の値
     final post = {
       "at": event["at"],
       "title": title,
       "detail": description,
     };
-    // 削除処理
+
+    // 選択していた値(もう使わない)をリストから削除
     eventsList.remove(event);
-    // 追加処理
+    //List iroiro = ["apple","cat"]
+    //iroiro.remove("apple");
+
+    // そのかわりに編集後の値をリストに追加
     eventsList.add(post);
 
     // 更新処理
@@ -113,6 +130,12 @@ class CalendarModel {
     // 削除処理
     eventsList.remove(event);
 
+    /*
+    eventsList = [
+      {"at":"2022-04-20","title":"google","detail":"詳細"},
+      {"at":"2022-04-19","title":"yahoo","detail":"詳細"}
+    ]
+     */
     //これはなんのUPDATE??
     //takuma:delete機能はまだ未実装
     //2022/04/20夜までに作成します
