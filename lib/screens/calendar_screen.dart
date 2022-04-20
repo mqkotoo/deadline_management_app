@@ -50,11 +50,13 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
     //1:{"at":Timestamp2022年04月01日}
     //2:{"at":Timestamp2022年04月30日}
     List _getEventsfromDay(DateTime date) {
+      // 分けられたいい感じのイベントたちが入る変数
       List contents = [];
+      //一個ずつeventListの中身をスキャンしていく
       for (var i = 0; i < events.length; i++) {
-        //TimeStampをDateTimeに変換
+        //イベントたちの登録されている日にちのTimeStampをDateTimeに変換
         DateTime isDay = events[i]['at'].toDate();
-        //DateTimeとDateTimeの比較
+        //イベントたちのDateTimeとカレンダーのDateTimeの比較
         if (DateTime(date.year, date.month, date.day)
             .isAtSameMomentAs(DateTime(isDay.year, isDay.month, isDay.day))) {
           //4月18日と4月18日のように日にちが同じだったらcontentsに追加
@@ -339,13 +341,14 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                 onPressed: () {
                   if (_eventController.text.isEmpty) {
                   } else {
-                    ref
-                        .read(calendarProvider)
+                    //POSTする
+                    ref.read(calendarProvider)
                         .post(_selectedDay, _eventController.text, "詳細");
                   }
                   print(_eventController.text);
                   Navigator.pop(context);
                   _eventController.clear();
+                  //ここのセットステーとっている？役割
                   setState(() {});
                   return;
                 },
