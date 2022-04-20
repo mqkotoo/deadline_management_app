@@ -167,7 +167,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                                             // イニシャルバリューを指定↓
                                             controller: _editController =
                                                 TextEditingController(
-                                                    text: event.title),
+                                                    text: event['title']),
                                             autofocus: true,
                                             decoration: InputDecoration(
                                               suffixIcon: IconButton(
@@ -191,18 +191,12 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                                             TextButton(
                                               onPressed: () {
                                                 setState(() {
-                                                  // 無理矢理値アップデート
-                                                  // 今あるやつ削除
-                                                  // selectedEvents[_selectedDay]!
-                                                  //     .remove(event);
-                                                  // // 追加
-                                                  // selectedEvents[_selectedDay]!.add(
-                                                  //     // Event(title: _editController!.text),
-                                                  //     );
-
-                                                  // // 値アップデート
-                                                  // selectedEvents[_selectedDay]![index] =
-                                                  //   Event(title: _eventController.text);
+                                                  ref
+                                                      .read(calendarProvider)
+                                                      .update(
+                                                          event,
+                                                          _editController!.text,
+                                                          "詳細");
                                                 });
                                                 print(_editController!.text);
                                                 Navigator.pop(context);
@@ -225,7 +219,8 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                                     context: context,
                                     builder: (context) => AlertDialog(
                                       title: Text("タスク削除"),
-                                      content: Text('"${event.title}"を削除しますか？'),
+                                      content:
+                                          Text('"${event['title']}"を削除しますか？'),
                                       actions: [
                                         // キャンセルボタン
                                         TextButton(
@@ -235,13 +230,11 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                                         ),
                                         // 追加ボタン
                                         TextButton(
-                                          onPressed: () {
-                                            // selectedEvents[_selectedDay]!
-                                            //     .remove(event);
-                                            // ref
-                                            //     .read(calendarProvider)
-                                            //     .delete(_selectedDay, event);
-                                            // Navigator.pop(context);
+                                          onPressed: () async {
+                                            await ref
+                                                .read(calendarProvider)
+                                                .delete(event);
+                                            Navigator.pop(context);
                                           },
                                           child: Text('OK'),
                                         ),
@@ -342,7 +335,8 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                   if (_eventController.text.isEmpty) {
                   } else {
                     //POSTする
-                    ref.read(calendarProvider)
+                    ref
+                        .read(calendarProvider)
                         .post(_selectedDay, _eventController.text, "詳細");
                   }
                   print(_eventController.text);
