@@ -6,7 +6,7 @@ import 'package:flutter_deadline_management/model/calendar_model.dart';
 import 'package:flutter_deadline_management/screens/calendar_screen.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-
+//やあ
 class StartUpPage extends HookConsumerWidget {
   static const String id = 'start';
 
