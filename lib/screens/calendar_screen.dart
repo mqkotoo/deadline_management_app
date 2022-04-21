@@ -7,6 +7,7 @@ import 'package:table_calendar/table_calendar.dart';
 
 import '../component/constants.dart';
 import '../component/selectedDay.dart';
+import 'add_event_screen.dart';
 
 class CalendarScreen extends StatefulHookConsumerWidget {
   static const String id = 'calendar';
@@ -235,6 +236,8 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                                                 .read(calendarProvider)
                                                 .delete(event);
                                             Navigator.pop(context);
+                                            //困ったらSETSTATE
+                                            setState((){});
                                           },
                                           child: Text('OK'),
                                         ),
@@ -253,6 +256,13 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                               title: Text(
                                 event["title"].toString(),
                                 style: TextStyle(fontSize: 20),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              subtitle: Text(
+                                event['detail'].toString(),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
                               ),
                             ),
                             decoration: BoxDecoration(
@@ -274,29 +284,10 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
 
       // タスク作成ボタン
       floatingActionButton: FloatingActionButton(
-        onPressed: () => _showAddDialog(),
+        // onPressed: () => _showAddDialog(),
+        onPressed: () => Navigator.pushNamed(context, AddEventScreen.id),
         child: Icon(Icons.add),
       ),
-
-//      イベント追加テスト用
-//       floatingActionButton: FloatingActionButton(
-//         onPressed: () {
-//           final db = FirebaseFirestore.instance;
-//           db.collection('AppPackage').doc('v1')
-//           .set({
-//             'events': {
-//               DateFormat('yyyy-MM-dd').format(_selectedDay) : {
-//                 '0' : {
-//                   'eventTitle' : '遠足',
-//                   'description' : '7am'
-//                 }
-//               }
-//             },
-//
-//           });
-//         },
-//         child: Icon(Icons.add),
-//       ),
     );
   }
 
