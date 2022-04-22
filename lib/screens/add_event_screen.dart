@@ -8,11 +8,21 @@ class AddEventScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final bool isUpdate = list != null;
+
+    //イベント追加用テキストコントローラー
+    TextEditingController _eventController = TextEditingController();
+
+    //イベント編集用テキストコントローラー
+    TextEditingController _editEventController = TextEditingController();
+
 
     return Scaffold(
       appBar: AppBar(
         title: Text("イベントを追加する"),
+        leading: IconButton(
+          onPressed: () => Navigator.pop(context),
+          icon: Icon(Icons.clear),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(40.0),

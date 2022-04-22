@@ -25,13 +25,13 @@ class StartUpPage extends HookConsumerWidget {
       return null;
     }, const []);
 
-    //処理中のUIを書いている？
-    return const Scaffold(
+    //処理中のUIを書いている
+    return Scaffold(
       body: Center(
         // indicator変更
         child: CircularProgressIndicator(),
-      ),
-    );
+        ),
+      );
   }
 }
 

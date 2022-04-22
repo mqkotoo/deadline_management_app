@@ -156,60 +156,61 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                                 label: '編集',
                                 // 編集ボタン押したときの処理
                                 onPressed: (value) {
-                                  showDialog(
-                                    barrierDismissible: false,
-                                    context: context,
-                                    builder: (context) => Column(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: [
-                                        AlertDialog(
-                                          title: Text("タスク編集"),
-                                          content: TextFormField(
-                                            // イニシャルバリューを指定↓
-                                            controller: _editController =
-                                                TextEditingController(
-                                                    text: event['title']),
-                                            autofocus: true,
-                                            decoration: InputDecoration(
-                                              suffixIcon: IconButton(
-                                                icon: Icon(Icons.close),
-                                                onPressed: () =>
-                                                    _editController!.clear(),
-                                              ),
-                                            ),
-                                          ),
-                                          actions: [
-                                            // キャンセルボタン
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.pop(context);
-                                                _editController!.clear();
-                                              },
-                                              child: Text('キャンセル'),
-                                            ),
-
-                                            // 更新ボタン
-                                            TextButton(
-                                              onPressed: () {
-                                                setState(() {
-                                                  ref
-                                                      .read(calendarProvider)
-                                                      .update(
-                                                          event,
-                                                          _editController!.text,
-                                                          "詳細");
-                                                });
-                                                print(_editController!.text);
-                                                Navigator.pop(context);
-                                                _editController!.clear();
-                                              },
-                                              child: Text('更新'),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  );
+                                  Navigator.pushNamed(context, AddEventScreen.id);
+                                  // showDialog(
+                                  //   barrierDismissible: false,
+                                  //   context: context,
+                                  //   builder: (context) => Column(
+                                  //     mainAxisAlignment: MainAxisAlignment.end,
+                                  //     children: [
+                                  //       AlertDialog(
+                                  //         title: Text("タスク編集"),
+                                  //         content: TextFormField(
+                                  //           // イニシャルバリューを指定↓
+                                  //           controller: _editController =
+                                  //               TextEditingController(
+                                  //                   text: event['title']),
+                                  //           autofocus: true,
+                                  //           decoration: InputDecoration(
+                                  //             suffixIcon: IconButton(
+                                  //               icon: Icon(Icons.close),
+                                  //               onPressed: () =>
+                                  //                   _editController!.clear(),
+                                  //             ),
+                                  //           ),
+                                  //         ),
+                                  //         actions: [
+                                  //           // キャンセルボタン
+                                  //           TextButton(
+                                  //             onPressed: () {
+                                  //               Navigator.pop(context);
+                                  //               _editController!.clear();
+                                  //             },
+                                  //             child: Text('キャンセル'),
+                                  //           ),
+                                  //
+                                  //           // 更新ボタン
+                                  //           TextButton(
+                                  //             onPressed: () {
+                                  //               setState(() {
+                                  //                 ref
+                                  //                     .read(calendarProvider)
+                                  //                     .update(
+                                  //                         event,
+                                  //                         _editController!.text,
+                                  //                         "詳細");
+                                  //               });
+                                  //               print(_editController!.text);
+                                  //               Navigator.pop(context);
+                                  //               _editController!.clear();
+                                  //             },
+                                  //             child: Text('更新'),
+                                  //           ),
+                                  //         ],
+                                  //       ),
+                                  //     ],
+                                  //   ),
+                                  // );
                                 },
                               ),
                               SlidableAction(
