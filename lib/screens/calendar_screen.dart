@@ -17,6 +17,7 @@ class CalendarScreen extends StatefulHookConsumerWidget {
 }
 
 class _CalendarScreenState extends ConsumerState<CalendarScreen> {
+
   //日にち分けしたときに一時的に予定が入るリスト
   List selectDatEvents = [];
 
@@ -156,7 +157,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                                 label: '編集',
                                 // 編集ボタン押したときの処理
                                 onPressed: (value) {
-                                  Navigator.pushNamed(context, AddEventScreen.id);
+                                  Navigator.pushNamed(context, AddEventScreen.id, arguments: _selectedDay);
                                   // showDialog(
                                   //   barrierDismissible: false,
                                   //   context: context,
@@ -286,7 +287,8 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
       // タスク作成ボタン
       floatingActionButton: FloatingActionButton(
         // onPressed: () => _showAddDialog(),
-        onPressed: () => Navigator.pushNamed(context, AddEventScreen.id),
+        // イベント追加ページに遷移
+        onPressed: () => Navigator.pushNamed(context, AddEventScreen.id, arguments: _selectedDay),
         child: Icon(Icons.add),
       ),
     );
@@ -329,7 +331,11 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                     //POSTする
                     ref
                         .read(calendarProvider)
-                        .post(_selectedDay, _eventController.text, "詳細");
+                        .post(
+                        _selectedDay,
+                        _eventController.text,
+                        "詳細",
+                    );
                   }
                   print(_eventController.text);
                   Navigator.pop(context);

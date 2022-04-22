@@ -1,11 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class AddEventScreen extends StatelessWidget {
+import '../model/calendar_model.dart';
+
+class AddEventScreen extends StatefulHookConsumerWidget {
 
   static const String id = 'add';
 
-  // late final List list;
+  @override
+  _AddEventScreenState createState() => _AddEventScreenState();
+}
 
+class _AddEventScreenState extends ConsumerState<AddEventScreen> {
+
+
+
+  // late final List list;
   @override
   Widget build(BuildContext context) {
 
@@ -13,7 +23,12 @@ class AddEventScreen extends StatelessWidget {
     TextEditingController _eventController = TextEditingController();
 
     //イベント編集用テキストコントローラー
-    TextEditingController _editEventController = TextEditingController();
+    // TextEditingController _editEventController = TextEditingController();
+
+    //詳細用テキストコントローラー
+    TextEditingController _detailEventController = TextEditingController();
+
+    var selectedDay = ModalRoute.of(context)!.settings.arguments;
 
 
     return Scaffold(
@@ -28,7 +43,11 @@ class AddEventScreen extends StatelessWidget {
         padding: const EdgeInsets.all(40.0),
         child: Column(
           children: [
+
+            //イベント追加用テキストフィールド
             TextFormField(
+              controller: _eventController,
+              autofocus: true,
               // onChanged: (text) {
               //   model.todoTitle = text;
               // },
@@ -42,8 +61,6 @@ class AddEventScreen extends StatelessWidget {
                 labelStyle: TextStyle(
                   fontWeight: FontWeight.w400,
                 ),
-                //focusColor: Colors.red,
-                // labelText: '追加するイベントを入力してください',
                 hintText: 'イベント追加',
                 enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(
@@ -57,8 +74,9 @@ class AddEventScreen extends StatelessWidget {
               height: 10,
             ),
 
-
+            //詳細追加用テキストフィールド
             TextFormField(
+              controller: _detailEventController,
               // onChanged: (text) {
               //   model.todoTitle = text;
               // },
@@ -86,51 +104,76 @@ class AddEventScreen extends StatelessWidget {
             SizedBox(
               height: 50,
             ),
-            RaisedButton(
-              child: Text("追加"),
-              onPressed: ()  {
 
-                // try {
-                //   await model.addTodotoFirebase();
-                //   await showDialog(
-                //     context: context,
-                //     builder: (BuildContext context) {
-                //       return AlertDialog(
-                //         title: Text('保存しました'),
-                //         actions: [
-                //           FlatButton(
-                //             child: Text('OK'),
-                //             onPressed: () {
-                //               Navigator.of(context).pop();
-                //             },
-                //           ),
-                //         ],
-                //       );
-                //     },
-                //   );
-                //   Navigator.of(context).pop();
-                //   //ここから例外処理
-                // } catch (e) {
-                //   showDialog(
-                //     context: context,
-                //     builder: (BuildContext context) {
-                //       return AlertDialog(
-                //         title: Text(e.toString()),
-                //         actions: [
-                //           FlatButton(
-                //             child: Text('OK'),
-                //             onPressed: () {
-                //               Navigator.of(context).pop();
-                //             },
-                //           ),
-                //         ],
-                //       );
-                //     },
-                //   );
-                // }
+            TextButton(
+              onPressed: () {
+                if (_eventController.text.isEmpty) {
+                } else {
+                  //POSTする
+                  ref
+                      .read(calendarProvider)
+                      .post(
+                      selectedDay,
+                      _eventController.text,
+                      _detailEventController.text,
+                  );
+                }
+                print(_eventController.text);
                 Navigator.pop(context);
+                _eventController.clear();
+
+                //これ入れても入れなくても変わんない
+                setState(() {});
+
+                return;
               },
+              child: Text('追加'),
             ),
+            // RaisedButton(
+            //   child: Text("追加"),
+            //   onPressed: ()  {
+            //
+            //     // try {
+            //     //   await model.addTodotoFirebase();
+            //     //   await showDialog(
+            //     //     context: context,
+            //     //     builder: (BuildContext context) {
+            //     //       return AlertDialog(
+            //     //         title: Text('保存しました'),
+            //     //         actions: [
+            //     //           FlatButton(
+            //     //             child: Text('OK'),
+            //     //             onPressed: () {
+            //     //               Navigator.of(context).pop();
+            //     //             },
+            //     //           ),
+            //     //         ],
+            //     //       );
+            //     //     },
+            //     //   );
+            //     //   Navigator.of(context).pop();
+            //     //   //ここから例外処理
+            //     // } catch (e) {
+            //     //   showDialog(
+            //     //     context: context,
+            //     //     builder: (BuildContext context) {
+            //     //       return AlertDialog(
+            //     //         title: Text(e.toString()),
+            //     //         actions: [
+            //     //           FlatButton(
+            //     //             child: Text('OK'),
+            //     //             onPressed: () {
+            //     //               Navigator.of(context).pop();
+            //     //             },
+            //     //           ),
+            //     //         ],
+            //     //       );
+            //     //     },
+            //     //   );
+            //     // }
+            //     Navigator.pop(context);
+            //   },
+            // ),
           ],
         ),
       ),
