@@ -95,6 +95,8 @@ class CalendarModel {
         .collection("users")
         .doc(uid);
 
+    print("テスト:" + event.toString());
+
     //POSTの形を作る
     //編集後の値
     final post = {

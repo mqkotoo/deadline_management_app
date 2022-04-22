@@ -156,63 +156,15 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                                 icon: Icons.edit,
                                 label: '編集',
                                 // 編集ボタン押したときの処理
-                                onPressed: (value) {
-                                  Navigator.pushNamed(context, AddEventScreen.id, arguments: _selectedDay);
-                                  // showDialog(
-                                  //   barrierDismissible: false,
-                                  //   context: context,
-                                  //   builder: (context) => Column(
-                                  //     mainAxisAlignment: MainAxisAlignment.end,
-                                  //     children: [
-                                  //       AlertDialog(
-                                  //         title: Text("タスク編集"),
-                                  //         content: TextFormField(
-                                  //           // イニシャルバリューを指定↓
-                                  //           controller: _editController =
-                                  //               TextEditingController(
-                                  //                   text: event['title']),
-                                  //           autofocus: true,
-                                  //           decoration: InputDecoration(
-                                  //             suffixIcon: IconButton(
-                                  //               icon: Icon(Icons.close),
-                                  //               onPressed: () =>
-                                  //                   _editController!.clear(),
-                                  //             ),
-                                  //           ),
-                                  //         ),
-                                  //         actions: [
-                                  //           // キャンセルボタン
-                                  //           TextButton(
-                                  //             onPressed: () {
-                                  //               Navigator.pop(context);
-                                  //               _editController!.clear();
-                                  //             },
-                                  //             child: Text('キャンセル'),
-                                  //           ),
-                                  //
-                                  //           // 更新ボタン
-                                  //           TextButton(
-                                  //             onPressed: () {
-                                  //               setState(() {
-                                  //                 ref
-                                  //                     .read(calendarProvider)
-                                  //                     .update(
-                                  //                         event,
-                                  //                         _editController!.text,
-                                  //                         "詳細");
-                                  //               });
-                                  //               print(_editController!.text);
-                                  //               Navigator.pop(context);
-                                  //               _editController!.clear();
-                                  //             },
-                                  //             child: Text('更新'),
-                                  //           ),
-                                  //         ],
-                                  //       ),
-                                  //     ],
-                                  //   ),
-                                  // );
+                                onPressed: (value) async{
+                                  await Navigator.pushNamed(
+                                      context, AddEventScreen.id,
+                                      //add_pageで使うやつを渡す
+                                      arguments: Arguments(_selectedDay,true,event));
+                                  //帰ってきて更新
+                                  setState(() {});
                                 },
+
                               ),
                               SlidableAction(
                                 onPressed: (value) {
@@ -288,7 +240,15 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
       floatingActionButton: FloatingActionButton(
         // onPressed: () => _showAddDialog(),
         // イベント追加ページに遷移
-        onPressed: () => Navigator.pushNamed(context, AddEventScreen.id, arguments: _selectedDay),
+        onPressed: () async{
+          await Navigator.pushNamed(
+              context, AddEventScreen.id,
+              //add_pageで使うやつを渡す
+              arguments: Arguments(_selectedDay,false,{}));
+          //上で帰ってくるの待って、SETSTATEで画面ぎゅいーん
+          setState(() {});
+
+        },
         child: Icon(Icons.add),
       ),
     );

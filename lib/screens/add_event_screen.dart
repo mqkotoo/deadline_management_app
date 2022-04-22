@@ -3,6 +3,16 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../model/calendar_model.dart';
 
+//calendarスクリーンから追加、編集の時に持ってくる値をいい感じにする
+class Arguments {
+  final DateTime selectedDay;
+  final bool isUpdate;
+  final Map events;
+
+  Arguments(this.selectedDay,this.isUpdate,this.events);
+}
+
+
 class AddEventScreen extends StatefulHookConsumerWidget {
 
   static const String id = 'add';
@@ -19,16 +29,16 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
   @override
   Widget build(BuildContext context) {
 
-    //イベント追加用テキストコントローラー
-    TextEditingController _eventController = TextEditingController();
+    //argumentsのなかにline7で作った形式で値を扱えるようになった
+    final Arguments? arguments = ModalRoute.of(context)!.settings.arguments as Arguments?;
 
-    //イベント編集用テキストコントローラー
-    // TextEditingController _editEventController = TextEditingController();
+    //イベント追加用テキストコントローラー
+    TextEditingController _eventController =
+        TextEditingController(text: arguments!.events['title'] ?? '');
 
     //詳細用テキストコントローラー
-    TextEditingController _detailEventController = TextEditingController();
-
-    var selectedDay = ModalRoute.of(context)!.settings.arguments;
+    TextEditingController _detailEventController =
+        TextEditingController(text: arguments.events['detail'] ?? '');
 
 
     return Scaffold(
@@ -106,74 +116,42 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
             ),
 
             TextButton(
+              style: TextButton.styleFrom(
+                backgroundColor: Theme.of(context).primaryColor,
+              ),
               onPressed: () {
                 if (_eventController.text.isEmpty) {
                 } else {
-                  //POSTする
-                  ref
-                      .read(calendarProvider)
-                      .post(
-                      selectedDay,
+                  // isUpdateがtrueだったらupdateする
+                  if( arguments.isUpdate ) {
+                    //UPDATEする
+                    ref
+                        .read(calendarProvider)
+                        .update(
+                      arguments.events,
                       _eventController.text,
                       _detailEventController.text,
-                  );
+                    );
+                  }else{
+                    // isUpdateがfalseだったらpostする
+                    //POSTする
+                    ref
+                        .read(calendarProvider)
+                        .post(
+                      arguments.selectedDay,
+                      _eventController.text,
+                      _detailEventController.text,
+                    );
+                  }
                 }
                 print(_eventController.text);
                 Navigator.pop(context);
                 _eventController.clear();
 
-                //これ入れても入れなくても変わんない
-                setState(() {});
-
                 return;
               },
-              child: Text('追加'),
+              child: Text('追加',style: TextStyle(color: Colors.white),),
             ),
-            // RaisedButton(
-            //   child: Text("追加"),
-            //   onPressed: ()  {
-            //
-            //     // try {
-            //     //   await model.addTodotoFirebase();
-            //     //   await showDialog(
-            //     //     context: context,
-            //     //     builder: (BuildContext context) {
-            //     //       return AlertDialog(
-            //     //         title: Text('保存しました'),
-            //     //         actions: [
-            //     //           FlatButton(
-            //     //             child: Text('OK'),
-            //     //             onPressed: () {
-            //     //               Navigator.of(context).pop();
-            //     //             },
-            //     //           ),
-            //     //         ],
-            //     //       );
-            //     //     },
-            //     //   );
-            //     //   Navigator.of(context).pop();
-            //     //   //ここから例外処理
-            //     // } catch (e) {
-            //     //   showDialog(
-            //     //     context: context,
-            //     //     builder: (BuildContext context) {
-            //     //       return AlertDialog(
-            //     //         title: Text(e.toString()),
-            //     //         actions: [
-            //     //           FlatButton(
-            //     //             child: Text('OK'),
-            //     //             onPressed: () {
-            //     //               Navigator.of(context).pop();
-            //     //             },
-            //     //           ),
-            //     //         ],
-            //     //       );
-            //     //     },
-            //     //   );
-            //     // }
-            //     Navigator.pop(context);
-            //   },
-            // ),
           ],
         ),
       ),

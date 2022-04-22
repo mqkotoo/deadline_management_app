@@ -24,6 +24,19 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+
+      darkTheme: ThemeData(
+          primaryColor: Colors.black,
+          primaryColorBrightness: Brightness.dark,
+          primaryColorLight: Colors.black,
+          brightness: Brightness.dark,
+          primaryColorDark: Colors.black,
+          indicatorColor: Colors.white,
+          canvasColor: Colors.black,
+          // next line is important!
+          appBarTheme: AppBarTheme(brightness: Brightness.dark),
+      ),
+
       debugShowCheckedModeBanner: false,
       routes: <String, WidgetBuilder>{
         WelcomeScreen.id: (BuildContext context) => WelcomeScreen(),
