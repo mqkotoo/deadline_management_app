@@ -7,6 +7,7 @@ import 'package:table_calendar/table_calendar.dart';
 
 import '../component/constants.dart';
 import '../component/selectedDay.dart';
+import 'add_event_screen.dart';
 
 class CalendarScreen extends StatefulHookConsumerWidget {
   static const String id = 'calendar';
@@ -16,6 +17,7 @@ class CalendarScreen extends StatefulHookConsumerWidget {
 }
 
 class _CalendarScreenState extends ConsumerState<CalendarScreen> {
+
   //日にち分けしたときに一時的に予定が入るリスト
   List selectDatEvents = [];
 
@@ -154,62 +156,15 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                                 icon: Icons.edit,
                                 label: '編集',
                                 // 編集ボタン押したときの処理
-                                onPressed: (value) {
-                                  showDialog(
-                                    barrierDismissible: false,
-                                    context: context,
-                                    builder: (context) => Column(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: [
-                                        AlertDialog(
-                                          title: Text("タスク編集"),
-                                          content: TextFormField(
-                                            // イニシャルバリューを指定↓
-                                            controller: _editController =
-                                                TextEditingController(
-                                                    text: event['title']),
-                                            autofocus: true,
-                                            decoration: InputDecoration(
-                                              suffixIcon: IconButton(
-                                                icon: Icon(Icons.close),
-                                                onPressed: () =>
-                                                    _editController!.clear(),
-                                              ),
-                                            ),
-                                          ),
-                                          actions: [
-                                            // キャンセルボタン
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.pop(context);
-                                                _editController!.clear();
-                                              },
-                                              child: Text('キャンセル'),
-                                            ),
-
-                                            // 更新ボタン
-                                            TextButton(
-                                              onPressed: () {
-                                                setState(() {
-                                                  ref
-                                                      .read(calendarProvider)
-                                                      .update(
-                                                          event,
-                                                          _editController!.text,
-                                                          "詳細");
-                                                });
-                                                print(_editController!.text);
-                                                Navigator.pop(context);
-                                                _editController!.clear();
-                                              },
-                                              child: Text('更新'),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  );
+                                onPressed: (value) async{
+                                  await Navigator.pushNamed(
+                                      context, AddEventScreen.id,
+                                      //add_pageで使うやつを渡す
+                                      arguments: Arguments(_selectedDay,true,event));
+                                  //帰ってきて更新
+                                  setState(() {});
                                 },
+
                               ),
                               SlidableAction(
                                 onPressed: (value) {
@@ -235,6 +190,8 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                                                 .read(calendarProvider)
                                                 .delete(event);
                                             Navigator.pop(context);
+                                            //困ったらSETSTATE
+                                            setState((){});
                                           },
                                           child: Text('OK'),
                                         ),
@@ -253,6 +210,13 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                               title: Text(
                                 event["title"].toString(),
                                 style: TextStyle(fontSize: 20),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              subtitle: Text(
+                                event['detail'].toString(),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
                               ),
                             ),
                             decoration: BoxDecoration(
@@ -274,29 +238,19 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
 
       // タスク作成ボタン
       floatingActionButton: FloatingActionButton(
-        onPressed: () => _showAddDialog(),
+        // onPressed: () => _showAddDialog(),
+        // イベント追加ページに遷移
+        onPressed: () async{
+          await Navigator.pushNamed(
+              context, AddEventScreen.id,
+              //add_pageで使うやつを渡す
+              arguments: Arguments(_selectedDay,false,{}));
+          //上で帰ってくるの待って、SETSTATEで画面ぎゅいーん
+          setState(() {});
+
+        },
         child: Icon(Icons.add),
       ),
-
-//      イベント追加テスト用
-//       floatingActionButton: FloatingActionButton(
-//         onPressed: () {
-//           final db = FirebaseFirestore.instance;
-//           db.collection('AppPackage').doc('v1')
-//           .set({
-//             'events': {
-//               DateFormat('yyyy-MM-dd').format(_selectedDay) : {
-//                 '0' : {
-//                   'eventTitle' : '遠足',
-//                   'description' : '7am'
-//                 }
-//               }
-//             },
-//
-//           });
-//         },
-//         child: Icon(Icons.add),
-//       ),
     );
   }
 
@@ -337,7 +291,11 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                     //POSTする
                     ref
                         .read(calendarProvider)
-                        .post(_selectedDay, _eventController.text, "詳細");
+                        .post(
+                        _selectedDay,
+                        _eventController.text,
+                        "詳細",
+                    );
                   }
                   print(_eventController.text);
                   Navigator.pop(context);

@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_deadline_management/screens/add_event_screen.dart';
 import 'package:flutter_deadline_management/screens/calendar_screen.dart';
 import 'package:flutter_deadline_management/screens/login_screen.dart';
 import 'package:flutter_deadline_management/screens/registration_screen.dart';
@@ -23,6 +24,19 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+
+      darkTheme: ThemeData(
+          primaryColor: Colors.black,
+          primaryColorBrightness: Brightness.dark,
+          primaryColorLight: Colors.black,
+          brightness: Brightness.dark,
+          primaryColorDark: Colors.black,
+          indicatorColor: Colors.white,
+          canvasColor: Colors.black,
+          // next line is important!
+          appBarTheme: AppBarTheme(brightness: Brightness.dark),
+      ),
+
       debugShowCheckedModeBanner: false,
       routes: <String, WidgetBuilder>{
         WelcomeScreen.id: (BuildContext context) => WelcomeScreen(),
@@ -31,6 +45,7 @@ class MyApp extends StatelessWidget {
         CalendarScreen.id: (BuildContext context) => CalendarScreen(),
         SettingScreen.id: (BuildContext context) => SettingScreen(),
         StartUpPage.id: (BuildContext context) => StartUpPage(),
+        AddEventScreen.id: (BuildContext context) => AddEventScreen(),
       },
 
       // ログインしているかしていないかで最初に表示するページを変える処理

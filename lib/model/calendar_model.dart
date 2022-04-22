@@ -32,7 +32,8 @@ class CalendarModel {
     // print(eventsList);
 
     //takuma:ここでは、DBにデータが存在したらそれをeventsListに入れて、なかったら空を入れています。
-    if (db.exists != null) {
+    // if (db.exists != null) {
+    if (db.data()?['events'] != null) {
       eventsList = db.data()?['events'];
       print(eventsList);
     } else {
@@ -63,10 +64,11 @@ class CalendarModel {
     // 追加処理
     eventsList.add(post);
 
-    // 更新処理
-    await db.update({
-      "events": eventsList,
-    });
+    //もし、Firestoreの方に値がなければsetしてくれる。
+    //すでにFirestoreの方に値が存在していたらupdateをしてくれる。
+    await db.set({
+      "events" : eventsList,
+    }, SetOptions(merge: true));
   }
 
   //以下更新処理
@@ -92,6 +94,8 @@ class CalendarModel {
         .doc("v1")
         .collection("users")
         .doc(uid);
+
+    print("テスト:" + event.toString());
 
     //POSTの形を作る
     //編集後の値
