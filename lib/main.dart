@@ -24,6 +24,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      //IPHONEの設定でダークモードにした時のテーマ
       darkTheme: ThemeData(
           primaryColor: Colors.black,
           primaryColorBrightness: Brightness.dark,

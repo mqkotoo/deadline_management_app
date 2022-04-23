@@ -206,10 +206,11 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                             ],
                           ),
                           child: Container(
+                            height: 64,
                             child: ListTile(
                               title: Text(
                                 event["title"].toString(),
-                                style: TextStyle(fontSize: 20),
+                                style: TextStyle(fontSize: 17),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                               ),
@@ -217,13 +218,16 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                                 event['detail'].toString(),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  fontSize: 14,
+                                ),
                               ),
                             ),
                             decoration: BoxDecoration(
                               border: Border(
                                 bottom: BorderSide(
                                   color: Colors.grey,
-                                  width: 0.85,
+                                  width: 0.6,
                                 ),
                               ),
                             ),
