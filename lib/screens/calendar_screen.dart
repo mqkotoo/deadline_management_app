@@ -70,179 +70,186 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        title: Text('カレンダー'),
-        actions: [
-          IconButton(
-              icon: Icon(Icons.settings),
-              onPressed: () => Navigator.pushNamed(context, SettingScreen.id)),
-        ],
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(40),
+        child: AppBar(
+          backgroundColor: Theme.of(context).primaryColor,
+          title: Text(
+            "カレンダー",
+          ),
+          actions: [
+            IconButton(
+                icon: Icon(Icons.settings),
+                onPressed: () => Navigator.pushNamed(context, SettingScreen.id)),
+          ],
+        ),
       ),
-      body: Column(
-        children: [
-          SizedBox(
-            height: 410,
-            // テーブルカレンダーを実装
-            child: TableCalendar(
-              calendarBuilders: CalendarBuilders(
-                markerBuilder: (context, date, events) {
-                  if (events.isNotEmpty) {
-                    return _buildEventsMarker(date, events);
+      body: SafeArea(
+        child: Column(
+          children: [
+            SizedBox(
+              height: 410,
+              // テーブルカレンダーを実装
+              child: TableCalendar(
+                calendarBuilders: CalendarBuilders(
+                  markerBuilder: (context, date, events) {
+                    if (events.isNotEmpty) {
+                      return _buildEventsMarker(date, events);
+                    }
+                  },
+                ),
+                locale: 'ja_JP',
+                shouldFillViewport: true,
+                firstDay: DateTime.utc(now.year - 1, 1, 1),
+                lastDay: DateTime.utc(now.year + 1, 12, 31),
+                focusedDay: _focusedDay,
+                calendarFormat: _calendarFormat,
+
+                // カレンダーのフォーマットを月毎にしかできなくする
+                availableCalendarFormats: const {
+                  CalendarFormat.month: 'Month',
+                },
+
+                selectedDayPredicate: (day) {
+                  return isSameDay(_selectedDay, day);
+                },
+                onDaySelected: (selectedDay, focusedDay) {
+                  if (!isSameDay(_selectedDay, selectedDay)) {
+                    setState(() {
+                      _selectedDay = selectedDay;
+                      _focusedDay = focusedDay;
+                    });
+                    _getEventsfromDay(_selectedDay);
                   }
                 },
+                onFormatChanged: (format) {
+                  if (_calendarFormat != format) {
+                    setState(() {
+                      _calendarFormat = format;
+                    });
+                  }
+                },
+                onPageChanged: (focusedDay) {
+                  _focusedDay = focusedDay;
+                },
+
+                // イベントを読み込む
+                eventLoader: _getEventsfromDay,
+                // カレンダーのスタイル
+                calendarStyle: calendarStyle,
+                daysOfWeekStyle: dayStyle,
+                // カレンダーの上の部分のスタイル
+                headerStyle: calendarHeadStyle,
               ),
-              locale: 'ja_JP',
-              shouldFillViewport: true,
-              firstDay: DateTime.utc(now.year - 1, 1, 1),
-              lastDay: DateTime.utc(now.year + 1, 12, 31),
-              focusedDay: _focusedDay,
-              calendarFormat: _calendarFormat,
-
-              // カレンダーのフォーマットを月毎にしかできなくする
-              availableCalendarFormats: const {
-                CalendarFormat.month: 'Month',
-              },
-
-              selectedDayPredicate: (day) {
-                return isSameDay(_selectedDay, day);
-              },
-              onDaySelected: (selectedDay, focusedDay) {
-                if (!isSameDay(_selectedDay, selectedDay)) {
-                  setState(() {
-                    _selectedDay = selectedDay;
-                    _focusedDay = focusedDay;
-                  });
-                  _getEventsfromDay(_selectedDay);
-                }
-              },
-              onFormatChanged: (format) {
-                if (_calendarFormat != format) {
-                  setState(() {
-                    _calendarFormat = format;
-                  });
-                }
-              },
-              onPageChanged: (focusedDay) {
-                _focusedDay = focusedDay;
-              },
-
-              // イベントを読み込む
-              eventLoader: _getEventsfromDay,
-              // カレンダーのスタイル
-              calendarStyle: calendarStyle,
-              daysOfWeekStyle: dayStyle,
-              // カレンダーの上の部分のスタイル
-              headerStyle: calendarHeadStyle,
             ),
-          ),
-          const SizedBox(
-            height: 11,
-          ),
-          // 今選択している日付をリストの上に表示する
-          selectedDay(selectedDay: _selectedDay),
+            const SizedBox(
+              height: 11,
+            ),
+            // 今選択している日付をリストの上に表示する
+            selectedDay(selectedDay: _selectedDay),
 
-          // タスクのリストを表示する
-          Expanded(
-            // child: Padding(
-            //   padding: EdgeInsets.only(left: 17.5),
-            child: ListView(
-                children: _getEventsfromDay(_selectedDay)
-                    .map((event) => Slidable(
-                          endActionPane: ActionPane(
-                            motion: ScrollMotion(),
-                            children: [
-                              SlidableAction(
-                                backgroundColor: Colors.blue,
-                                icon: Icons.edit,
-                                label: '編集',
-                                // 編集ボタン押したときの処理
-                                onPressed: (value) async{
-                                  await Navigator.pushNamed(
-                                      context, AddEventScreen.id,
-                                      //add_pageで使うやつを渡す
-                                      arguments: Arguments(_selectedDay,true,event));
-                                  //帰ってきて更新
-                                  setState(() {});
-                                },
+            // タスクのリストを表示する
+            Expanded(
+              // child: Padding(
+              //   padding: EdgeInsets.only(left: 17.5),
+              child: ListView(
+                  children: _getEventsfromDay(_selectedDay)
+                      .map((event) => Slidable(
+                            endActionPane: ActionPane(
+                              motion: ScrollMotion(),
+                              children: [
+                                SlidableAction(
+                                  backgroundColor: Colors.blue,
+                                  icon: Icons.edit,
+                                  label: '編集',
+                                  // 編集ボタン押したときの処理
+                                  onPressed: (value) async{
+                                    await Navigator.pushNamed(
+                                        context, AddEventScreen.id,
+                                        //add_pageで使うやつを渡す
+                                        arguments: Arguments(_selectedDay,true,event));
+                                    //帰ってきて更新
+                                    setState(() {});
+                                  },
 
+                                ),
+                                SlidableAction(
+                                  onPressed: (value) {
+                                    // 削除する前にダイアログを出す
+                                    showDialog(
+                                      barrierDismissible: false,
+                                      context: context,
+                                      builder: (context) => AlertDialog(
+                                        title: Text("タスク削除"),
+                                        content:
+                                            Text('"${event['title']}"を削除しますか？'),
+                                        actions: [
+                                          // キャンセルボタン
+                                          TextButton(
+                                            onPressed: () =>
+                                                Navigator.pop(context),
+                                            child: Text('キャンセル'),
+                                          ),
+                                          // 追加ボタン
+                                          TextButton(
+                                            onPressed: () async {
+                                              await ref
+                                                  .read(calendarProvider)
+                                                  .delete(event);
+                                              Navigator.pop(context);
+                                              //困ったらSETSTATE
+                                              setState((){});
+                                            },
+                                            child: Text('OK'),
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                  backgroundColor: Colors.red,
+                                  icon: Icons.delete,
+                                  label: '削除',
+                                ),
+                              ],
+                            ),
+                            child: Container(
+                              height: 64,
+                              child: ListTile(
+                                title: Text(
+                                  event["title"].toString(),
+                                  style: TextStyle(fontSize: 17),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                subtitle: Text(
+                                  event['detail'].toString(),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                  ),
+                                ),
                               ),
-                              SlidableAction(
-                                onPressed: (value) {
-                                  // 削除する前にダイアログを出す
-                                  showDialog(
-                                    barrierDismissible: false,
-                                    context: context,
-                                    builder: (context) => AlertDialog(
-                                      title: Text("タスク削除"),
-                                      content:
-                                          Text('"${event['title']}"を削除しますか？'),
-                                      actions: [
-                                        // キャンセルボタン
-                                        TextButton(
-                                          onPressed: () =>
-                                              Navigator.pop(context),
-                                          child: Text('キャンセル'),
-                                        ),
-                                        // 追加ボタン
-                                        TextButton(
-                                          onPressed: () async {
-                                            await ref
-                                                .read(calendarProvider)
-                                                .delete(event);
-                                            Navigator.pop(context);
-                                            //困ったらSETSTATE
-                                            setState((){});
-                                          },
-                                          child: Text('OK'),
-                                        ),
-                                      ],
-                                    ),
-                                  );
-                                },
-                                backgroundColor: Colors.red,
-                                icon: Icons.delete,
-                                label: '削除',
-                              ),
-                            ],
-                          ),
-                          child: Container(
-                            height: 64,
-                            child: ListTile(
-                              title: Text(
-                                event["title"].toString(),
-                                style: TextStyle(fontSize: 17),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                              subtitle: Text(
-                                event['detail'].toString(),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                  fontSize: 14,
+                              decoration: BoxDecoration(
+                                border: Border(
+                                  bottom: BorderSide(
+                                    color: Colors.grey,
+                                    width: 0.6,
+                                  ),
                                 ),
                               ),
                             ),
-                            decoration: BoxDecoration(
-                              border: Border(
-                                bottom: BorderSide(
-                                  color: Colors.grey,
-                                  width: 0.6,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ))
-                    .toList()),
-
-            // ),
-          ),
-        ],
+                          ))
+                      .toList()),
+            ),
+          ],
+        ),
       ),
 
       // タスク作成ボタン
       floatingActionButton: FloatingActionButton(
-        // onPressed: () => _showAddDialog(),
+        // backgroundColor: Colors.blue,
+        backgroundColor: Theme.of(context).primaryColor,
         // イベント追加ページに遷移
         onPressed: () async{
           await Navigator.pushNamed(
@@ -253,66 +260,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
           setState(() {});
 
         },
-        child: Icon(Icons.add),
-      ),
-    );
-  }
-
-  // イベント追加の際のモーダル
-  _showAddDialog() {
-    showDialog(
-      barrierDismissible: false,
-      context: context,
-      builder: (context) => Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          AlertDialog(
-            title: Text("タスク追加"),
-            content: TextField(
-              controller: _eventController,
-              autofocus: true,
-              decoration: InputDecoration(
-                suffixIcon: IconButton(
-                  icon: Icon(Icons.close),
-                  onPressed: () => _eventController.clear(),
-                ),
-              ),
-            ),
-            actions: [
-              // キャンセルボタン
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                  _eventController.clear();
-                },
-                child: Text('キャンセル'),
-              ),
-              // 追加ボタン
-              TextButton(
-                onPressed: () {
-                  if (_eventController.text.isEmpty) {
-                  } else {
-                    //POSTする
-                    ref
-                        .read(calendarProvider)
-                        .post(
-                        _selectedDay,
-                        _eventController.text,
-                        "詳細",
-                    );
-                  }
-                  print(_eventController.text);
-                  Navigator.pop(context);
-                  _eventController.clear();
-                  //ここのセットステーとっている？役割
-                  setState(() {});
-                  return;
-                },
-                child: Text('追加'),
-              ),
-            ],
-          ),
-        ],
+        child: Icon(Icons.add,color: Colors.white,),
       ),
     );
   }
