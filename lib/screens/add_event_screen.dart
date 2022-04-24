@@ -40,6 +40,9 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
     TextEditingController _detailEventController =
         TextEditingController(text: arguments.events['detail'] ?? '');
 
+    //イベント追加した後にボタンだけで詳細入力できるようにするやつ
+    final _detailFocusNode = FocusNode();
+
 
     return Scaffold(
       appBar: AppBar(
@@ -79,6 +82,16 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                   ),
                 ),
               ),
+
+              // 右下のボタンをNEXTにかえる
+              textInputAction: TextInputAction.next,
+
+              // NEXTを押したらパスワード入力フォームにフォーカスさせる
+              onFieldSubmitted: (_) {
+                FocusScope.of(context)
+                    .requestFocus(_detailFocusNode); // 変更
+              },
+
             ),
 
             SizedBox(
@@ -88,9 +101,6 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
             //詳細追加用テキストフィールド
             TextFormField(
               controller: _detailEventController,
-              // onChanged: (text) {
-              //   model.todoTitle = text;
-              // },
               decoration: InputDecoration(
                 focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(
@@ -110,6 +120,9 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                   ),
                 ),
               ),
+
+              // パスワード入力フォームに飛ばせるたえのやつ
+              focusNode: _detailFocusNode,
             ),
 
             SizedBox(
