@@ -25,9 +25,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       //IPHONEの設定でダークモードにした時のテーマ
-      darkTheme: ThemeData.dark(),
+      darkTheme: ThemeData.dark().copyWith(
+        accentColor: Colors.indigo,
+      ),
       theme: ThemeData(
-        // primaryColor: Colors.white,
+        // primaryColor: Color(0xfffaf0e6),
+        primaryColor: Colors.pink[100],
       ),
       debugShowCheckedModeBanner: false,
       routes: <String, WidgetBuilder>{

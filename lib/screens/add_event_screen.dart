@@ -43,6 +43,7 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
 
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Theme.of(context).primaryColor,
         title: Text("イベントを追加する"),
         leading: IconButton(
           onPressed: () => Navigator.pop(context),

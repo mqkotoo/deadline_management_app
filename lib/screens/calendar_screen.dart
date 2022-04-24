@@ -17,7 +17,6 @@ class CalendarScreen extends StatefulHookConsumerWidget {
 }
 
 class _CalendarScreenState extends ConsumerState<CalendarScreen> {
-
   //日にち分けしたときに一時的に予定が入るリスト
   List selectDatEvents = [];
 
@@ -68,6 +67,8 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
       return contents;
     }
 
+    final platformBrightness = MediaQuery.platformBrightnessOf(context);
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: PreferredSize(
@@ -80,7 +81,8 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
           actions: [
             IconButton(
                 icon: Icon(Icons.settings),
-                onPressed: () => Navigator.pushNamed(context, SettingScreen.id)),
+                onPressed: () =>
+                    Navigator.pushNamed(context, SettingScreen.id)),
           ],
         ),
       ),
@@ -136,10 +138,10 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                 // イベントを読み込む
                 eventLoader: _getEventsfromDay,
                 // カレンダーのスタイル
-                calendarStyle: calendarStyle,
+                calendarStyle: calendarStyle(context),
                 daysOfWeekStyle: dayStyle,
                 // カレンダーの上の部分のスタイル
-                headerStyle: calendarHeadStyle,
+                headerStyle: calendarHeadStyle(context),
               ),
             ),
             const SizedBox(
@@ -163,15 +165,15 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                                   icon: Icons.edit,
                                   label: '編集',
                                   // 編集ボタン押したときの処理
-                                  onPressed: (value) async{
+                                  onPressed: (value) async {
                                     await Navigator.pushNamed(
                                         context, AddEventScreen.id,
                                         //add_pageで使うやつを渡す
-                                        arguments: Arguments(_selectedDay,true,event));
+                                        arguments: Arguments(
+                                            _selectedDay, true, event));
                                     //帰ってきて更新
                                     setState(() {});
                                   },
-
                                 ),
                                 SlidableAction(
                                   onPressed: (value) {
@@ -198,7 +200,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                                                   .delete(event);
                                               Navigator.pop(context);
                                               //困ったらSETSTATE
-                                              setState((){});
+                                              setState(() {});
                                             },
                                             child: Text('OK'),
                                           ),
@@ -248,19 +250,25 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
 
       // タスク作成ボタン
       floatingActionButton: FloatingActionButton(
-        // backgroundColor: Colors.blue,
-        backgroundColor: Theme.of(context).primaryColor,
+
+        // テーマがDARKだったらとかのやつ
+        backgroundColor: platformBrightness == Brightness.dark
+            ? Theme.of(context).accentColor
+            : Theme.of(context).primaryColor,
+
+        // foregroundColor: Colors.red,
         // イベント追加ページに遷移
-        onPressed: () async{
-          await Navigator.pushNamed(
-              context, AddEventScreen.id,
+        onPressed: () async {
+          await Navigator.pushNamed(context, AddEventScreen.id,
               //add_pageで使うやつを渡す
-              arguments: Arguments(_selectedDay,false,{}));
+              arguments: Arguments(_selectedDay, false, {}));
           //上で帰ってくるの待って、SETSTATEで画面ぎゅいーん
           setState(() {});
-
         },
-        child: Icon(Icons.add,color: Colors.white,),
+        child: Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
       ),
     );
   }

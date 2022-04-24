@@ -8,22 +8,23 @@ class SettingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Theme.of(context).primaryColor,
         title: Text('設定'),
-        actions: [
-
-        ],
+        actions: [],
       ),
-      body:ElevatedButton(
+      body: ElevatedButton(
+        style: ButtonStyle(
+            // backgroundColor: Theme.of(context).primaryColor,
+            ),
         child: Text('ログアウト'),
         onPressed: () {
           _auth.signOut();
 
           // 全画面ポップしてWELCOME画面を表示する
-          Navigator.of(context).pushNamedAndRemoveUntil(
-              WelcomeScreen.id, (route) => false);
+          Navigator.of(context)
+              .pushNamedAndRemoveUntil(WelcomeScreen.id, (route) => false);
 
           print("ログアウトしました");
         },
