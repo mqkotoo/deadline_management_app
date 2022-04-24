@@ -148,7 +148,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
               ),
             ),
             const SizedBox(
-              height: 11,
+              height: 3,
             ),
             // 今選択している日付をリストの上に表示する
             selectedDay(selectedDay: _selectedDay),
