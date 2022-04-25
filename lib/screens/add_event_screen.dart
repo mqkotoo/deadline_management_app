@@ -40,7 +40,7 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
     TextEditingController _detailEventController =
         TextEditingController(text: arguments.events['detail'] ?? '');
 
-    //イベント追加した後にボタンだけで詳細入力できるようにするやつ
+    //イベント追加した後にボタンだけで詳細追加のところにフォーカスできるようにするやつ
     final _detailFocusNode = FocusNode();
 
 
@@ -83,13 +83,13 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                 ),
               ),
 
-              // 右下のボタンをNEXTにかえる
+            //  キーパッドの左下の「確定」→「次へ」みたいにする
               textInputAction: TextInputAction.next,
 
-              // NEXTを押したらパスワード入力フォームにフォーカスさせる
+            //  次へ　を押したら詳細入力フォームにフォーカスを移すようにする
               onFieldSubmitted: (_) {
                 FocusScope.of(context)
-                    .requestFocus(_detailFocusNode); // 変更
+                    .requestFocus(_detailFocusNode);
               },
 
             ),
@@ -121,7 +121,7 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                 ),
               ),
 
-              // パスワード入力フォームに飛ばせるたえのやつ
+            //  詳細入力フォームにフォーカスを移すためにここの入力フォームにFOCUSNODEを設定してあげる
               focusNode: _detailFocusNode,
             ),
 
