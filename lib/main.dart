@@ -10,8 +10,9 @@ import 'package:flutter_deadline_management/screens/welcome_screen.dart';
 import 'package:flutter_deadline_management/start_up.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/date_symbol_data_local.dart';
-
 import 'firebase_options.dart';
+
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

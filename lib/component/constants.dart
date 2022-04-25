@@ -21,8 +21,8 @@ CalendarStyle calendarStyle(context) {
 }
 
 final dayStyle = DaysOfWeekStyle(
-  weekdayStyle: TextStyle(fontWeight: FontWeight.bold),
-  weekendStyle: TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
+  weekdayStyle: TextStyle(fontWeight: FontWeight.bold,fontSize: 12.8),
+  weekendStyle: TextStyle(fontWeight: FontWeight.bold, color: Colors.red,fontSize: 12.8),
 );
 
 HeaderStyle calendarHeadStyle(context) {
