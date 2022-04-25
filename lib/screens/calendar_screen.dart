@@ -71,6 +71,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
     final platformBrightness = MediaQuery.platformBrightnessOf(context);
 
     return Scaffold(
+      backgroundColor: Colors.pink[50],
       resizeToAvoidBottomInset: false,
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(40),
@@ -155,97 +156,107 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
 
             // タスクのリストを表示する
             Expanded(
-              // child: Padding(
-              //   padding: EdgeInsets.only(left: 17.5),
-              child: ListView(
-                  children: _getEventsfromDay(_selectedDay)
-                      .map((event) => Slidable(
-                            endActionPane: ActionPane(
-                              motion: ScrollMotion(),
-                              children: [
-                                SlidableAction(
-                                  backgroundColor: Colors.blue,
-                                  icon: Icons.edit,
-                                  label: '編集',
-                                  // 編集ボタン押したときの処理
-                                  onPressed: (value) async {
-                                    await Navigator.pushNamed(
-                                        context, AddEventScreen.id,
-                                        //add_pageで使うやつを渡す
-                                        arguments: Arguments(
-                                            _selectedDay, true, event));
-                                    //帰ってきて更新
-                                    setState(() {});
-                                  },
+                child: ListView(
+                    children: _getEventsfromDay(_selectedDay)
+                        .map((event) => Slidable(
+                              endActionPane: ActionPane(
+                                motion: ScrollMotion(),
+                                children: [
+                                  SlidableAction(
+                                    backgroundColor: Colors.blue,
+                                    icon: Icons.edit,
+                                    label: '編集',
+                                    // 編集ボタン押したときの処理
+                                    onPressed: (value) async {
+                                      await Navigator.pushNamed(
+                                          context, AddEventScreen.id,
+                                          //add_pageで使うやつを渡す
+                                          arguments: Arguments(
+                                              _selectedDay, true, event));
+                                      //帰ってきて更新
+                                      setState(() {});
+                                    },
+                                  ),
+                                  SlidableAction(
+                                    onPressed: (value) {
+                                      // 削除する前にダイアログを出す
+                                      showDialog(
+                                        barrierDismissible: false,
+                                        context: context,
+                                        builder: (context) => AlertDialog(
+                                          title: Text("タスク削除"),
+                                          content:
+                                              Text('"${event['title']}"を削除しますか？'),
+                                          actions: [
+                                            // キャンセルボタン
+                                            TextButton(
+                                              onPressed: () =>
+                                                  Navigator.pop(context),
+                                              child: Text('キャンセル'),
+                                            ),
+                                            // 追加ボタン
+                                            TextButton(
+                                              onPressed: () async {
+                                                await ref
+                                                    .read(calendarProvider)
+                                                    .delete(event);
+                                                Navigator.pop(context);
+                                                //困ったらSETSTATE
+                                                setState(() {});
+                                              },
+                                              child: Text('OK'),
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                    backgroundColor: Colors.red,
+                                    icon: Icons.delete,
+                                    label: '削除',
+                                  ),
+                                ],
+                              ),
+
+                              //ここから、　締め切りのリストの一つ一つの要素
+                              child: Card(
+                                //影設定
+                                elevation: 7,
+                                //カードの形の角を取る
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
                                 ),
-                                SlidableAction(
-                                  onPressed: (value) {
-                                    // 削除する前にダイアログを出す
-                                    showDialog(
-                                      barrierDismissible: false,
-                                      context: context,
-                                      builder: (context) => AlertDialog(
-                                        title: Text("タスク削除"),
-                                        content:
-                                            Text('"${event['title']}"を削除しますか？'),
-                                        actions: [
-                                          // キャンセルボタン
-                                          TextButton(
-                                            onPressed: () =>
-                                                Navigator.pop(context),
-                                            child: Text('キャンセル'),
-                                          ),
-                                          // 追加ボタン
-                                          TextButton(
-                                            onPressed: () async {
-                                              await ref
-                                                  .read(calendarProvider)
-                                                  .delete(event);
-                                              Navigator.pop(context);
-                                              //困ったらSETSTATE
-                                              setState(() {});
-                                            },
-                                            child: Text('OK'),
-                                          ),
-                                        ],
+
+                                child: Container(
+                                  // color: Colors.pink,
+                                  height: 64,
+                                  child: ListTile(
+                                    title: Text(
+                                      event["title"].toString(),
+                                      style: TextStyle(fontSize: 17),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    subtitle: Text(
+                                      event['detail'].toString(),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                        fontSize: 14,
                                       ),
-                                    );
-                                  },
-                                  backgroundColor: Colors.red,
-                                  icon: Icons.delete,
-                                  label: '削除',
-                                ),
-                              ],
-                            ),
-                            child: Container(
-                              height: 64,
-                              child: ListTile(
-                                title: Text(
-                                  event["title"].toString(),
-                                  style: TextStyle(fontSize: 17),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                subtitle: Text(
-                                  event['detail'].toString(),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                    fontSize: 14,
+                                    ),
+                                  ),
+                                  decoration: BoxDecoration(
+                                    border: Border(
+                                      bottom: BorderSide(
+                                        color: Colors.grey,
+                                        width: 0.6,
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ),
-                              decoration: BoxDecoration(
-                                border: Border(
-                                  bottom: BorderSide(
-                                    color: Colors.grey,
-                                    width: 0.6,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ))
-                      .toList()),
+                            ))
+                        .toList()),
             ),
           ],
         ),
