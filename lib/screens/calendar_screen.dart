@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_deadline_management/component/simekiri_tile.dart';
 import 'package:flutter_deadline_management/model/calendar_model.dart';
 import 'package:flutter_deadline_management/screens/setting_screen.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
-
 import '../component/constants.dart';
 import '../component/selectedDay.dart';
 import 'add_event_screen.dart';
+import 'dart:io';
+
 
 class CalendarScreen extends StatefulHookConsumerWidget {
   static const String id = 'calendar';
@@ -17,7 +19,6 @@ class CalendarScreen extends StatefulHookConsumerWidget {
 }
 
 class _CalendarScreenState extends ConsumerState<CalendarScreen> {
-
   //日にち分けしたときに一時的に予定が入るリスト
   List selectDatEvents = [];
 
@@ -68,206 +69,166 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
       return contents;
     }
 
+    //テーマ別に色を変えられるようにするためのやつ
+    final platformBrightness = MediaQuery.platformBrightnessOf(context);
+
     return Scaffold(
-      resizeToAvoidBottomInset: false,
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(40),
-        child: AppBar(
-          backgroundColor: Theme.of(context).primaryColor,
-          title: Text(
-            "カレンダー",
+        backgroundColor: Colors.pink[50],
+        resizeToAvoidBottomInset: false,
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(40),
+          child: AppBar(
+            backgroundColor: Theme.of(context).primaryColor,
+            title: Text(
+              "カレンダー",
+            ),
+            actions: [
+              IconButton(
+                  icon: Icon(Icons.settings),
+                  onPressed: () =>
+                      Navigator.pushNamed(context, SettingScreen.id)),
+            ],
           ),
-          actions: [
-            IconButton(
-                icon: Icon(Icons.settings),
-                onPressed: () => Navigator.pushNamed(context, SettingScreen.id)),
-          ],
         ),
-      ),
-      body: SafeArea(
-        child: Column(
-          children: [
-            SizedBox(
-              height: 410,
-              // テーブルカレンダーを実装
-              child: TableCalendar(
-                calendarBuilders: CalendarBuilders(
-                  markerBuilder: (context, date, events) {
-                    if (events.isNotEmpty) {
-                      return _buildEventsMarker(date, events);
-                    }
-                  },
-                ),
-                locale: 'ja_JP',
-                shouldFillViewport: true,
-                firstDay: DateTime.utc(now.year - 1, 1, 1),
-                lastDay: DateTime.utc(now.year + 1, 12, 31),
-                focusedDay: _focusedDay,
-                calendarFormat: _calendarFormat,
+        body: SafeArea(
+          child: Column(
+            children: [
+              //カレンダーの大きさ変えてる
+              SizedBox(
+                height: Platform.isIOS ? 410 : 340,
 
-                // カレンダーのフォーマットを月毎にしかできなくする
-                availableCalendarFormats: const {
-                  CalendarFormat.month: 'Month',
-                },
+                // テーブルカレンダーを実装
+                child: Card(
+                  child: TableCalendar(
 
-                selectedDayPredicate: (day) {
-                  return isSameDay(_selectedDay, day);
-                },
-                onDaySelected: (selectedDay, focusedDay) {
-                  if (!isSameDay(_selectedDay, selectedDay)) {
-                    setState(() {
-                      _selectedDay = selectedDay;
+                    //カレンダーの大きさ変えれるようにするやつ
+                    shouldFillViewport: true,
+
+                    locale: 'ja_JP',
+                    firstDay: DateTime.utc(now.year - 1, 1, 1),
+                    lastDay: DateTime.utc(now.year + 1, 12, 31),
+                    focusedDay: _focusedDay,
+                    calendarFormat: _calendarFormat,
+
+                    //カレンダーのマーカー表示するためのビルダー
+                    calendarBuilders: CalendarBuilders(
+                      markerBuilder: (context, date, events) {
+                        if (events.isNotEmpty) {
+                          return _buildEventsMarker(date, events,context);
+                        }
+                      },
+                    ),
+
+                    // カレンダーのフォーマットを月毎にしかできなくする
+                    availableCalendarFormats: const {
+                      CalendarFormat.month: 'Month',
+                    },
+
+                    selectedDayPredicate: (day) {
+                      return isSameDay(_selectedDay, day);
+                    },
+                    onDaySelected: (selectedDay, focusedDay) {
+                      if (!isSameDay(_selectedDay, selectedDay)) {
+                        setState(() {
+                          _selectedDay = selectedDay;
+                          _focusedDay = focusedDay;
+                        });
+                        _getEventsfromDay(_selectedDay);
+                      }
+                    },
+                    onFormatChanged: (format) {
+                      if (_calendarFormat != format) {
+                        setState(() {
+                          _calendarFormat = format;
+                        });
+                      }
+                    },
+                    onPageChanged: (focusedDay) {
                       _focusedDay = focusedDay;
-                    });
-                    _getEventsfromDay(_selectedDay);
-                  }
-                },
-                onFormatChanged: (format) {
-                  if (_calendarFormat != format) {
-                    setState(() {
-                      _calendarFormat = format;
-                    });
-                  }
-                },
-                onPageChanged: (focusedDay) {
-                  _focusedDay = focusedDay;
-                },
+                    },
 
-                // イベントを読み込む
-                eventLoader: _getEventsfromDay,
-                // カレンダーのスタイル
-                calendarStyle: calendarStyle,
-                daysOfWeekStyle: dayStyle,
-                // カレンダーの上の部分のスタイル
-                headerStyle: calendarHeadStyle,
+                    // イベントを読み込む
+                    eventLoader: _getEventsfromDay,
+                    // カレンダーのスタイル
+                    calendarStyle: calendarStyle(context),
+                    daysOfWeekStyle: dayStyle,
+                    // カレンダーの上の部分のスタイル
+                    headerStyle: calendarHeadStyle(context),
+                  ),
+                ),
               ),
-            ),
-            const SizedBox(
-              height: 11,
-            ),
-            // 今選択している日付をリストの上に表示する
-            selectedDay(selectedDay: _selectedDay),
 
-            // タスクのリストを表示する
-            Expanded(
-              // child: Padding(
-              //   padding: EdgeInsets.only(left: 17.5),
-              child: ListView(
-                  children: _getEventsfromDay(_selectedDay)
-                      .map((event) => Slidable(
-                            endActionPane: ActionPane(
-                              motion: ScrollMotion(),
-                              children: [
-                                SlidableAction(
-                                  backgroundColor: Colors.blue,
-                                  icon: Icons.edit,
-                                  label: '編集',
-                                  // 編集ボタン押したときの処理
-                                  onPressed: (value) async{
-                                    await Navigator.pushNamed(
-                                        context, AddEventScreen.id,
-                                        //add_pageで使うやつを渡す
-                                        arguments: Arguments(_selectedDay,true,event));
-                                    //帰ってきて更新
-                                    setState(() {});
-                                  },
+              //ちょっと隙間小さかったから空白を足してるよ
+              const SizedBox(height: 3),
 
-                                ),
-                                SlidableAction(
-                                  onPressed: (value) {
-                                    // 削除する前にダイアログを出す
-                                    showDialog(
-                                      barrierDismissible: false,
-                                      context: context,
-                                      builder: (context) => AlertDialog(
-                                        title: Text("タスク削除"),
-                                        content:
-                                            Text('"${event['title']}"を削除しますか？'),
-                                        actions: [
-                                          // キャンセルボタン
-                                          TextButton(
-                                            onPressed: () =>
-                                                Navigator.pop(context),
-                                            child: Text('キャンセル'),
-                                          ),
-                                          // 追加ボタン
-                                          TextButton(
-                                            onPressed: () async {
-                                              await ref
-                                                  .read(calendarProvider)
-                                                  .delete(event);
-                                              Navigator.pop(context);
-                                              //困ったらSETSTATE
-                                              setState((){});
-                                            },
-                                            child: Text('OK'),
-                                          ),
-                                        ],
-                                      ),
-                                    );
-                                  },
-                                  backgroundColor: Colors.red,
-                                  icon: Icons.delete,
-                                  label: '削除',
-                                ),
-                              ],
+              // 今選択している日付をリストの上に表示する
+              selectedDay(selectedDay: _selectedDay),
+
+              //ちょっと隙間小さかったから空白を足してるよ
+              SizedBox(height: 3),
+
+              // タスクのリストを表示する
+              Expanded(
+                  child: _getEventsfromDay(_selectedDay).isEmpty
+                      ? Center(
+                    child : Text(
+                      DateFormat.MMMEd('ja').format(_selectedDay) + 'の締め切りはありません',
+                  ),
+              )
+                      : ListView(
+                      children: _getEventsfromDay(_selectedDay)
+                          .map((event) => Card(
+                            //影設定
+                            elevation: 7,
+                            //カードの形の角を取る
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
                             ),
-                            child: Container(
-                              height: 64,
-                              child: ListTile(
-                                title: Text(
-                                  event["title"].toString(),
-                                  style: TextStyle(fontSize: 17),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                subtitle: Text(
-                                  event['detail'].toString(),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                  ),
-                                ),
-                              ),
-                              decoration: BoxDecoration(
-                                border: Border(
-                                  bottom: BorderSide(
-                                    color: Colors.grey,
-                                    width: 0.6,
-                                  ),
-                                ),
-                              ),
+
+                            child: CustomTile(
+                              title: event['title'].toString(),
+                              subtitle: event['detail'].toString(),
+                              onTap: () {},
                             ),
                           ))
-                      .toList()),
-            ),
-          ],
+                          .toList()),
+              ),
+            ],
+          ),
         ),
-      ),
 
-      // タスク作成ボタン
-      floatingActionButton: FloatingActionButton(
-        // backgroundColor: Colors.blue,
-        backgroundColor: Theme.of(context).primaryColor,
-        // イベント追加ページに遷移
-        onPressed: () async{
-          await Navigator.pushNamed(
-              context, AddEventScreen.id,
-              //add_pageで使うやつを渡す
-              arguments: Arguments(_selectedDay,false,{}));
-          //上で帰ってくるの待って、SETSTATEで画面ぎゅいーん
-          setState(() {});
+        // タスク作成ボタン
+        floatingActionButton: FloatingActionButton(
 
-        },
-        child: Icon(Icons.add,color: Colors.white,),
-      ),
-    );
+          // テーマがDARKだったらとかのやつ
+          backgroundColor: platformBrightness == Brightness.dark
+              ? Theme.of(context).accentColor
+              : Theme.of(context).primaryColor,
+
+          // foregroundColor: Colors.red,
+          // イベント追加ページに遷移
+          onPressed: () async {
+            await Navigator.pushNamed(context, AddEventScreen.id,
+                //add_pageで使うやつを渡す
+                arguments: Arguments(_selectedDay, false, {}));
+            //上で帰ってくるの待って、SETSTATEで画面ぎゅいーん
+            setState(() {});
+          },
+          child: Icon(
+            Icons.add,
+            color: Colors.white,
+          ),
+        ),
+      );
   }
 }
 
 // イベントの数を数字で表示するためのウィジェット
-Widget _buildEventsMarker(DateTime date, List events) {
+Widget _buildEventsMarker(DateTime date, List events,context) {
+
+  //テーマ別に色を変えられるようにするためのやつ
+  final platformBrightness = MediaQuery.platformBrightnessOf(context);
+
   return Positioned(
     right: 5,
     bottom: 5,
@@ -275,7 +236,9 @@ Widget _buildEventsMarker(DateTime date, List events) {
       duration: const Duration(milliseconds: 300),
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: Colors.red[300],
+        color: platformBrightness == Brightness.dark
+            ? Colors.red[300]
+            : Colors.pink[200],
       ),
       width: 16.0,
       height: 16.0,
