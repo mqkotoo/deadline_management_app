@@ -47,7 +47,10 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColor,
-        title: Text("イベントを追加する"),
+        title: Text(
+          //編集か追加でボタンのテキストを変える
+            arguments.isUpdate ? '締め切りを変更する' : '締め切りを追加する',
+        ),
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
           icon: Icon(Icons.clear),
@@ -75,7 +78,10 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                 labelStyle: TextStyle(
                   fontWeight: FontWeight.w400,
                 ),
-                hintText: 'イベント追加',
+
+                //編集か追加でヒントテキストを変える
+                hintText: arguments.isUpdate ? '締め切り変更' : '締め切り追加',
+
                 enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(
                     color: Theme.of(context).primaryColor
@@ -111,9 +117,10 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                 labelStyle: TextStyle(
                   fontWeight: FontWeight.w400,
                 ),
-                //focusColor: Colors.red,
-                // labelText: '追加するイベントを入力してください',
-                hintText: '詳細追加',
+
+                //編集か追加でヒントテキストを変える
+                hintText: arguments.isUpdate ? '詳細の変更' : '詳細の追加',
+
                 enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(
                       color: Theme.of(context).primaryColor
@@ -164,7 +171,13 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
 
                 return;
               },
-              child: Text('追加',style: TextStyle(color: Colors.white),),
+              child: Text(
+                //編集か追加でボタンのテキストを変える
+                arguments.isUpdate ? '変更' : '追加',
+                style: TextStyle(
+                    color: Colors.white,
+                ),
+              ),
             ),
           ],
         ),
