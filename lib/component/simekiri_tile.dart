@@ -1,18 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_deadline_management/screens/add_event_screen.dart';
+
+enum Menu {edit, delete, detail}
 
 class CustomTile extends StatelessWidget {
-  CustomTile(
-      {required this.title,
-        required this.subtitle,
-        required this.onTap,
-        Key? key})
+
+  CustomTile({required this.title, required this.subtitle, required this.popUpMenu,Key? key})
       : super(key: key);
+
   String title;
   String subtitle;
-  Function onTap;
+  Widget popUpMenu;
 
   @override
   Widget build(BuildContext context) {
+
+
     return SafeArea(
       top: false,
       bottom: false,
@@ -47,10 +50,7 @@ class CustomTile extends StatelessWidget {
                     ],
                   ),
                 ),
-                IconButton(
-                  onPressed: () => onTap,
-                  icon: Icon(Icons.more_vert),
-                ),
+                popUpMenu
               ],
             ),
           ),
@@ -59,3 +59,4 @@ class CustomTile extends StatelessWidget {
     );
   }
 }
+
