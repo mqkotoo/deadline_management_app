@@ -2,6 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_deadline_management/screens/welcome_screen.dart';
 
+import 'event_detail_screen.dart';
+
 class SettingScreen extends StatelessWidget {
   static const String id = 'setting';
   final _auth = FirebaseAuth.instance;
@@ -12,7 +14,6 @@ class SettingScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColor,
         title: Text('設定'),
-        actions: [],
       ),
       body: ElevatedButton(
         style: ButtonStyle(

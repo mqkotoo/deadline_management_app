@@ -95,7 +95,8 @@ class CalendarModel {
         .collection("users")
         .doc(uid);
 
-    print("テスト:" + event.toString());
+    //UPDATEするeventのインデックスを取得する
+    final eventIndex = eventsList.indexOf(event);
 
     //POSTの形を作る
     //編集後の値
@@ -105,13 +106,8 @@ class CalendarModel {
       "detail": description,
     };
 
-    // 選択していた値(もう使わない)をリストから削除
-    eventsList.remove(event);
-    //List iroiro = ["apple","cat"]
-    //iroiro.remove("apple");
-
-    // そのかわりに編集後の値をリストに追加
-    eventsList.add(post);
+    //ローカルのeventListの値をupdate(上書きする)
+    eventsList[eventIndex] = post;
 
     // 更新処理
     await db.update({
