@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_deadline_management/component/simekiri_tile.dart';
 import 'package:flutter_deadline_management/model/calendar_model.dart';
+import 'package:flutter_deadline_management/screens/event_detail_screen.dart';
 import 'package:flutter_deadline_management/screens/setting_screen.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -203,13 +204,41 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                                           //編集のページから帰ってきてからSETSTATEで更新する
                                           setState(() {});
                                           break;
+                                        //  削除を選択した時の処理
                                         case Menu.delete:
-                                          Navigator.pushNamed(
-                                              context, AddEventScreen.id);
+                                          showDialog(
+                                            barrierDismissible: false,
+                                            context: context,
+                                            builder: (context) => AlertDialog(
+                                              title: Text("タスク削除"),
+                                              content:
+                                              Text('"${event['title']}"を削除しますか？'),
+                                              actions: [
+                                                // キャンセルボタン
+                                                TextButton(
+                                                  onPressed: () =>
+                                                      Navigator.pop(context),
+                                                  child: Text('キャンセル'),
+                                                ),
+                                                // 追加ボタン
+                                                TextButton(
+                                                  onPressed: () async {
+                                                    await ref
+                                                        .read(calendarProvider)
+                                                        .delete(event);
+                                                    Navigator.pop(context);
+                                                    // 更新する
+                                                    setState(() {});
+                                                  },
+                                                  child: Text('OK'),
+                                                ),
+                                              ],
+                                            ),
+                                          );
                                           break;
                                         case Menu.detail:
                                           Navigator.pushNamed(
-                                              context, AddEventScreen.id);
+                                              context, EventDetailScreen.id);
                                           break;
                                           //  例外の時の処理はなし
                                         default:

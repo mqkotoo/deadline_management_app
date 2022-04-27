@@ -12,36 +12,23 @@ class SettingScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Theme.of(context).primaryColor,
         title: Text('設定'),
       ),
-      body: Column(
-        children: [
-          //ログアウトボタン
-          ElevatedButton(
-            style: ButtonStyle(
-                // backgroundColor: Theme.of(context).primaryColor,
-                ),
-            child: Text('ログアウト'),
-            onPressed: () {
-              _auth.signOut();
-
-              // 全画面ポップしてWELCOME画面を表示する
-              Navigator.of(context)
-                  .pushNamedAndRemoveUntil(WelcomeScreen.id, (route) => false);
-
-              print("ログアウトしました");
-            },
-          ),
-
-        //  詳細のテストページ
-          ElevatedButton(
-            style: ButtonStyle(
-              // backgroundColor: Theme.of(context).primaryColor,
+      body: ElevatedButton(
+        style: ButtonStyle(
+            // backgroundColor: Theme.of(context).primaryColor,
             ),
-            child: Text('詳細ページ'),
-            onPressed: () =>  Navigator.pushNamed(context, EventDetailScreen.id),
-          ),
-        ],
+        child: Text('ログアウト'),
+        onPressed: () {
+          _auth.signOut();
+
+          // 全画面ポップしてWELCOME画面を表示する
+          Navigator.of(context)
+              .pushNamedAndRemoveUntil(WelcomeScreen.id, (route) => false);
+
+          print("ログアウトしました");
+        },
       ),
     );
   }
