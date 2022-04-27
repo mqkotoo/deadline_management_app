@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_deadline_management/component/simekiri_tile.dart';
 import 'package:flutter_deadline_management/model/calendar_model.dart';
-import 'package:flutter_deadline_management/screens/event_detail_screen.dart';
 import 'package:flutter_deadline_management/screens/setting_screen.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../component/constants.dart';
 import '../component/selectedDay.dart';
@@ -28,6 +28,11 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
   final now = DateTime.now();
 
   TextEditingController _eventController = TextEditingController();
+
+  //スクロールを管理するコントローラとリスナーを定義
+  final ItemScrollController itemScrollController = ItemScrollController();
+  final ItemPositionsListener itemPositionsListener = ItemPositionsListener.create();
+
 
 
 
@@ -176,121 +181,157 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                           'の締め切りはありません',
                     ),
                   )
-                : ListView(
-                    children: _getEventsfromDay(_selectedDay)
-                        .map((event) => Card(
-                              //影設定
-                              elevation: 7,
-                              //カードの形の角を取る
+                : ScrollablePositionedList.builder(
+                    itemCount: _getEventsfromDay(_selectedDay).length,
+                //スクロール関係のコントローラとリスナー追加
+                itemScrollController: itemScrollController,
+                itemPositionsListener: itemPositionsListener,
+                //itembuilderでひとつずつカードを生成していく(INDEX)が1,2,3..というふうになる
+                itemBuilder: (context, index) {
+                  /*
+                  * 下の定義の[index]にも1,2,3..というふうに数字が流れる、
+                  * 最終的には最後のカードの要素の値が入る
+                  */
+                      final event = _getEventsfromDay(_selectedDay)[index];
+                      return Container(
+                        /*
+                  * その日のリストの最後のインデックスのカードの中身と、
+                  * その日のリストの最後のカードの要素が一緒だったら、そのカードには下の余白を追加する
+                  */
+                        margin: event == _getEventsfromDay(_selectedDay).last
+                            ? EdgeInsets.only(bottom: 30)
+                            : EdgeInsets.only(),
+                        child: Card(
+                          //影設定
+                          elevation: 7,
+                          //カードの形の角を取る
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+
+                          //自作のリストタイルを使う
+                          child: CustomTile(
+                            title: event['title'].toString(),
+                            subtitle: event['detail'].toString(),
+
+                            //popupmenuの実装ここから！　↓
+                            popUpMenu: PopupMenuButton(
+                              // menuを丸くする
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10),
                               ),
+                              onSelected: (selectedMenu) async {
+                                switch (selectedMenu) {
+                                  case Menu.edit:
+                                    await Navigator.pushNamed(
+                                        context, AddEventScreen.id,
+                                        arguments: Arguments(
+                                            _selectedDay, true, event));
+                                    //編集のページから帰ってきてからSETSTATEで更新する
+                                    setState(() {});
+                                    break;
 
-                              //自作のリストタイルを使う
-                              child: CustomTile(
-                                title: event['title'].toString(),
-                                subtitle: event['detail'].toString(),
-
-                                //popupmenuの実装ここから！　↓
-                                popUpMenu: PopupMenuButton(
-                                  // menuを丸くする
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  onSelected: (selectedMenu) async {
-                                    switch (selectedMenu) {
-                                      case Menu.edit:
-                                        await Navigator.pushNamed(
-                                            context, AddEventScreen.id,
-                                            arguments: Arguments(
-                                                _selectedDay, true, event));
-                                        //編集のページから帰ってきてからSETSTATEで更新する
-                                        setState(() {});
-                                        break;
-
-                                      //  削除を選択した時の処理
-                                      case Menu.delete:
-                                        showDialog(
-                                          barrierDismissible: false,
-                                          context: context,
-                                          builder: (context) => AlertDialog(
-                                            title: Text("タスク削除"),
-                                            content:
-                                            Text('"${event['title']}"を削除しますか？'),
-                                            actions: [
-                                              // キャンセルボタン
-                                              TextButton(
-                                                onPressed: () =>
-                                                    Navigator.pop(context),
-                                                child: Text('キャンセル'),
-                                              ),
-                                              // 追加ボタン
-                                              TextButton(
-                                                onPressed: () async {
-                                                  await ref
-                                                      .read(calendarProvider)
-                                                      .delete(event);
-                                                  Navigator.pop(context);
-
-                                                  // 更新する
-                                                  setState(() {});
-
-                                                },
-                                                child: Text('OK'),
-                                              ),
-                                            ],
+                                //  削除を選択した時の処理
+                                  case Menu.delete:
+                                    showDialog(
+                                      barrierDismissible: false,
+                                      context: context,
+                                      builder: (context) => AlertDialog(
+                                        title: Text("タスク削除"),
+                                        content:
+                                        Text('"${event['title']}"を削除しますか？'),
+                                        actions: [
+                                          // キャンセルボタン
+                                          TextButton(
+                                            onPressed: () =>
+                                                Navigator.pop(context),
+                                            child: Text('キャンセル'),
                                           ),
-                                        );
-                                        break;
-                                      case Menu.detail:
-                                        Navigator.pushNamed(
-                                            context, EventDetailScreen.id);
-                                        break;
-                                        //  例外の時の処理はなし
-                                      default:
-                                        break;
-                                    }
-                                  },
-                                  child: Icon(Icons.more_vert),
-                                  itemBuilder: (BuildContext context) =>
-                                      <PopupMenuEntry<Menu>>[
-                                        //編集要素
-                                    PopupMenuItem(
-                                      child: ListTile(
-                                        leading: Icon(Icons.edit),
-                                        title: Text('編集'),
+                                          // 追加ボタン
+                                          TextButton(
+                                            onPressed: () async {
+                                              await ref
+                                                  .read(calendarProvider)
+                                                  .delete(event);
+                                              Navigator.pop(context);
+
+                                              // 更新する
+                                              setState(() {});
+
+                                            },
+                                            child: Text('OK'),
+                                          ),
+                                        ],
                                       ),
-                                      value: Menu.edit,
-                                    ),
-
-                                    //divider
-                                    PopupMenuDivider(),
-
-                                      //削除要素
-                                    PopupMenuItem(
-                                      child: ListTile(
-                                        leading: Icon(Icons.delete),
-                                        title: Text('削除'),
+                                    );
+                                    break;
+                                  case Menu.detail:
+                                    showDialog(
+                                      barrierDismissible: false,
+                                      context: context,
+                                      builder: (context) => AlertDialog(
+                                        title: Text(event['title']),
+                                        content:
+                                        Text(event['detail']),
+                                        actions: [
+                                          // 閉じるボタン
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            },
+                                            child: Text('閉じる'),
+                                          ),
+                                        ],
                                       ),
-                                      value: Menu.delete,
-                                    ),
-
-                                      //divider
-                                    PopupMenuDivider(),
-
-                                      //詳細要素
-                                    PopupMenuItem(
-                                      child: ListTile(
-                                        leading: Icon(Icons.notes),
-                                        title: Text('詳細'),
-                                      ),
-                                      value: Menu.detail,
-                                    ),
-                                  ],
+                                    );
+                                    break;
+                                //  例外の時の処理はなし
+                                  default:
+                                    break;
+                                }
+                              },
+                              child: Icon(Icons.more_vert),
+                              itemBuilder: (BuildContext context) =>
+                              <PopupMenuEntry<Menu>>[
+                                //編集要素
+                                PopupMenuItem(
+                                  child: ListTile(
+                                    leading: Icon(Icons.edit),
+                                    title: Text('編集'),
+                                  ),
+                                  value: Menu.edit,
                                 ),
-                              ),
-                            ))
-                        .toList()),
+
+                                //divider
+                                PopupMenuDivider(),
+
+                                //削除要素
+                                PopupMenuItem(
+                                  child: ListTile(
+                                    leading: Icon(Icons.delete),
+                                    title: Text('削除'),
+                                  ),
+                                  value: Menu.delete,
+                                ),
+
+                                //divider
+                                PopupMenuDivider(),
+
+                                //詳細要素
+                                PopupMenuItem(
+                                  child: ListTile(
+                                    leading: Icon(Icons.notes),
+                                    title: Text('詳細'),
+                                  ),
+                                  value: Menu.detail,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                }
+          ),
           ),
         ],
       ),
@@ -311,6 +352,9 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
 
           //上で帰ってくるの待って、setStateで画面ぎゅいーん
           setState(() {});
+
+          //締め切りの追加が終わったら、1番下のリスト表示
+          itemScrollController.jumpTo(index: _getEventsfromDay(_selectedDay).length);
           },
         child: Icon(
           Icons.add,
