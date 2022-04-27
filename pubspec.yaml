@@ -26,6 +26,7 @@ dependencies:
   flutter_hooks: ^0.18.3
   custom_pop_up_menu: ^1.2.3+1
   futuristic_ui: ^0.0.1
+  scrollable_positioned_list: ^0.2.3
 
 dev_dependencies:
   flutter_test:
