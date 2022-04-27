@@ -24,6 +24,8 @@ dependencies:
 
   hooks_riverpod: ^1.0.3
   flutter_hooks: ^0.18.3
+  custom_pop_up_menu: ^1.2.3+1
+  futuristic_ui: ^0.0.1
 
 dev_dependencies:
   flutter_test:

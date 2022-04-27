@@ -28,9 +28,6 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
 
   TextEditingController _eventController = TextEditingController();
 
-  // タスクを編集するとき用のTextEditingController
-  TextEditingController? _editController;
-
   @override
   void initState() {
     super.initState();
@@ -72,9 +69,8 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
     final platformBrightness = MediaQuery.platformBrightnessOf(context);
 
     return Scaffold(
-      backgroundColor: platformBrightness == Brightness.dark
-      ? Colors.grey
-      : Colors.pink[50],
+      backgroundColor:
+          platformBrightness == Brightness.dark ? Colors.grey : Colors.pink[50],
       resizeToAvoidBottomInset: false,
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(40),
@@ -194,30 +190,36 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                                   //popupmenuの実装ここから！　↓
                                   popUpMenu: PopupMenuButton(
                                     // menuを丸くする
-                                   shape: RoundedRectangleBorder(
-                                     borderRadius: BorderRadius.circular(10),
-                                   ),
-                                    onSelected: (selectedMenu) async{
-                                      switch(selectedMenu) {
-                                        case Menu.edit :
-                                          await Navigator.pushNamed(context, AddEventScreen.id,arguments: Arguments(
-                                              _selectedDay, true, event));
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    onSelected: (selectedMenu) async {
+                                      switch (selectedMenu) {
+                                        case Menu.edit:
+                                          await Navigator.pushNamed(
+                                              context, AddEventScreen.id,
+                                              arguments: Arguments(
+                                                  _selectedDay, true, event));
+                                          //編集のページから帰ってきてからSETSTATEで更新する
+                                          setState(() {});
                                           break;
                                         case Menu.delete:
-                                          Navigator.pushNamed(context, AddEventScreen.id);
+                                          Navigator.pushNamed(
+                                              context, AddEventScreen.id);
                                           break;
                                         case Menu.detail:
-                                          Navigator.pushNamed(context, AddEventScreen.id);
+                                          Navigator.pushNamed(
+                                              context, AddEventScreen.id);
                                           break;
-                                        //  例外の時の処理はなし
+                                          //  例外の時の処理はなし
                                         default:
                                           break;
                                       }
                                     },
-                                    child : Icon(Icons.more_vert),
-                                    itemBuilder: (BuildContext context) => <PopupMenuEntry<Menu>>[
-
-                                      //編集要素
+                                    child: Icon(Icons.more_vert),
+                                    itemBuilder: (BuildContext context) =>
+                                        <PopupMenuEntry<Menu>>[
+                                          //編集要素
                                       PopupMenuItem(
                                         child: ListTile(
                                           leading: Icon(Icons.edit),
@@ -229,7 +231,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                                       //divider
                                       PopupMenuDivider(),
 
-                                      //削除要素
+                                        //削除要素
                                       PopupMenuItem(
                                         child: ListTile(
                                           leading: Icon(Icons.delete),
@@ -238,10 +240,10 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                                         value: Menu.delete,
                                       ),
 
-                                      //divider
+                                        //divider
                                       PopupMenuDivider(),
 
-                                      //詳細要素
+                                        //詳細要素
                                       PopupMenuItem(
                                         child: ListTile(
                                           leading: Icon(Icons.notes),
@@ -282,22 +284,6 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
       ),
     );
   }
-  // void popupMenuSelected(BuildContext context,selectedMenu) async{
-  //   switch(selectedMenu) {
-  //     case Menu.edit :
-  //       await Navigator.pushNamed(context, AddEventScreen.id,arguments: Arguments(
-  //           _selectedDay, true, event));
-  //       break;
-  //     case Menu.delete:
-  //       Navigator.pushNamed(context, AddEventScreen.id);
-  //       break;
-  //     case Menu.detail:
-  //       Navigator.pushNamed(context, AddEventScreen.id);
-  //       break;
-  //     default:
-  //       break;
-  //   }
-  // }
 }
 
 // イベントの数を数字で表示するためのウィジェット
