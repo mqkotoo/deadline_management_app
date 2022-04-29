@@ -97,68 +97,67 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
         body: Column(
           children: [
             //カレンダーの大きさ変えてる
-            SizedBox(
-              height: Platform.isIOS ? 410 : 340,
+              Expanded(
+                flex: 5,
+                child: Card(
+                  // テーブルカレンダーを実装
+                  child: TableCalendar(
+                    //カレンダーの大きさ変えれるようにするやつ
+                    shouldFillViewport: true,
 
-              // テーブルカレンダーを実装
-              child: Card(
-                child: TableCalendar(
-                  //カレンダーの大きさ変えれるようにするやつ
-                  shouldFillViewport: true,
+                    locale: 'ja_JP',
+                    firstDay: DateTime.utc(now.year - 1, 1, 1),
+                    lastDay: DateTime.utc(now.year + 1, 12, 31),
+                    focusedDay: _focusedDay,
+                    calendarFormat: _calendarFormat,
 
-                  locale: 'ja_JP',
-                  firstDay: DateTime.utc(now.year - 1, 1, 1),
-                  lastDay: DateTime.utc(now.year + 1, 12, 31),
-                  focusedDay: _focusedDay,
-                  calendarFormat: _calendarFormat,
+                    //カレンダーのマーカー表示するためのビルダー
+                    calendarBuilders: CalendarBuilders(
+                      markerBuilder: (context, date, events) {
+                        if (events.isNotEmpty) {
+                          return _buildEventsMarker(date, events, context);
+                        }
+                      },
+                    ),
 
-                  //カレンダーのマーカー表示するためのビルダー
-                  calendarBuilders: CalendarBuilders(
-                    markerBuilder: (context, date, events) {
-                      if (events.isNotEmpty) {
-                        return _buildEventsMarker(date, events, context);
+                    // カレンダーのフォーマットを月毎にしかできなくする
+                    availableCalendarFormats: const {
+                      CalendarFormat.month: 'Month',
+                    },
+
+                    selectedDayPredicate: (day) {
+                      return isSameDay(_selectedDay, day);
+                    },
+                    onDaySelected: (selectedDay, focusedDay) {
+                      if (!isSameDay(_selectedDay, selectedDay)) {
+                        setState(() {
+                          _selectedDay = selectedDay;
+                          _focusedDay = focusedDay;
+                        });
+                        _getEventsfromDay(_selectedDay);
                       }
                     },
+                    onFormatChanged: (format) {
+                      if (_calendarFormat != format) {
+                        setState(() {
+                          _calendarFormat = format;
+                        });
+                      }
+                    },
+                    onPageChanged: (focusedDay) {
+                      _focusedDay = focusedDay;
+                    },
+
+                    // イベントを読み込む
+                    eventLoader: _getEventsfromDay,
+                    // カレンダーのスタイル
+                    calendarStyle: calendarStyle(context),
+                    daysOfWeekStyle: dayStyle,
+                    // カレンダーの上の部分のスタイル
+                    headerStyle: calendarHeadStyle(context),
                   ),
-
-                  // カレンダーのフォーマットを月毎にしかできなくする
-                  availableCalendarFormats: const {
-                    CalendarFormat.month: 'Month',
-                  },
-
-                  selectedDayPredicate: (day) {
-                    return isSameDay(_selectedDay, day);
-                  },
-                  onDaySelected: (selectedDay, focusedDay) {
-                    if (!isSameDay(_selectedDay, selectedDay)) {
-                      setState(() {
-                        _selectedDay = selectedDay;
-                        _focusedDay = focusedDay;
-                      });
-                      _getEventsfromDay(_selectedDay);
-                    }
-                  },
-                  onFormatChanged: (format) {
-                    if (_calendarFormat != format) {
-                      setState(() {
-                        _calendarFormat = format;
-                      });
-                    }
-                  },
-                  onPageChanged: (focusedDay) {
-                    _focusedDay = focusedDay;
-                  },
-
-                  // イベントを読み込む
-                  eventLoader: _getEventsfromDay,
-                  // カレンダーのスタイル
-                  calendarStyle: calendarStyle(context),
-                  daysOfWeekStyle: dayStyle,
-                  // カレンダーの上の部分のスタイル
-                  headerStyle: calendarHeadStyle(context),
                 ),
               ),
-            ),
 
             //ちょっと隙間小さかったから空白を足してるよ
             const SizedBox(height: 3),
@@ -184,6 +183,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
 
             // タスクのリストを表示する
             Expanded(
+              flex: 4,
               child: _getEventsfromDay(_selectedDay).isEmpty
                   ? Center(
                       child: Text(
