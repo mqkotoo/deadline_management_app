@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_deadline_management/screens/add_event_screen.dart';
 
-enum Menu {edit, delete, detail}
+enum Menu {edit, delete}
 
 class CustomTile extends StatelessWidget {
 
@@ -24,7 +24,7 @@ class CustomTile extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Padding(
-            padding: const EdgeInsets.fromLTRB(20, 4, 4, 4),
+            padding: const EdgeInsets.fromLTRB(20, 4, 13, 4),
             child: Row(
               children: [
                 Expanded(
