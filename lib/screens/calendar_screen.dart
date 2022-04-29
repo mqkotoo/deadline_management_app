@@ -207,129 +207,119 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                           margin: event == _getEventsfromDay(_selectedDay).last
                               ? EdgeInsets.only(bottom: 22)
                               : EdgeInsets.only(),
-                          child: Card(
-                            //影設定
-                            elevation: 3,
-                            //カードの形の角を取る
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-
-                            //自作のリストタイルを使う
-                            child: CustomTile(
-                              title: event['title'].toString(),
-                              subtitle: event['detail'].toString(),
-
-                              //popupmenuの実装ここから！　↓
-                              popUpMenu: PopupMenuButton(
-                                // menuを丸くする
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10),
+                          //cardをタップすると締め切りの詳細が見れるようにする
+                          child: GestureDetector(
+                            onTap : () {
+                              showDialog(
+                                context: context,
+                                builder: (context) => AlertDialog(
+                                  title: Text(event['title']),
+                                  content: Text(event['detail']),
+                                  actions: [
+                                    // 閉じるボタン
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: Text('閉じる'),
+                                    ),
+                                  ],
                                 ),
-                                onSelected: (selectedMenu) async {
-                                  switch (selectedMenu) {
-                                    case Menu.edit:
-                                      await Navigator.pushNamed(
-                                          context, AddEventScreen.id,
-                                          arguments: Arguments(
-                                              _selectedDay, true, event));
-                                      //編集のページから帰ってきてからSETSTATEで更新する
-                                      setState(() {});
-                                      break;
+                              );
+                            },
+                            child: Card(
+                              //影設定
+                              elevation: 3,
+                              //カードの形の角を取る
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
 
-                                    //  削除を選択した時の処理
-                                    case Menu.delete:
-                                      showDialog(
-                                        barrierDismissible: false,
-                                        context: context,
-                                        builder: (context) => AlertDialog(
-                                          title: Text("タスク削除"),
-                                          content: Text(
-                                              '"${event['title']}"を削除しますか？'),
-                                          actions: [
-                                            // キャンセルボタン
-                                            TextButton(
-                                              onPressed: () =>
-                                                  Navigator.pop(context),
-                                              child: Text('キャンセル'),
-                                            ),
-                                            // OKボタン
-                                            TextButton(
-                                              onPressed: () async {
-                                                await ref
-                                                    .read(calendarProvider)
-                                                    .delete(event);
-                                                Navigator.pop(context);
+                              //自作のリストタイルを使う
+                              child: CustomTile(
+                                title: event['title'].toString(),
+                                subtitle: event['detail'].toString(),
 
-                                                // 更新する
-                                                setState(() {});
-                                              },
-                                              child: Text('OK'),
-                                            ),
-                                          ],
-                                        ),
-                                      );
-                                      break;
-                                    case Menu.detail:
-                                      showDialog(
-                                        barrierDismissible: false,
-                                        context: context,
-                                        builder: (context) => AlertDialog(
-                                          title: Text(event['title']),
-                                          content: Text(event['detail']),
-                                          actions: [
-                                            // 閉じるボタン
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.pop(context);
-                                              },
-                                              child: Text('閉じる'),
-                                            ),
-                                          ],
-                                        ),
-                                      );
-                                      break;
-                                    //  例外の時の処理はなし
-                                    default:
-                                      break;
-                                  }
-                                },
-                                child: Icon(Icons.more_vert),
-                                itemBuilder: (BuildContext context) =>
-                                    <PopupMenuEntry<Menu>>[
-                                  //編集要素
-                                  PopupMenuItem(
-                                    child: ListTile(
-                                      leading: Icon(Icons.edit),
-                                      title: Text('編集'),
-                                    ),
-                                    value: Menu.edit,
+                                //popupmenuの実装ここから！　↓
+                                popUpMenu: PopupMenuButton(
+                                  // menuを丸くする
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
                                   ),
+                                  onSelected: (selectedMenu) async {
+                                    switch (selectedMenu) {
+                                      case Menu.edit:
+                                        await Navigator.pushNamed(
+                                            context, AddEventScreen.id,
+                                            arguments: Arguments(
+                                                _selectedDay, true, event));
+                                        //編集のページから帰ってきてからSETSTATEで更新する
+                                        setState(() {});
+                                        break;
 
-                                  //divider
-                                  PopupMenuDivider(),
+                                      //  削除を選択した時の処理
+                                      case Menu.delete:
+                                        showDialog(
+                                          barrierDismissible: false,
+                                          context: context,
+                                          builder: (context) => AlertDialog(
+                                            title: Text("タスク削除"),
+                                            content: Text(
+                                                '"${event['title']}"を削除しますか？'),
+                                            actions: [
+                                              // キャンセルボタン
+                                              TextButton(
+                                                onPressed: () =>
+                                                    Navigator.pop(context),
+                                                child: Text('キャンセル'),
+                                              ),
+                                              // OKボタン
+                                              TextButton(
+                                                onPressed: () async {
+                                                  await ref
+                                                      .read(calendarProvider)
+                                                      .delete(event);
+                                                  Navigator.pop(context);
 
-                                  //削除要素
-                                  PopupMenuItem(
-                                    child: ListTile(
-                                      leading: Icon(Icons.delete),
-                                      title: Text('削除'),
+                                                  // 更新する
+                                                  setState(() {});
+                                                },
+                                                child: Text('OK'),
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                                        break;
+                                      //  例外の時の処理はなし
+                                      default:
+                                        break;
+                                    }
+                                  },
+                                  child: Icon(Icons.more_vert),
+                                  itemBuilder: (BuildContext context) =>
+                                      <PopupMenuEntry<Menu>>[
+                                    //編集要素
+                                    PopupMenuItem(
+                                      child: ListTile(
+                                        leading: Icon(Icons.edit),
+                                        title: Text('編集'),
+                                      ),
+                                      value: Menu.edit,
                                     ),
-                                    value: Menu.delete,
-                                  ),
 
-                                  //divider
-                                  PopupMenuDivider(),
+                                    //divider
+                                    PopupMenuDivider(),
 
-                                  //詳細要素
-                                  PopupMenuItem(
-                                    child: ListTile(
-                                      leading: Icon(Icons.notes),
-                                      title: Text('詳細'),
+                                    //削除要素
+                                    PopupMenuItem(
+                                      child: ListTile(
+                                        leading: Icon(Icons.delete),
+                                        title: Text('削除'),
+                                      ),
+                                      value: Menu.delete,
                                     ),
-                                    value: Menu.detail,
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ),
                           ),
