@@ -174,8 +174,13 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                   setState(() {});
 
                   //締め切りの追加が終わったら、1番下のリスト表示
-                  itemScrollController.jumpTo(
-                      index: _getEventsfromDay(_selectedDay).length);
+                  // その日の締め切りがなかったら、スクロールのやつ、つかわない
+                  if (_getEventsfromDay(_selectedDay).isEmpty) {
+                    return;
+                  }else {
+                    itemScrollController.jumpTo(
+                        index: _getEventsfromDay(_selectedDay).length);
+                  }
                 }),
 
             //ちょっと隙間小さかったから空白を足してるよ
