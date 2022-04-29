@@ -214,7 +214,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                               : EdgeInsets.only(),
                           //cardをタップすると締め切りの詳細が見れるようにする
                           child: GestureDetector(
-                            onTap : () {
+                            onLongPress : () {
                               showDialog(
                                 context: context,
                                 builder: (context) => AlertDialog(
@@ -226,7 +226,9 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                                       onPressed: () {
                                         Navigator.pop(context);
                                       },
-                                      child: Text('閉じる'),
+                                      child: Text(
+                                          '閉じる'
+                                          ),
                                     ),
                                   ],
                                 ),
