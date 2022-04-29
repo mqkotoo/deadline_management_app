@@ -22,18 +22,20 @@ class selectedDay extends StatelessWidget {
         padding: EdgeInsets.only(left: 30),
         child: Row(
           children: [
-            Text(DateFormat.MMMEd('ja').format(_selectedDay),
-              style: TextStyle(
-                  fontSize: 17,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white
+            Expanded(
+              child: Text(DateFormat.MMMEd('ja').format(_selectedDay),
+                style: TextStyle(
+                    fontSize: 17,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white
+                ),
               ),
             ),
-            SizedBox(
-              width: 220,
-            ),
+            // SizedBox(
+            //   width: 220,
+            // ),
             Padding(
-              padding: const EdgeInsets.only(bottom: 10),
+              padding: const EdgeInsets.fromLTRB(0,0,13,10),
               child: IconButton(
                 color: Colors.white,
                 icon: Icon(Icons.add,size: 40),

@@ -64,11 +64,15 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
             //イベント追加用テキストフィールド
             TextFormField(
               controller: _eventController,
-              autofocus: true,
-              // onChanged: (text) {
-              //   model.todoTitle = text;
-              // },
+              // autofocus: true,
               decoration: InputDecoration(
+                //通常の時のフォームのスタイル
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                      color: Theme.of(context).primaryColor
+                  ),
+                ),
+                //focusした時のフォームのスタイル
                 focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(
                     width: 2.0,
@@ -79,14 +83,9 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                   fontWeight: FontWeight.w400,
                 ),
 
-                //編集か追加でヒントテキストを変える
-                hintText: arguments.isUpdate ? '締め切り変更' : '締め切り追加',
-
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                    color: Theme.of(context).primaryColor
-                  ),
-                ),
+                //編集か追加でヒント、ラベルテキストを変える
+                labelText: arguments.isUpdate ? '締め切り変更' : '締め切り追加',
+                hintText: arguments.isUpdate ? null : '読書感想文',
               ),
 
             //  キーパッドの左下の「確定」→「次へ」みたいにする
@@ -106,8 +105,16 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
 
             //詳細追加用テキストフィールド
             TextFormField(
+              maxLines: 3,
               controller: _detailEventController,
               decoration: InputDecoration(
+                //通常時のフォームのスタイル
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                      color: Theme.of(context).primaryColor
+                  ),
+                ),
+                //focusした時のフォームのスタイル
                 focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(
                       width: 2.0,
@@ -118,14 +125,10 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                   fontWeight: FontWeight.w400,
                 ),
 
-                //編集か追加でヒントテキストを変える
-                hintText: arguments.isUpdate ? '詳細の変更' : '詳細の追加',
+                //編集か追加でヒント,ラベルテキストを変える
+                labelText: arguments.isUpdate ? '詳細の変更' : '詳細の追加',
+                hintText: arguments.isUpdate ? null : '原稿用紙2枚以上\n体育が終わったら〇〇先生に提出する',
 
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                      color: Theme.of(context).primaryColor
-                  ),
-                ),
               ),
 
             //  詳細入力フォームにフォーカスを移すためにここの入力フォームにFOCUSNODEを設定してあげる
