@@ -107,11 +107,13 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                   //通常の時のフォームのスタイル
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: Theme.of(context).primaryColor),
+                    borderRadius: BorderRadius.circular(8)
                   ),
                   //focusした時のフォームのスタイル
                   focusedBorder: OutlineInputBorder(
                     borderSide: BorderSide(
                         width: 2.0, color: Theme.of(context).primaryColor),
+                      borderRadius: BorderRadius.circular(8)
                   ),
                   labelStyle: TextStyle(
                       fontWeight: FontWeight.w400,
@@ -150,11 +152,13 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                   //通常時のフォームのスタイル
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: Theme.of(context).primaryColor),
+                      borderRadius: BorderRadius.circular(8)
                   ),
                   //focusした時のフォームのスタイル
                   focusedBorder: OutlineInputBorder(
                     borderSide: BorderSide(
                         width: 2.0, color: Theme.of(context).primaryColor),
+                      borderRadius: BorderRadius.circular(8)
                   ),
                   labelStyle: TextStyle(
                       fontWeight: FontWeight.w400,

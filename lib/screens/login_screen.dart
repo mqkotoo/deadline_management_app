@@ -66,11 +66,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: Text(
-          'ログイン',
-        ),
-      ),
       body: ModalProgressHUD(
         inAsyncCall: isLoad,
         child: Padding(

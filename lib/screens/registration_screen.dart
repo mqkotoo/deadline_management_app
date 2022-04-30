@@ -56,9 +56,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: Text('登録'),
-      ),
       body: ModalProgressHUD(
         inAsyncCall: isLoad,
         child: Padding(

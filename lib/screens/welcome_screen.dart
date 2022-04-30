@@ -31,15 +31,17 @@ class WelcomeScreen extends StatelessWidget {
             // LOGIN
             RoundedButton(
               textColor: Colors.white,
-              color: Colors.blue,
+              // color: Colors.blue,
+              color: Colors.grey[600],
               title: 'ログイン',
               onPressed: () => Navigator.pushNamed(context, LoginScreen.id),
             ),
 
             // REGISTRATION
             RoundedButton(
-              textColor: Colors.blue,
-              color: Colors.blue[50],
+              textColor: Colors.black,
+              // color: Colors.blue[50],
+              color: Colors.grey[300],
               title: 'アカウントを作成する',
               onPressed: () => Navigator.pushNamed(context, RegistrationScreen.id),
             ),

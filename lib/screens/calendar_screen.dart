@@ -90,7 +90,8 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
               IconButton(
                   icon: Icon(Icons.settings),
                   onPressed: () =>
-                      Navigator.pushNamed(context, SettingScreen.id)),
+                      Navigator.pushNamed(context, SettingScreen.id),
+              ),
             ],
           ),
         ),
@@ -302,7 +303,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                                         break;
                                     }
                                   },
-                                  child: Icon(Icons.more_vert),
+                                  child: Icon(Icons.more_vert,size: 27),
                                   itemBuilder: (BuildContext context) =>
                                       <PopupMenuEntry<Menu>>[
                                     //編集要素

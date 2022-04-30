@@ -24,7 +24,7 @@ class CustomTile extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Padding(
-            padding: const EdgeInsets.fromLTRB(20, 4, 13, 4),
+            padding: const EdgeInsets.fromLTRB(20, 6, 13, 6),
             child: Row(
               children: [
                 Expanded(
