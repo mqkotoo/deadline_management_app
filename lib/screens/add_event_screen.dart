@@ -125,7 +125,7 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
 
                   //編集か追加でヒント、ラベルテキストを変える
                   labelText: arguments.isUpdate ? '締め切り変更' : '締め切り追加',
-                  hintText: arguments.isUpdate ? null : '読書感想文',
+                  hintText: arguments.isUpdate ? null : '（必須）読書感想文',
 
                   //ラベルテキスト枠の上に固定する
                   floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -171,7 +171,7 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                   //編集か追加でヒント,ラベルテキストを変える
                   labelText: arguments.isUpdate ? '詳細の変更' : '詳細の追加',
                   hintText:
-                      arguments.isUpdate ? null : '原稿用紙2枚以上\n体育が終わったら〇〇先生に提出する',
+                      arguments.isUpdate ? null : '（任意）\n原稿用紙2枚以上\n体育が終わったら〇〇先生に提出する',
 
                   //ラベルテキスト枠の上に固定する
                   floatingLabelBehavior: FloatingLabelBehavior.always,

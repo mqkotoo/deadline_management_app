@@ -178,7 +178,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                   //締め切りの追加が終わったら、1番下のリスト表示
                   // その日の締め切りがなかったら、スクロールのやつ、つかわない
                   if (_getEventsfromDay(_selectedDay).isEmpty) {
-                    return;
+                    return; //何も処理しない
                   }else {
                     itemScrollController.jumpTo(
                         index: _getEventsfromDay(_selectedDay).length);
@@ -338,32 +338,33 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
           ],
         ),
 
-        // // タスク作成ボタン
-        // floatingActionButton: FloatingActionButton(
-        //   // テーマがDARKだったらとかのやつ
-        //   backgroundColor: platformBrightness == Brightness.dark
-        //       ? Theme.of(context).accentColor
-        //       : Theme.of(context).primaryColor,
-        //
-        //   // foregroundColor: Colors.red,
-        //   // イベント追加ページに遷移
-        //   onPressed: () async {
-        //     await Navigator.pushNamed(context, AddEventScreen.id,
-        //         //add_pageで使うやつを渡す
-        //         arguments: Arguments(_selectedDay, false, {}));
-        //
-        //     //上で帰ってくるの待って、setStateで画面ぎゅいーん
-        //     setState(() {});
-        //
-        //     //締め切りの追加が終わったら、1番下のリスト表示
-        //     itemScrollController.jumpTo(
-        //         index: _getEventsfromDay(_selectedDay).length);
-        //   },
-        //   child: Icon(
-        //     Icons.add,
-        //     color: Colors.white,
-        //   ),
-        // ),
+        // タスク作成ボタン
+        floatingActionButton: FloatingActionButton(
+          // テーマがDARKだったらとかのやつ
+          backgroundColor: platformBrightness == Brightness.dark
+              ? Theme.of(context).accentColor
+              : Theme.of(context).primaryColor,
+
+          // foregroundColor: Colors.red,
+          // イベント追加ページに遷移
+          onPressed: () async {
+            await Navigator.pushNamed(context, AddEventScreen.id,
+                //add_pageで使うやつを渡す
+                arguments: Arguments(_selectedDay, false, {}));
+
+            //上で帰ってくるの待って、setStateで画面ぎゅいーん
+            setState(() {});
+
+            //締め切りの追加が終わったら、1番下のリスト表示
+            itemScrollController.jumpTo(
+                index: _getEventsfromDay(_selectedDay).length);
+          },
+          child: Icon(
+            Icons.add,
+            color: Colors.white,
+            size: 34.99,
+          ),
+        ),
     );
   }
 }
