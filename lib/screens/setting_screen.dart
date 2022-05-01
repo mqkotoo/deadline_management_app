@@ -12,11 +12,13 @@ class SettingScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).primaryColor,
-        title: Text('設定'),
-      ),
+          elevation: 0,
+          backgroundColor: Theme.of(context).primaryColor,
+          title: Text('設定'),
+        ),
       body:  ListView(
           children: [
+            _menuItem(title: "メニュー1", icon: Icon(Icons.navigate_next),onPress: () => print('onPressed')),
             _menuItem(title: "メニュー1", icon: Icon(Icons.navigate_next),onPress: () => print('onPressed')),
             _menuItem(title: "メニュー1", icon: Icon(Icons.navigate_next),onPress: () => print('onPressed')),
             _menuItem(title: "メニュー1", icon: Icon(Icons.navigate_next),onPress: () => print('onPressed')),
@@ -30,7 +32,7 @@ class SettingScreen extends StatelessWidget {
   Widget _menuItem({required String title, required Icon icon,required Function onPress}) {
     return GestureDetector(
       child:Container(
-          padding: EdgeInsets.all(14.0),
+          padding: EdgeInsets.symmetric(vertical: 14.0),
           decoration: new BoxDecoration(
               border: new Border(bottom: BorderSide(width: 1.0, color: Colors.grey))
           ),
@@ -44,7 +46,8 @@ class SettingScreen extends StatelessWidget {
                   title,
                   style: TextStyle(
                       fontSize: 18,
-                      color: Colors.black
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black54,
                   ),
                 ),
               ),

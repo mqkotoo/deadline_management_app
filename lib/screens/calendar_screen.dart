@@ -80,8 +80,9 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
             : Colors.pink[50],
         resizeToAvoidBottomInset: false,
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(40),
+          preferredSize: Size.fromHeight(45),
           child: AppBar(
+            elevation: 0.0,
             backgroundColor: Theme.of(context).primaryColor,
             title: Text(
               "カレンダー",
@@ -237,7 +238,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                             },
                             child: Card(
                               //影設定
-                              elevation: 3,
+                              elevation: 5,
                               //カードの形の角を取る
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10),
