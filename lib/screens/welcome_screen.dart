@@ -9,12 +9,13 @@ class WelcomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey[400],
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 24.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
+          children: [
             Text(
               "app name",
               style: TextStyle(
@@ -32,16 +33,16 @@ class WelcomeScreen extends StatelessWidget {
             RoundedButton(
               textColor: Colors.white,
               // color: Colors.blue,
-              color: Colors.grey[600],
+              color: Colors.blue,
               title: 'ログイン',
               onPressed: () => Navigator.pushNamed(context, LoginScreen.id),
             ),
 
             // REGISTRATION
             RoundedButton(
-              textColor: Colors.black,
+              textColor: Colors.blue,
               // color: Colors.blue[50],
-              color: Colors.grey[300],
+              color: Colors. blue[50],
               title: 'アカウントを作成する',
               onPressed: () => Navigator.pushNamed(context, RegistrationScreen.id),
             ),
