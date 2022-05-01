@@ -42,17 +42,62 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
     //テーマ別に色を変えられるようにするためのやつ
     final platformBrightness = MediaQuery.platformBrightnessOf(context);
 
+    //２画面画面をポップするために使うやつ
+    int count = 0;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColor,
         title: Text(
           //編集か追加でボタンのテキストを変える
-          arguments.isUpdate ? '締め切りを変更する' : '締め切りを追加する',
+          arguments.isUpdate ? '締め切りを編集する' : '締め切りを追加する',
         ),
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
           icon: Icon(Icons.clear),
         ),
+        actions: [
+          Visibility(
+            visible: arguments.isUpdate,
+            child: IconButton(
+                onPressed: () {
+                  showDialog(
+                                barrierDismissible: false,
+                                context: context,
+                                builder: (context) => AlertDialog(
+                                  title: Text("タスク削除"),
+                                  content: Text(
+                                      '"${arguments.events['title']}"を削除しますか？'),
+                                  actions: [
+                                    // キャンセルボタン
+                                    TextButton(
+                                      onPressed: () =>
+                                          Navigator.pop(context),
+                                      child: Text('キャンセル'),
+                                    ),
+                                    // OKボタン
+                                    TextButton(
+                                      onPressed: () async {
+                                        await ref
+                                            .read(calendarProvider)
+                                            .delete(arguments.events);
+                                        // Navigator.pop(context);
+                                        //カレンダー画面まで一気に二つ分ポップする
+                                        Navigator.popUntil(context, (_) => count++ >= 2);
+
+                                        // 更新する
+                                        setState(() {});
+                                      },
+                                      child: Text('OK'),
+                                    ),
+                                  ],
+                                ),
+                              );
+                },
+                icon: Icon(Icons.delete,size: 28),
+            ),
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Padding(
