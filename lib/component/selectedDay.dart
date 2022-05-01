@@ -34,14 +34,14 @@ class selectedDay extends StatelessWidget {
             // SizedBox(
             //   width: 220,
             // ),
-            // Padding(
-            //   padding: const EdgeInsets.fromLTRB(0,0,13,10),
-            //   child: IconButton(
-            //     color: Colors.white,
-            //     icon: Icon(Icons.add,size: 40),
-            //     onPressed: onTap,
-            //   ),
-            // ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0,0,13,10),
+              child: IconButton(
+                color: Colors.white,
+                icon: Icon(Icons.add,size: 40),
+                onPressed: onTap,
+              ),
+            ),
           ],
         ),
       ),

@@ -56,48 +56,48 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
           onPressed: () => Navigator.pop(context),
           icon: Icon(Icons.clear),
         ),
-        actions: [
-          Visibility(
-            visible: arguments.isUpdate,
-            child: IconButton(
-              onPressed: () {
-                showDialog(
-                  barrierDismissible: false,
-                  context: context,
-                  builder: (context) => AlertDialog(
-                    title: Text("タスク削除"),
-                    content: Text(
-                        '"${arguments.events['title']}"を削除しますか？'),
-                    actions: [
-                      // キャンセルボタン
-                      TextButton(
-                        onPressed: () =>
-                            Navigator.pop(context),
-                        child: Text('キャンセル'),
-                      ),
-                      // OKボタン
-                      TextButton(
-                        onPressed: () async {
-                          await ref
-                              .read(calendarProvider)
-                              .delete(arguments.events);
-                          // Navigator.pop(context);
-                          //カレンダー画面まで一気に二つ分ポップする
-                          Navigator.popUntil(context, (_) => count++ >= 2);
-
-                          // 更新する
-                          setState(() {});
-                        },
-                        child: Text('OK'),
-                      ),
-                    ],
-                  ),
-                );
-              },
-              icon: Icon(Icons.delete,size: 28),
-            ),
-          ),
-        ],
+        // actions: [
+        //   Visibility(
+        //     visible: arguments.isUpdate,
+        //     child: IconButton(
+        //       onPressed: () {
+        //         showDialog(
+        //           barrierDismissible: false,
+        //           context: context,
+        //           builder: (context) => AlertDialog(
+        //             title: Text("タスク削除"),
+        //             content: Text(
+        //                 '"${arguments.events['title']}"を削除しますか？'),
+        //             actions: [
+        //               // キャンセルボタン
+        //               TextButton(
+        //                 onPressed: () =>
+        //                     Navigator.pop(context),
+        //                 child: Text('キャンセル'),
+        //               ),
+        //               // OKボタン
+        //               TextButton(
+        //                 onPressed: () async {
+        //                   await ref
+        //                       .read(calendarProvider)
+        //                       .delete(arguments.events);
+        //                   // Navigator.pop(context);
+        //                   //カレンダー画面まで一気に二つ分ポップする
+        //                   Navigator.popUntil(context, (_) => count++ >= 2);
+        //
+        //                   // 更新する
+        //                   setState(() {});
+        //                 },
+        //                 child: Text('OK'),
+        //               ),
+        //             ],
+        //           ),
+        //         );
+        //       },
+        //       icon: Icon(Icons.delete,size: 28),
+        //     ),
+        //   ),
+        // ],
       ),
       body: SingleChildScrollView(
         child: Padding(
