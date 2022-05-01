@@ -5,7 +5,7 @@ class selectedDay extends StatelessWidget {
   const selectedDay({
     Key? key,
     required DateTime selectedDay,
-    required this.onTap
+    this.onTap
   }) : _selectedDay = selectedDay, super(key: key);
 
   final DateTime _selectedDay;
@@ -34,14 +34,14 @@ class selectedDay extends StatelessWidget {
             // SizedBox(
             //   width: 220,
             // ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0,0,13,10),
-              child: IconButton(
-                color: Colors.white,
-                icon: Icon(Icons.add,size: 40),
-                onPressed: onTap,
-              ),
-            ),
+            // Padding(
+            //   padding: const EdgeInsets.fromLTRB(0,0,13,10),
+            //   child: IconButton(
+            //     color: Colors.white,
+            //     icon: Icon(Icons.add,size: 40),
+            //     onPressed: onTap,
+            //   ),
+            // ),
           ],
         ),
       ),
