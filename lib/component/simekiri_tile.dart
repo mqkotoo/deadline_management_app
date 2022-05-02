@@ -5,12 +5,13 @@ enum Menu {edit, delete}
 
 class CustomTile extends StatelessWidget {
 
-  CustomTile({required this.title, required this.subtitle,this.popUpMenu,Key? key})
+  CustomTile({required this.title, required this.subtitle,this.popUpMenu,required this.icon,Key? key})
       : super(key: key);
 
   String title;
   String subtitle;
   Widget? popUpMenu;
+  Icon icon;
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +49,7 @@ class CustomTile extends StatelessWidget {
                     ],
                   ),
                 ),
+                icon,
                 // popUpMenu
               ],
             ),

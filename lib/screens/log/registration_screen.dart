@@ -3,53 +3,43 @@ import 'package:flutter/material.dart';
 import 'package:flutter_deadline_management/start_up.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
-import '../component/rounded_button.dart';
-import '../constants.dart';
+import '../../component/rounded_button.dart';
+import '../../component/input_decoration_constants.dart';
 
-class LoginScreen extends StatefulWidget {
-  static const String id = 'login';
+class RegistrationScreen extends StatefulWidget {
+  static const String id = 'registration';
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  _RegistrationScreenState createState() => _RegistrationScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _RegistrationScreenState extends State<RegistrationScreen> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   bool isLoad = false;
   String email = '';
   String password = '';
-  // firebaseからのエラーメッセージを表示するための変数
-  String errorMessage = '';
 
-  Future<void> loginUserFromEmail() async {
+  Future<void> createUserFromEmail() async {
     setState(() {
       isLoad = true;
     });
-
     try {
-      // newUserに値を入れる
-      final newUser = await _auth.signInWithEmailAndPassword(
+      final newUser = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
-
-      // ユーザが確認できたら
       if (newUser != null) {
-        // 全画面ポップしてスタートあっぷ画面に飛ぶ(スタートアップだけがスタックに存在する
-        Navigator.of(context)
-            .pushNamedAndRemoveUntil(StartUpPage.id, (route) => false);
-
-        print("ログインに成功しました");
+        Navigator.pushNamed(context, StartUpPage.id);
       }
       setState(() {
         isLoad = false;
       });
     } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-disabled') {
-        errorMessage = 'そのメールアドレスは利用できません';
+      if (e.code == 'email-already-in-use') {
+        print('指定したメールアドレスは登録済みです');
       } else if (e.code == 'invalid-email') {
-        errorMessage = 'メールアドレスのフォーマットが正しくありません';
-      } else if (e.code == 'user-not-found') {
-        errorMessage = 'ユーザーが見つかりません';
-      } else if (e.code == 'wrong-password') {
-        errorMessage = 'パスワードが違います';
+        print('メールアドレスのフォーマットが正しくありません');
+      } else if (e.code == 'operation-not-allowed') {
+        print('指定したメールアドレス・パスワードは現在使用できません');
+      } else if (e.code == 'weak-password') {
+        print('パスワードは６文字以上にしてください');
       }
     }
     // エラー後にロードを解除する
@@ -78,7 +68,7 @@ class _LoginScreenState extends State<LoginScreen> {
               children: <Widget>[
                 Flexible(
                   child: Text(
-                    "ログイン↓↓",
+                    "ユーザー登録",
                     style: TextStyle(
                       color: Colors.grey,
                       fontSize: 45.0,
@@ -98,18 +88,15 @@ class _LoginScreenState extends State<LoginScreen> {
                     email = value;
                   },
                   decoration: kTextFieldDecoration.copyWith(
-                    hintText: 'メールアドレスを入力して下さい',
+                    hintText: 'メールアドレスを入力してください',
                   ),
-
                   // 右下のボタンをNEXTにかえる
                   textInputAction: TextInputAction.next,
-
                   // NEXTを押したらパスワード入力フォームにフォーカスさせる
                   onFieldSubmitted: (_) {
                     FocusScope.of(context)
                         .requestFocus(_passwordFocusNode); // 変更
                   },
-
 //                  バリデーション実装
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -122,7 +109,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   height: 8.0,
                 ),
 
-                // パスワードの入力フォーム
+                // ここからパスワード用のテキストフィールド
                 TextFormField(
                     obscureText: true,
                     onChanged: (value) {
@@ -132,48 +119,31 @@ class _LoginScreenState extends State<LoginScreen> {
                     decoration: kTextFieldDecoration.copyWith(
                       hintText: 'パスワードを入力してください',
                     ),
-
                     // パスワード入力フォームに飛ばせるたえのやつ
                     focusNode: _passwordFocusNode,
-
                     //バリデーション実装
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'パスワードを入力してください';
                       }
                       if (value.length < 6) {
-                        return 'パスワードは6文字以上です';
+                        return 'パスワードは6文字以上でないといけません';
                       }
                       return null;
                     }),
-                SizedBox(
-                  height: 8.0,
-                ),
-
-                // FIREBASEからのエラー表示
-                Center(
-                  child: Text(
-                    errorMessage,
-                    style: TextStyle(
-                      color: Colors.red,
-                      decoration: TextDecoration.underline,
-                      decorationColor: Colors.red,
-                    ),
-                  ),
-                ),
 
                 SizedBox(
                   height: 24.0,
                 ),
 
-                // ログインボタン
+                // 登録ボタン
                 RoundedButton(
                   textColor: Colors.white,
                   color: Colors.blue,
-                  title: 'ログイン',
+                  title: '登録',
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
-                      loginUserFromEmail();
+                      createUserFromEmail();
                     }
                     print(email);
                     print(password);

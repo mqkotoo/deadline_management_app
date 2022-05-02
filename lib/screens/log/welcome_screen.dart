@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_deadline_management/screens/registration_screen.dart';
-import '../component/rounded_button.dart';
+import 'package:flutter_deadline_management/screens/log/registration_screen.dart';
+import '../../component/rounded_button.dart';
 import 'login_screen.dart';
 
 class WelcomeScreen extends StatelessWidget {

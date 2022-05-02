@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_deadline_management/component/simekiri_tile.dart';
 import 'package:flutter_deadline_management/model/calendar_model.dart';
-import 'package:flutter_deadline_management/screens/setting_screen.dart';
+import 'package:flutter_deadline_management/screens/setting_pages/setting_screen.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
@@ -254,6 +254,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                             child: CustomTile(
                               title: event['title'].toString(),
                               subtitle: event['detail'].toString(),
+                              icon: Icon(Icons.navigate_next),
 
                               // //popupmenuの実装ここから！　↓
                               // popUpMenu: PopupMenuButton(
