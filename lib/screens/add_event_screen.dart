@@ -58,6 +58,7 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
         ),
         actions: [
           Visibility(
+            //編集時はアップバーの右上に削除ボタンを設ける
             visible: arguments.isUpdate,
             child: IconButton(
                 onPressed: () {

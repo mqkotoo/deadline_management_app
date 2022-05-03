@@ -7,6 +7,7 @@ class SettingAccountScreen extends StatelessWidget {
   static const String id = 'account';
   final _auth = FirebaseAuth.instance;
 
+
   @override
   Widget build(BuildContext context) {
     //テーマ別に色を変えられるようにするためのやつ
@@ -84,7 +85,11 @@ class SettingAccountScreen extends StatelessWidget {
                       user.reauthenticateWithCredential;
                       user.delete();
                       //アカウントが持ってるデータを消す
-                      FirebaseFirestore.instance.collection('users').doc(user.uid).delete;
+                      FirebaseFirestore.instance
+                          .collection("AppPackage")
+                          .doc("v1")
+                          .collection("users")
+                          .doc(user.uid).delete();
 
                       // 全画面ポップしてWELCOME画面を表示する
                       Navigator.of(context).pushNamedAndRemoveUntil(

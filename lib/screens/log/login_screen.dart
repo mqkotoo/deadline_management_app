@@ -65,7 +65,7 @@ class _LoginScreenState extends State<LoginScreen> {
     final _formKey = GlobalKey<FormState>();
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.grey[400],
       body: ModalProgressHUD(
         inAsyncCall: isLoad,
         child: Padding(
