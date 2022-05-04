@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_deadline_management/screens/add_event_screen.dart';
 
-enum Menu {edit, delete}
+enum Menu { edit, delete }
 
 class CustomTile extends StatelessWidget {
-
-  CustomTile({required this.title, required this.subtitle,this.popUpMenu,required this.icon,Key? key})
+  CustomTile(
+      {required this.title,
+      required this.subtitle,
+      this.popUpMenu,
+      required this.icon,
+      Key? key})
       : super(key: key);
 
   String title;
@@ -31,21 +35,37 @@ class CustomTile extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      Text(
-                        title,
-                        style: const TextStyle(fontSize: 17),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      Text(
-                        subtitle,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                          fontSize: 12,
-                          color: Colors.grey,
-                        ),
-                      ),
+                      //subtitleがなかった場合paddingを入れてカードを大きくする
+                      subtitle == ''
+                          ? Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 9.0),
+                              child: Text(
+                                title,
+                                style: const TextStyle(fontSize: 17),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ))
+                          //subtitleがあったら普通通り
+                          : Text(
+                              title,
+                              style: const TextStyle(fontSize: 17),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+
+                      subtitle == ''
+                          //　subtitleがなかったらスペースが入るから、サイズボックス入れて、空白を無くす
+                          ? SizedBox.shrink()
+                          : Text(
+                              subtitle,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(
+                                fontSize: 12,
+                                color: Colors.grey,
+                              ),
+                            ),
                     ],
                   ),
                 ),
@@ -59,4 +79,3 @@ class CustomTile extends StatelessWidget {
     );
   }
 }
-

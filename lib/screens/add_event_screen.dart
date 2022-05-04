@@ -44,6 +44,7 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
 
     //２画面画面をポップするために使うやつ
     int count = 0;
+    
 
     return Scaffold(
       appBar: AppBar(
@@ -184,6 +185,14 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                 onFieldSubmitted: (_) {
                   FocusScope.of(context).requestFocus(_detailFocusNode);
                 },
+                //バリデーション処理
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return '締め切りを入力してください';
+                  }
+                  return null;
+                },
+
               ),
 
               SizedBox(
@@ -243,6 +252,7 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                   ),
                   onPressed: () {
                     if (_eventController.text.isEmpty) {
+                      return;
                     } else {
                       // isUpdateがtrueだったらupdateする
                       if (arguments.isUpdate) {

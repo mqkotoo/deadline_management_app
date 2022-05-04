@@ -58,12 +58,12 @@ class _LoginScreenState extends State<LoginScreen> {
     });
   }
 
+  // 入力処理の時に使う奴ら
+  final _passwordFocusNode = FocusNode();
+  final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
-    // 入力処理の時に使う奴ら
-    final _passwordFocusNode = FocusNode();
-    final _formKey = GlobalKey<FormState>();
-
     return Scaffold(
       backgroundColor: Colors.grey[400],
       body: ModalProgressHUD(
@@ -149,6 +149,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 SizedBox(
                   height: 8.0,
                 ),
+
 
                 // FIREBASEからのエラー表示
                 Center(
