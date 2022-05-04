@@ -1,9 +1,4 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_deadline_management/screens/log/welcome_screen.dart';
-
-import 'account.dart';
-
 class SettingScreen extends StatelessWidget {
   static const String id = 'setting';
 
@@ -17,7 +12,7 @@ class SettingScreen extends StatelessWidget {
         ),
       body:  ListView(
           children: [
-            _menuItem(context,title: "アカウント", icon: Icon(Icons.navigate_next),onPress: () => Navigator.pushNamed(context, SettingAccountScreen.id)),
+            _menuItem(context,title: "アカウント", icon: Icon(Icons.navigate_next),onPress: () => print('onPressed')),
             _menuItem(context,title: "通知", icon: Icon(Icons.navigate_next),onPress: () => print('onPressed')),
             _menuItem(context,title: "テーマ着せ替え", icon: Icon(Icons.navigate_next),onPress: () => print('onPressed')),
             _menuItem(context,title: "プライバシーポリシー", icon: Icon(Icons.navigate_next),onPress: () => print('onPressed')),
