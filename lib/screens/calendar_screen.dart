@@ -195,6 +195,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                     child: Text(
                       DateFormat.MMMEd('ja').format(_selectedDay) +
                           'の締め切りはありません',
+                      style: TextStyle(fontSize: 16),
                     ),
                   )
                 : ScrollablePositionedList.builder(

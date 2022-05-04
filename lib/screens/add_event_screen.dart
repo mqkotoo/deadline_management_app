@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_deadline_management/screens/calendar_screen.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 
@@ -42,9 +43,6 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
     //テーマ別に色を変えられるようにするためのやつ
     final platformBrightness = MediaQuery.platformBrightnessOf(context);
 
-    //２画面画面をポップするために使うやつ
-    int count = 0;
-    
 
     return Scaffold(
       appBar: AppBar(
@@ -84,8 +82,8 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                                             .read(calendarProvider)
                                             .delete(arguments.events);
                                         // Navigator.pop(context);
-                                        //カレンダー画面まで一気に二つ分ポップする
-                                        Navigator.popUntil(context, (_) => count++ >= 2);
+                                        //カレンダー画面まで一気にポップする
+                                        Navigator.popUntil(context,ModalRoute.withName(CalendarScreen.id));
 
                                         // 更新する
                                         setState(() {});

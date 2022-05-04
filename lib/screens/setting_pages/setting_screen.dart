@@ -19,11 +19,11 @@ class SettingScreen extends StatelessWidget {
           children: [
             _menuItem(context,title: "アカウント", icon: Icon(Icons.navigate_next),onPress: () => Navigator.pushNamed(context, SettingAccountScreen.id)),
             _menuItem(context,title: "通知", icon: Icon(Icons.navigate_next),onPress: () => print('onPressed')),
-            _menuItem(context,title: "メニテーマ着せ替え", icon: Icon(Icons.navigate_next),onPress: () => print('onPressed')),
+            _menuItem(context,title: "テーマ着せ替え", icon: Icon(Icons.navigate_next),onPress: () => print('onPressed')),
             _menuItem(context,title: "プライバシーポリシー", icon: Icon(Icons.navigate_next),onPress: () => print('onPressed')),
             _menuItem(context,title: "お問い合わせ", icon: Icon(Icons.navigate_next),onPress: () => print('onPressed')),
             _menuItem(context,title: "このアプリの使い方", icon: Icon(Icons.navigate_next),onPress: () => print('onPressed')),
-            _menuItem(context,title: "メニュー1", icon: Icon(Icons.navigate_next),onPress: () => print('onPressed')),
+            _menuItem(context,title: "利用規約", icon: Icon(Icons.navigate_next),onPress: () => print('onPressed')),
           ]
       ),
     );
