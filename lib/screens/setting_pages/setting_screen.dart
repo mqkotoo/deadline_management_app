@@ -12,12 +12,12 @@ class SettingScreen extends StatelessWidget {
         ),
       body:  ListView(
           children: [
-            _menuItem(context,title: "通知", icon: Icon(Icons.navigate_next),onPress: () => print('onPressed')),
-            _menuItem(context,title: "テーマ着せ替え", icon: Icon(Icons.navigate_next),onPress: () => print('onPressed')),
-            _menuItem(context,title: "プライバシーポリシー", icon: Icon(Icons.navigate_next),onPress: () => print('onPressed')),
-            _menuItem(context,title: "お問い合わせ", icon: Icon(Icons.navigate_next),onPress: () => print('onPressed')),
             _menuItem(context,title: "このアプリの使い方", icon: Icon(Icons.navigate_next),onPress: () => print('onPressed')),
+            _menuItem(context,title: "テーマ着せ替え", icon: Icon(Icons.navigate_next),onPress: () => print('onPressed')),
+            _menuItem(context,title: "通知", icon: Icon(Icons.navigate_next),onPress: () => print('onPressed')),
+            _menuItem(context,title: "プライバシーポリシー", icon: Icon(Icons.navigate_next),onPress: () => print('onPressed')),
             _menuItem(context,title: "利用規約", icon: Icon(Icons.navigate_next),onPress: () => print('onPressed')),
+            _menuItem(context,title: "お問い合わせ", icon: Icon(Icons.navigate_next),onPress: () => print('onPressed')),
           ]
       ),
     );
@@ -49,9 +49,6 @@ class SettingScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              // SizedBox(
-              //   width: 220,
-              // ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(0,0,13,0),
                 child: icon,

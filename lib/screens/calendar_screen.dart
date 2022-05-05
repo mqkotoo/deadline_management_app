@@ -165,23 +165,6 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
           // 今選択している日付をリストの上に表示する
           selectedDay(
               selectedDay: _selectedDay,
-              // onTap: () async {
-              //   await Navigator.pushNamed(context, AddEventScreen.id,
-              //       //add_pageで使うやつを渡す
-              //       arguments: Arguments(_selectedDay, false, {}));
-              //
-              //   //上で帰ってくるの待って、setStateで画面ぎゅいーん
-              //   setState(() {});
-              //
-              //   //締め切りの追加が終わったら、1番下のリスト表示
-              //   // その日の締め切りがなかったら、スクロールのやつ、つかわない
-              //   if (_getEventsfromDay(_selectedDay).isEmpty) {
-              //     return; //何も処理しない
-              //   } else {
-              //     itemScrollController.jumpTo(
-              //         index: _getEventsfromDay(_selectedDay).length);
-              //   }
-              // },
           ),
 
           //ちょっと隙間小さかったから空白を足してるよ
@@ -217,25 +200,6 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                         //cardをタップすると締め切りの詳細が見れるようにする
                         child: GestureDetector(
                           onTap: () async {
-                            // showDialog(
-                            //   context: context,
-                            //   builder: (context) => AlertDialog(
-                            //     title: Text(event['title']),
-                            //     content: Text(event['detail']),
-                            //     actions: [
-                            //       // 閉じるボタン
-                            //       TextButton(
-                            //         onPressed: () {
-                            //           Navigator.pop(context);
-                            //         },
-                            //         child: Text(
-                            //             '閉じる'
-                            //             ),
-                            //       ),
-                            //     ],
-                            //   ),
-                            // );
-
                             await Navigator.pushNamed(
                                 context, AddEventScreen.id,
                                 arguments:
@@ -256,87 +220,6 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                               title: event['title'].toString(),
                               subtitle: event['detail'].toString(),
                               icon: Icon(Icons.navigate_next),
-
-                              // //popupmenuの実装ここから！　↓
-                              // popUpMenu: PopupMenuButton(
-                              //   // menuを丸くする
-                              //   shape: RoundedRectangleBorder(
-                              //     borderRadius: BorderRadius.circular(10),
-                              //   ),
-                              //   onSelected: (selectedMenu) async {
-                              //     switch (selectedMenu) {
-                              //       case Menu.edit:
-                              //         await Navigator.pushNamed(
-                              //             context, AddEventScreen.id,
-                              //             arguments: Arguments(
-                              //                 _selectedDay, true, event));
-                              //         //編集のページから帰ってきてからSETSTATEで更新する
-                              //         setState(() {});
-                              //         break;
-                              //
-                              //       //  削除を選択した時の処理
-                              //       case Menu.delete:
-                              //         showDialog(
-                              //           barrierDismissible: false,
-                              //           context: context,
-                              //           builder: (context) => AlertDialog(
-                              //             title: Text("タスク削除"),
-                              //             content: Text(
-                              //                 '"${event['title']}"を削除しますか？'),
-                              //             actions: [
-                              //               // キャンセルボタン
-                              //               TextButton(
-                              //                 onPressed: () =>
-                              //                     Navigator.pop(context),
-                              //                 child: Text('キャンセル'),
-                              //               ),
-                              //               // OKボタン
-                              //               TextButton(
-                              //                 onPressed: () async {
-                              //                   await ref
-                              //                       .read(calendarProvider)
-                              //                       .delete(event);
-                              //                   Navigator.pop(context);
-                              //
-                              //                   // 更新する
-                              //                   setState(() {});
-                              //                 },
-                              //                 child: Text('OK'),
-                              //               ),
-                              //             ],
-                              //           ),
-                              //         );
-                              //         break;
-                              //       //  例外の時の処理はなし
-                              //       default:
-                              //         break;
-                              //     }
-                              //   },
-                              //   child: Icon(Icons.more_vert,size: 27),
-                              //   itemBuilder: (BuildContext context) =>
-                              //       <PopupMenuEntry<Menu>>[
-                              //     //編集要素
-                              //     PopupMenuItem(
-                              //       child: ListTile(
-                              //         leading: Icon(Icons.edit),
-                              //         title: Text('編集'),
-                              //       ),
-                              //       value: Menu.edit,
-                              //     ),
-                              //
-                              //     //divider
-                              //     PopupMenuDivider(),
-                              //
-                              //     //削除要素
-                              //     PopupMenuItem(
-                              //       child: ListTile(
-                              //         leading: Icon(Icons.delete),
-                              //         title: Text('削除'),
-                              //       ),
-                              //       value: Menu.delete,
-                              //     ),
-                              //   ],
-                              // ),
                             ),
                           ),
                         ),
@@ -356,7 +239,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
         // foregroundColor: Colors.red,
         // イベント追加ページに遷移
         onPressed: () async {
-          await Navigator.pushNamed(context, AddEventScreen.id,
+          final isAdd = await Navigator.pushNamed(context, AddEventScreen.id,
               //add_pageで使うやつを渡す
               arguments: Arguments(_selectedDay, false, {}));
 
@@ -364,13 +247,16 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
           setState(() {});
 
           //締め切りの追加が終わったら、1番下のリスト表示
-          // その日の締め切りがなかったら、スクロールのやつ、つかわない
-          if (_getEventsfromDay(_selectedDay).isEmpty) {
-            return; //何も処理しない
-          } else {
+          // もし締め切りを追加しなかったらスクロールしない
+          if (isAdd) {
             itemScrollController.jumpTo(
                 index: _getEventsfromDay(_selectedDay).length);
           }
+          else {
+            return;
+          }
+
+
         },
         child: Icon(
           Icons.add,

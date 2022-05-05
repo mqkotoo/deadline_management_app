@@ -33,6 +33,7 @@ class StartUpPage extends HookConsumerWidget {
         Future(() async {
             await FirebaseAuth.instance.signInAnonymously();
             unawaited(Navigator.of(context)
+                //チュートリアルを行うページに遷移させたい　
                 .pushNamedAndRemoveUntil(CalendarScreen.id, (route) => false));
         });
         print('匿名ログイン');
