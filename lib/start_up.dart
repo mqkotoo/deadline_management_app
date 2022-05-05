@@ -27,6 +27,7 @@ class StartUpPage extends HookConsumerWidget {
           unawaited(Navigator.of(context)
               .pushNamedAndRemoveUntil(CalendarScreen.id, (route) => false));
           });
+          print('ユーザーの情報ゲット');
     }
       else {
         Future(() async {
@@ -34,6 +35,7 @@ class StartUpPage extends HookConsumerWidget {
             unawaited(Navigator.of(context)
                 .pushNamedAndRemoveUntil(CalendarScreen.id, (route) => false));
         });
+        print('匿名ログイン');
       }
       return null;
     }, const []);

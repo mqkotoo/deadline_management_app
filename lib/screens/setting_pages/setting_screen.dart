@@ -12,7 +12,6 @@ class SettingScreen extends StatelessWidget {
         ),
       body:  ListView(
           children: [
-            _menuItem(context,title: "アカウント", icon: Icon(Icons.navigate_next),onPress: () => print('onPressed')),
             _menuItem(context,title: "通知", icon: Icon(Icons.navigate_next),onPress: () => print('onPressed')),
             _menuItem(context,title: "テーマ着せ替え", icon: Icon(Icons.navigate_next),onPress: () => print('onPressed')),
             _menuItem(context,title: "プライバシーポリシー", icon: Icon(Icons.navigate_next),onPress: () => print('onPressed')),
