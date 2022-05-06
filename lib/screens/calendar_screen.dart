@@ -246,16 +246,13 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
           //上で帰ってくるの待って、setStateで画面ぎゅいーん
           setState(() {});
 
-          //締め切りの追加が終わったら、1番下のリスト表示
-          // もし締め切りを追加しなかったらスクロールしない
-          if (isAdd) {
-            itemScrollController.jumpTo(
-                index: _getEventsfromDay(_selectedDay).length);
-          }
-          else {
-            return;
-          }
-
+          // //締め切りの追加が終わったら、1番下のリスト表示
+          // // もし締め切りを追加しなかったらスクロールしない
+          // if (isAdd != null) {
+          //   itemScrollController.jumpTo(
+          //       index: _getEventsfromDay(_selectedDay).length);
+          // }
+          // else {}
 
         },
         child: Icon(

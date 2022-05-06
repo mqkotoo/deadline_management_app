@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 class SettingScreen extends StatelessWidget {
   static const String id = 'setting';
+
+  //プライバシーポリシーのURL
+  final privacyPolicyUrl = 'https://qiita.com/mqkotoo/private/67e00cec34ce2ff84d63';
 
   @override
   Widget build(BuildContext context) {
@@ -15,8 +20,7 @@ class SettingScreen extends StatelessWidget {
             _menuItem(context,title: "このアプリの使い方", icon: Icon(Icons.navigate_next),onPress: () => print('onPressed')),
             _menuItem(context,title: "テーマ着せ替え", icon: Icon(Icons.navigate_next),onPress: () => print('onPressed')),
             _menuItem(context,title: "通知", icon: Icon(Icons.navigate_next),onPress: () => print('onPressed')),
-            _menuItem(context,title: "プライバシーポリシー", icon: Icon(Icons.navigate_next),onPress: () => print('onPressed')),
-            _menuItem(context,title: "利用規約", icon: Icon(Icons.navigate_next),onPress: () => print('onPressed')),
+            _menuItem(context,title: "利用規約・プライバシーポリシー", icon: Icon(Icons.navigate_next),onPress: () => _opneUrl(privacyPolicyUrl)),
             _menuItem(context,title: "お問い合わせ", icon: Icon(Icons.navigate_next),onPress: () => print('onPressed')),
           ]
       ),
@@ -57,5 +61,18 @@ class SettingScreen extends StatelessWidget {
           )
       ),
     );
+  }
+}
+
+//利用規約、プライバシーポリシーのURLに遷移させるやつ
+Future _opneUrl(String url) async {
+  if (await canLaunch(url)) {
+    await launch(
+      url,
+      forceSafariVC: true,
+      forceWebView: true,
+    );
+  } else {
+    throw 'このURLにはアクセスできません';
   }
 }
