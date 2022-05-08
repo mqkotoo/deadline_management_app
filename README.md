@@ -1,4 +1,4 @@
-# flutter_deadline_management
+# あらゆる締め切りを管理するアプリ
 
 A new Flutter project.
 
