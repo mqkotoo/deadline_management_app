@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_material_pickers/flutter_material_pickers.dart';
 import 'package:intl/intl.dart';
 
 
@@ -16,7 +15,7 @@ class _SettingNotificationScreenState extends State<SettingNotificationScreen> {
   bool isOn = false;
 
   //タイムピッカーデフォルトの変数
-  TimeOfDay _selectedTime = TimeOfDay(hour: 10, minute: 0);
+  TimeOfDay _selectedTime = TimeOfDay(hour: 10, minute: 00);
 
 
   @override
@@ -103,15 +102,27 @@ class _SettingNotificationScreenState extends State<SettingNotificationScreen> {
 
 
 //  timePickerを呼ぶための関数ーーーーーーーーーーーーーーーーーーーーーーーーー
-  void _pickTime(BuildContext context) {
-    // final initialTime = TimeOfDay(hour: 10, minute: 0);
+  Future _pickTime(BuildContext context) async{
 
-    //TimePickerの表示
-    showMaterialTimePicker(
-        context: context,
-        selectedTime: _selectedTime,
-      onChanged: (value) => setState(() => _selectedTime = value ),
-    );
+    //TODO24時間形式をFALSEにして端末の設定に関わらず、12時間形式で表示する↓
+    //どうにかしてALWAYS24HOURFORMATをFALSEにする
+
+    final TimeOfDay? timeValue =
+        await showTimePicker(
+            context: context,
+            initialTime: TimeOfDay(hour: 10, minute: 00),
+            cancelText: 'キャンセル',
+            hourLabelText: '',
+            minuteLabelText: '',
+            helpText: ''
+
+        );
+
+    if (timeValue != null) {
+      setState(() {
+        _selectedTime = timeValue;
+      });
+    }
 
   }
 
@@ -123,13 +134,13 @@ class _SettingNotificationScreenState extends State<SettingNotificationScreen> {
       var hours = _selectedTime.hour.toString();
       var minutes = _selectedTime.minute.toString();
 
-      // if(hours == '12') {
-      //   hours = '24';
-      // }
-      //
-      // if(hours == '0') {
-      //   hours = '12';
-      // }
+      if(hours == '12') {
+        hours = '24';
+      }
+
+      if(hours == '0') {
+        hours = '12';
+      }
 
       print(hours);
 
@@ -142,8 +153,8 @@ Widget _displayTimeBox({void Function()? onTap}) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        width: MediaQuery.of(context).size.width * 0.18,
-        height: MediaQuery.of(context).size.height * 0.04,
+        width: MediaQuery.of(context).size.width * 0.2,
+        height: MediaQuery.of(context).size.height * 0.05,
         decoration: BoxDecoration(
           border : Border.all(color: Colors.grey)
         ),
