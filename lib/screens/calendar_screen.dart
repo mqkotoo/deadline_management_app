@@ -261,7 +261,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
           child: Icon(
             Icons.add,
             color: Colors.white,
-            size: 34.99,
+            size: 38,
           ),
         ),
       ),
