@@ -230,35 +230,39 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
       ),
 
       // タスク作成ボタン
-      floatingActionButton: FloatingActionButton(
-        // テーマがDARKだったらとかのやつ
-        backgroundColor: platformBrightness == Brightness.dark
-            ? Theme.of(context).accentColor
-            : Theme.of(context).primaryColor,
+      floatingActionButton: SizedBox(
+        width: 60,
+        height: 60,
+        child: FloatingActionButton(
+          // テーマがDARKだったらとかのやつ
+          backgroundColor: platformBrightness == Brightness.dark
+              ? Theme.of(context).accentColor
+              : Theme.of(context).primaryColor,
 
-        // foregroundColor: Colors.red,
-        // イベント追加ページに遷移
-        onPressed: () async {
-          final isAdd = await Navigator.pushNamed(context, AddEventScreen.id,
-              //add_pageで使うやつを渡す
-              arguments: Arguments(_selectedDay, false, {}));
+          // foregroundColor: Colors.red,
+          // イベント追加ページに遷移
+          onPressed: () async {
+            final isAdd = await Navigator.pushNamed(context, AddEventScreen.id,
+                //add_pageで使うやつを渡す
+                arguments: Arguments(_selectedDay, false, {}));
 
-          //上で帰ってくるの待って、setStateで画面ぎゅいーん
-          setState(() {});
+            //上で帰ってくるの待って、setStateで画面ぎゅいーん
+            setState(() {});
 
-          // //締め切りの追加が終わったら、1番下のリスト表示
-          // // もし締め切りを追加しなかったらスクロールしない
-          // if (isAdd != null) {
-          //   itemScrollController.jumpTo(
-          //       index: _getEventsfromDay(_selectedDay).length);
-          // }
-          // else {}
+            // //締め切りの追加が終わったら、1番下のリスト表示
+            // // もし締め切りを追加しなかったらスクロールしない
+            // if (isAdd != null) {
+            //   itemScrollController.jumpTo(
+            //       index: _getEventsfromDay(_selectedDay).length);
+            // }
+            // else {}
 
-        },
-        child: Icon(
-          Icons.add,
-          color: Colors.white,
-          size: 34.99,
+          },
+          child: Icon(
+            Icons.add,
+            color: Colors.white,
+            size: 34.99,
+          ),
         ),
       ),
     );
