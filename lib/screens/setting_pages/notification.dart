@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingNotificationScreen extends StatefulWidget {
   static const String id = 'notification';
@@ -14,12 +13,34 @@ class _SettingNotificationScreenState extends State<SettingNotificationScreen> {
   //スイッチのオンオフのBOOL値
   bool isOn = false;
 
+  String timeText = '10:00';
+
   //タイムピッカーデフォルトの変数
   TimeOfDay _selectedTime = TimeOfDay(hour: 10, minute: 00);
 
 
+  _saveBool(String key, bool value) async {
+    var prefs = await SharedPreferences.getInstance();
+    prefs.setBool(key, value);
+  }
+
+  _saveText(String key, String value) async{
+    var prefs = await SharedPreferences.getInstance();
+    prefs.setString(key, value);
+  }
+
+  _restoreValues() async {
+    var prefs = await SharedPreferences.getInstance();
+    setState(() {
+      isOn = prefs.getBool('isOn') ?? false;
+      timeText = prefs.getString('timeText') ?? '10:00';
+    });
+  }
+
+
   @override
   void initState() {
+    _restoreValues();
     super.initState();
   }
 
@@ -37,8 +58,8 @@ class _SettingNotificationScreenState extends State<SettingNotificationScreen> {
 
             //通知がオフだったら「通知を受け取る時間」を非表示にする
             isOn
-                ? _menuItem(context,title: "通知を受け取る時間", child: _displayTimeBox(onTap : () => _pickTime(context)),
-                onPress: () => print('onPressed'))
+                ? _menuItem(context,title: "通知を受け取る時間",
+                  child: _displayTimeBox(onTap : () => _pickTime(context)))
                 : SizedBox.shrink()
           ]
       ),
@@ -46,40 +67,37 @@ class _SettingNotificationScreenState extends State<SettingNotificationScreen> {
   }
 
   Widget _menuItem(BuildContext context,
-      {required String title, required Widget child, void Function()? onPress}) {
+      {required String title, required Widget child}) {
 
     //テーマ別に色を変えられるようにするためのやつ
     final platformBrightness = MediaQuery.platformBrightnessOf(context);
 
-    return GestureDetector(
-      onTap: onPress,
-      child:Container(
-          padding: EdgeInsets.symmetric(vertical: 14.0),
-          decoration: BoxDecoration(
-              border: Border(bottom: BorderSide(width: 1.0, color: Colors.grey))
-          ),
-          child: Row(
-            children: [
-              SizedBox(
-                width: 20,
-              ),
-              Expanded(
-                child: Text(
-                  title,
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: platformBrightness == Brightness.dark ? Colors.white : Colors.black54,
-                  ),
+    return Container(
+        padding: EdgeInsets.symmetric(vertical: 14.0),
+        decoration: BoxDecoration(
+            border: Border(bottom: BorderSide(width: 1.0, color: Colors.grey))
+        ),
+        child: Row(
+          children: [
+            SizedBox(
+              width: 20,
+            ),
+            Expanded(
+              child: Text(
+                title,
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: platformBrightness == Brightness.dark ? Colors.white : Colors.black54,
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0,0,20,0),
-                child: child,
-              ),
-            ],
-          )
-      ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0,0,20,0),
+              child: child,
+            ),
+          ],
+        )
     );
   }
 
@@ -92,6 +110,7 @@ class _SettingNotificationScreenState extends State<SettingNotificationScreen> {
         if (value != null) {
           setState(() {
             isOn = value;
+            _saveBool('isOn', isOn);
             print("$isOn");
           });
         }
@@ -114,8 +133,16 @@ class _SettingNotificationScreenState extends State<SettingNotificationScreen> {
             cancelText: 'キャンセル',
             hourLabelText: '',
             minuteLabelText: '',
-            helpText: ''
-
+            helpText: '',
+          //各々の携帯の設定に関わらず時刻選択の際は12時間フォーマットにする
+          builder: (BuildContext context, Widget? child) {
+            return MediaQuery(
+              data: MediaQuery.of(context)
+                  //ここ↓
+                  .copyWith(alwaysUse24HourFormat: false),
+              child: child!,
+            );
+          },
         );
 
     if (timeValue != null) {
@@ -132,7 +159,7 @@ class _SettingNotificationScreenState extends State<SettingNotificationScreen> {
       return '10:00';
     } else {
       var hours = _selectedTime.hour.toString();
-      var minutes = _selectedTime.minute.toString();
+      var minutes = _selectedTime.minute.toString().padLeft(2,'0');
 
       if(hours == '12') {
         hours = '24';
@@ -142,9 +169,11 @@ class _SettingNotificationScreenState extends State<SettingNotificationScreen> {
         hours = '12';
       }
 
-      print(hours);
-
-      return '$hours : ${minutes.padLeft(2,'0')}';
+      setState(() {
+        timeText = '$hours : $minutes';
+        _saveText('timeText', timeText);
+      });
+      return timeText;
     }
   }
 
@@ -162,13 +191,12 @@ Widget _displayTimeBox({void Function()? onTap}) {
           child: Text(
               _getTimeText(),
             style: TextStyle(
-              color: Colors.white,
+              // color: Colors.white,
               fontWeight: FontWeight.bold,
-              fontSize: 16.5
+              fontSize: 18
             ),
           ),
         ),
-
       ),
     );
 }
