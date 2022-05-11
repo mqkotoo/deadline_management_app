@@ -249,13 +249,14 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
             //上で帰ってくるの待って、setStateで画面ぎゅいーん
             setState(() {});
 
-            // //締め切りの追加が終わったら、1番下のリスト表示
-            // // もし締め切りを追加しなかったらスクロールしない
-            // if (isAdd != null) {
-            //   itemScrollController.jumpTo(
-            //       index: _getEventsfromDay(_selectedDay).length);
-            // }
-            // else {}
+            //締め切りの追加が終わったら、1番下のリスト表示
+            // もし締め切りを追加しなかったらスクロールしない
+            if (isAdd == true) {
+              itemScrollController.jumpTo(
+                  index: _getEventsfromDay(_selectedDay).length);
+            }
+            else {}
+            print(isAdd);
 
           },
           child: Icon(
@@ -268,6 +269,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
     );
   }
 }
+
 
 // イベントの数を数字で表示するためのウィジェット
 Widget _buildEventsMarker(DateTime date, List events, context) {

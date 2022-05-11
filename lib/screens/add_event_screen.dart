@@ -53,7 +53,7 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
         ),
         leading: IconButton(
           // onPressed: () => Navigator.pop(context),
-          onPressed: () => Navigator.pop(context,true),
+          onPressed: () => Navigator.pop(context,false),
           icon: Icon(Icons.clear),
         ),
         actions: [
@@ -266,7 +266,7 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                     }
                     print(_eventController.text);
                     //Navigator.pop(context,true);
-                    Navigator.pop(context);
+                    Navigator.pop(context,true);
                     _eventController.clear();
 
                     return;
