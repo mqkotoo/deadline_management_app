@@ -1,6 +1,6 @@
 # あらゆる締め切りを管理するアプリ
 
-A new Flutter project.
+A Flutterアプリ
 
 ## Getting Started
 
