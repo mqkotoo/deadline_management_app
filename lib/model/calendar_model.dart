@@ -1,5 +1,8 @@
 //モデルの作成
+import 'dart:ui';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_deadline_management/model/fireauth.dart';
 import 'package:flutter_deadline_management/model/firestore.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';

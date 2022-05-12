@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class SettingNotificationScreen extends StatefulWidget {
+class SettingNotificationScreen extends StatefulHookConsumerWidget {
   static const String id = 'notification';
 
   @override
-  State<SettingNotificationScreen> createState() => _SettingNotificationScreenState();
+  _SettingNotificationScreenState createState() => _SettingNotificationScreenState();
 }
 
-class _SettingNotificationScreenState extends State<SettingNotificationScreen> {
+class _SettingNotificationScreenState extends ConsumerState<SettingNotificationScreen> {
 
   //スイッチのオンオフのBOOL値
   bool isOn = false;
-
-  String timeText = '10:00';
 
   //タイムピッカーデフォルトの変数
   TimeOfDay _selectedTime = TimeOfDay(hour: 10, minute: 00);
@@ -29,23 +29,109 @@ class _SettingNotificationScreenState extends State<SettingNotificationScreen> {
     prefs.setString(key, value);
   }
 
-  _restoreValues() async {
-    var prefs = await SharedPreferences.getInstance();
-    setState(() {
-      isOn = prefs.getBool('isOn') ?? false;
-      timeText = prefs.getString('timeText') ?? '10:00';
-    });
-  }
 
 
   @override
   void initState() {
-    _restoreValues();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+
+    final timeText = useState("10:00");
+
+    useEffect(() {
+      Future(() async {
+        var prefs = await SharedPreferences.getInstance();
+        setState(() {
+          isOn = prefs.getBool('isOn') ?? false;
+          timeText.value = (prefs.getString('timeText') ?? '10:00');
+        });
+      });
+      return null;
+    }, const []);
+
+    //  timePickerを呼ぶための関数ーーーーーーーーーーーーーーーーーーーーーーーーー
+    Future _pickTime(BuildContext context) async{
+
+      //TODO24時間形式をFALSEにして端末の設定に関わらず、12時間形式で表示する↓
+      //どうにかしてALWAYS24HOURFORMATをFALSEにする
+
+      final TimeOfDay? timeValue =
+      await showTimePicker(
+        context: context,
+        initialTime: TimeOfDay(hour: 10, minute: 00),
+        cancelText: 'キャンセル',
+        hourLabelText: '',
+        minuteLabelText: '',
+        helpText: '',
+        //各々の携帯の設定に関わらず時刻選択の際は12時間フォーマットにする
+        builder: (BuildContext context, Widget? child) {
+          return MediaQuery(
+            data: MediaQuery.of(context)
+            //ここ↓
+                .copyWith(alwaysUse24HourFormat: false),
+            child: child!,
+          );
+        },
+      );
+
+      if (timeValue != null) {
+        setState(() {
+          _selectedTime = timeValue;
+        });
+      }
+    }
+
+    //選択した時刻のテキスト
+    String _getTimeText() {
+      if (_selectedTime == null) {
+        return '10:00';
+      } else {
+        var hours = _selectedTime.hour.toString();
+        var minutes = _selectedTime.minute.toString().padLeft(2,'0');
+
+        if(hours == '12') {
+          hours = '24';
+        }
+
+        if(hours == '0') {
+          hours = '12';
+        }
+
+          timeText.value = '$hours : $minutes';
+          _saveText('timeText', timeText.value);
+
+        print(timeText.value);
+        return timeText.value;
+      }
+    }
+
+    //時刻をリストの右側におくウィジェット
+    Widget _displayTimeBox({void Function()? onTap}) {
+      return GestureDetector(
+        onTap: onTap,
+        child: Container(
+          width: MediaQuery.of(context).size.width * 0.2,
+          height: MediaQuery.of(context).size.height * 0.05,
+          decoration: BoxDecoration(
+              border : Border.all(color: Colors.grey)
+          ),
+          child: Center(
+            child: Text(
+              _getTimeText(),
+              style: TextStyle(
+                // color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -54,12 +140,12 @@ class _SettingNotificationScreenState extends State<SettingNotificationScreen> {
       ),
       body:  ListView(
           children: [
-              _menuItem(context,title: "通知", child: _switch()),
+            _menuItem(context,title: "通知", child: _switch()),
 
             //通知がオフだったら「通知を受け取る時間」を非表示にする
             isOn
                 ? _menuItem(context,title: "通知を受け取る時間",
-                  child: _displayTimeBox(onTap : () => _pickTime(context)))
+                child: _displayTimeBox(onTap : () => _pickTime(context)))
                 : SizedBox.shrink()
           ]
       ),
@@ -118,87 +204,4 @@ class _SettingNotificationScreenState extends State<SettingNotificationScreen> {
     );
   }
 //  ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
-
-
-//  timePickerを呼ぶための関数ーーーーーーーーーーーーーーーーーーーーーーーーー
-  Future _pickTime(BuildContext context) async{
-
-    //TODO24時間形式をFALSEにして端末の設定に関わらず、12時間形式で表示する↓
-    //どうにかしてALWAYS24HOURFORMATをFALSEにする
-
-    final TimeOfDay? timeValue =
-        await showTimePicker(
-            context: context,
-            initialTime: TimeOfDay(hour: 10, minute: 00),
-            cancelText: 'キャンセル',
-            hourLabelText: '',
-            minuteLabelText: '',
-            helpText: '',
-          //各々の携帯の設定に関わらず時刻選択の際は12時間フォーマットにする
-          builder: (BuildContext context, Widget? child) {
-            return MediaQuery(
-              data: MediaQuery.of(context)
-                  //ここ↓
-                  .copyWith(alwaysUse24HourFormat: false),
-              child: child!,
-            );
-          },
-        );
-
-    if (timeValue != null) {
-      setState(() {
-        _selectedTime = timeValue;
-      });
-    }
-
-  }
-
-  //選択した時刻のテキスト
-  String _getTimeText() {
-    if (_selectedTime == null) {
-      return '10:00';
-    } else {
-      var hours = _selectedTime.hour.toString();
-      var minutes = _selectedTime.minute.toString().padLeft(2,'0');
-
-      if(hours == '12') {
-        hours = '24';
-      }
-
-      if(hours == '0') {
-        hours = '12';
-      }
-
-      setState(() {
-        timeText = '$hours : $minutes';
-        _saveText('timeText', timeText);
-      });
-      return timeText;
-    }
-  }
-
-//時刻をリストの右側におくウィジェット
-Widget _displayTimeBox({void Function()? onTap}) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        width: MediaQuery.of(context).size.width * 0.2,
-        height: MediaQuery.of(context).size.height * 0.05,
-        decoration: BoxDecoration(
-          border : Border.all(color: Colors.grey)
-        ),
-        child: Center(
-          child: Text(
-              _getTimeText(),
-            style: TextStyle(
-              // color: Colors.white,
-              fontWeight: FontWeight.bold,
-              fontSize: 18
-            ),
-          ),
-        ),
-      ),
-    );
-}
-
 }

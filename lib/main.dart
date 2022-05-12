@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_deadline_management/screens/add_event_screen.dart';
 import 'package:flutter_deadline_management/screens/calendar_screen.dart';
+import 'package:flutter_deadline_management/screens/setting_pages/change_theme.dart';
 import 'package:flutter_deadline_management/screens/setting_pages/notification.dart';
 import 'package:flutter_deadline_management/screens/setting_pages/setting_screen.dart';
 import 'package:flutter_deadline_management/start_up.dart';
@@ -39,6 +40,7 @@ class MyApp extends StatelessWidget {
         StartUpPage.id: (BuildContext context) => StartUpPage(),
         AddEventScreen.id: (BuildContext context) => AddEventScreen(),
         SettingNotificationScreen.id : (BuildContext context) => SettingNotificationScreen(),
+        ChangeThemeScreen.id : (BuildContext context) => ChangeThemeScreen(),
       },
       home: StartUpPage(),
     );

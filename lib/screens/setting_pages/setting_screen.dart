@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_deadline_management/screens/setting_pages/notification.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'change_theme.dart';
 
 class SettingScreen extends StatelessWidget {
   static const String id = 'setting';
@@ -21,7 +22,7 @@ class SettingScreen extends StatelessWidget {
       body:  ListView(
           children: [
             _menuItem(context,title: "このアプリの使い方", icon: Icon(Icons.navigate_next),onPress: () => print('onPressed')),
-            _menuItem(context,title: "テーマ着せ替え", icon: Icon(Icons.navigate_next),onPress: () => print('onPressed')),
+            _menuItem(context,title: "テーマ着せ替え", icon: Icon(Icons.navigate_next),onPress: () => Navigator.pushNamed(context, ChangeThemeScreen.id)),
             _menuItem(context,title: "通知", icon: Icon(Icons.navigate_next),onPress: () => Navigator.pushNamed(context, SettingNotificationScreen.id)),
             _menuItem(context,title: "利用規約・プライバシーポリシー", icon: Icon(Icons.navigate_next),onPress: () => _opnePrivacyPolicyUrl(privacyPolicyUrl)),
             _menuItem(context,title: "お問い合わせ", icon: Icon(Icons.navigate_next),onPress: () => _opneInquiryUrl(twitterUrl)),

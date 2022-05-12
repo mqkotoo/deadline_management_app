@@ -52,7 +52,7 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
           arguments.isUpdate ? '締め切りを編集する' : '締め切りを追加する',
         ),
         leading: IconButton(
-          // onPressed: () => Navigator.pop(context),
+          //calendarページのisAddにfalseを返している
           onPressed: () => Navigator.pop(context,false),
           icon: Icon(Icons.clear),
         ),
@@ -265,7 +265,7 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                       }
                     }
                     print(_eventController.text);
-                    //Navigator.pop(context,true);
+                    //calendarページのisAddにTRUEを返している
                     Navigator.pop(context,true);
                     _eventController.clear();
 
