@@ -56,7 +56,6 @@ class SettingScreen extends StatelessWidget {
                   style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
-                      color: platformBrightness == Brightness.dark ? Colors.white : Colors.black54,
                   ),
                 ),
               ),

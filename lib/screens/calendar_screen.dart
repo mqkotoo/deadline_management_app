@@ -71,12 +71,8 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
       return contents;
     }
 
-    //テーマ別に色を変えられるようにするためのやつ
-    final platformBrightness = MediaQuery.platformBrightnessOf(context);
-
     return Scaffold(
-      backgroundColor:
-          platformBrightness == Brightness.dark ? Colors.grey : Colors.pink[50],
+      backgroundColor:Theme.of(context).hoverColor,
       resizeToAvoidBottomInset: false,
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(45),
@@ -100,6 +96,10 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
           Expanded(
             flex: 5,
             child: Card(
+              elevation: 3.0,
+              // shape: RoundedRectangleBorder(
+              //     borderRadius: BorderRadius.circular(10),
+              //   ),
               // テーブルカレンダーを実装
               child: TableCalendar(
                 //カレンダーの大きさ変えれるようにするやつ
@@ -234,24 +234,22 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
         width: 60,
         height: 60,
         child: FloatingActionButton(
-          // テーマがDARKだったらとかのやつ
-          backgroundColor: platformBrightness == Brightness.dark
-              ? Theme.of(context).accentColor
-              : Theme.of(context).primaryColor,
-
-          // foregroundColor: Colors.red,
+          backgroundColor: Theme.of(context).accentColor,
           // イベント追加ページに遷移
           onPressed: () async {
-            final isAdd = await Navigator.pushNamed(context, AddEventScreen.id,
+            final isAdd = await Navigator.pushNamed(
+                context,
+                AddEventScreen.id,
                 //add_pageで使うやつを渡す
-                arguments: Arguments(_selectedDay, false, {}));
+                arguments: Arguments(_selectedDay, false, {}),
+            );
 
             //上で帰ってくるの待って、setStateで画面ぎゅいーん
             setState(() {});
 
             //締め切りの追加が終わったら、1番下のリスト表示
             // もし締め切りを追加しなかったらスクロールしない
-            if (isAdd == true) {
+            if (isAdd == true && _getEventsfromDay(_selectedDay).isNotEmpty) {
               itemScrollController.jumpTo(
                   index: _getEventsfromDay(_selectedDay).length);
             }

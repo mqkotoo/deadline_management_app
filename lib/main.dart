@@ -11,6 +11,8 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'firebase_options.dart';
 import 'package:flutter/services.dart';
 
+import 'model/theme/theme_provider.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,18 +23,16 @@ void main() async {
       .then((_) => runApp(ProviderScope(child: MyApp())));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerWidget {
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+
+    var themeProvider = ref.watch(ThemeProvider);
+
+
     return MaterialApp(
       //IPHONEの設定でダークモードにした時のテーマ
-      darkTheme: ThemeData.dark().copyWith(
-        accentColor: Colors.indigo,
-      ),
-      theme: ThemeData(
-        // primaryColor: Color(0xfffaf0e6),
-        primaryColor: Colors.pink[100],
-      ),
+      theme: themeProvider.currentTheme,
       debugShowCheckedModeBanner: false,
       routes: <String, WidgetBuilder>{
         CalendarScreen.id: (BuildContext context) => CalendarScreen(),

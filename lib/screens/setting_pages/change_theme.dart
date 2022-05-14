@@ -1,19 +1,23 @@
 // 赤、青、黒、白、黄色、緑、オレンジ、ピンク、
 
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class ChangeThemeScreen extends StatefulWidget {
+import '../../model/theme/theme_provider.dart' as theme;
+
+class ChangeThemeScreen extends StatefulHookConsumerWidget {
 
   static const String id = 'changeTheme';
 
   @override
-  State<ChangeThemeScreen> createState() => _ChangeThemeScreenState();
+  _ChangeThemeScreenState createState() => _ChangeThemeScreenState();
 }
 
-class _ChangeThemeScreenState extends State<ChangeThemeScreen> {
+class _ChangeThemeScreenState extends ConsumerState<ChangeThemeScreen> {
   @override
   Widget build(BuildContext context) {
-    Color? primaryColor = Theme.of(context).primaryColor;
+
+    var themeProvider = ref.watch(theme.ThemeProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -21,20 +25,45 @@ class _ChangeThemeScreenState extends State<ChangeThemeScreen> {
         backgroundColor: Theme.of(context).primaryColor,
       ),
       body : Center(
-        child: Container(
-          child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              primary: Colors.red,
-              onPrimary: Colors.white,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                primary: Colors.red,
+                onPrimary: Colors.white,
+              ),
+              onPressed: () {
+              //  選択したら色が変わるようにする
+                themeProvider.changeDarkTheme();
+              },
+              child: Text('ダークモードへ変更'),
             ),
-            onPressed: () {
-            //  選択したら色が変わるようにする
-            },
-            child: Text('赤へ変更'),
 
-          ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                primary: Colors.pinkAccent,
+                onPrimary: Colors.white,
+              ),
+              onPressed: () {
+                //  選択したら色が変わるようにする
+                themeProvider.changePinkTheme();
+              },
+              child: Text('pinkへ変更'),
+            ),
+          ],
         ),
       ),
     );
   }
 }
+
+class ChangeColor extends StatelessWidget {
+  const ChangeColor({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container();
+  }
+}
+

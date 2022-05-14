@@ -12,7 +12,6 @@ dependencies:
   flutter:
     sdk: flutter
 
-
   cupertino_icons: ^1.0.2
   firebase_core: ^1.14.0
   firebase_auth: ^3.3.12
@@ -20,13 +19,13 @@ dependencies:
   table_calendar: ^3.0.5
   intl: ^0.17.0
   cloud_firestore: ^3.1.12
-
   hooks_riverpod: ^1.0.3
   flutter_hooks: ^0.18.3
   scrollable_positioned_list: ^0.2.3
   url_launcher: ^6.1.0
   flutter_local_notifications: ^9.5.2
   shared_preferences: ^2.0.13
+
 
 dev_dependencies:
   flutter_test:
@@ -35,6 +34,5 @@ dev_dependencies:
   flutter_lints: ^1.0.0
 
 flutter:
-
   uses-material-design: true
 
