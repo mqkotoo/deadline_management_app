@@ -81,10 +81,11 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
           backgroundColor: Theme.of(context).primaryColor,
           title: Text(
             "カレンダー",
+            style: TextStyle(color: Theme.of(context).selectedRowColor),
           ),
           actions: [
             IconButton(
-              icon: Icon(Icons.settings),
+              icon: Icon(Icons.settings,color: Theme.of(context).selectedRowColor),
               onPressed: () => Navigator.pushNamed(context, SettingScreen.id),
             ),
           ],
@@ -281,9 +282,7 @@ Widget _buildEventsMarker(DateTime date, List events, context) {
       duration: const Duration(milliseconds: 300),
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: platformBrightness == Brightness.dark
-            ? Colors.red[300]
-            : Colors.pink[200],
+        color: Theme.of(context).indicatorColor
         // : Theme.of(context).primaryColor
       ),
       width: 16.0,

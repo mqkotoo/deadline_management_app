@@ -27,21 +27,10 @@ class selectedDay extends StatelessWidget {
                 style: TextStyle(
                     fontSize: 17,
                     fontWeight: FontWeight.bold,
-                    color: Colors.white
+                  color: Theme.of(context).selectedRowColor
                 ),
               ),
             ),
-            // SizedBox(
-            //   width: 220,
-            // ),
-            // Padding(
-            //   padding: const EdgeInsets.fromLTRB(0,0,13,10),
-            //   child: IconButton(
-            //     color: Colors.white,
-            //     icon: Icon(Icons.add,size: 40),
-            //     onPressed: onTap,
-            //   ),
-            // ),
           ],
         ),
       ),

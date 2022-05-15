@@ -136,7 +136,13 @@ class _SettingNotificationScreenState extends ConsumerState<SettingNotificationS
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Theme.of(context).primaryColor,
-        title: Text('通知'),
+        title: Text('通知',style: TextStyle(color: Theme.of(context).selectedRowColor)),
+        leading: IconButton(
+          onPressed: () => Navigator.pop(context),
+          icon: Icon(Icons.arrow_back_ios,
+            color: Theme.of(context).selectedRowColor,
+          ),
+        ),
       ),
       body:  ListView(
           children: [
@@ -174,7 +180,6 @@ class _SettingNotificationScreenState extends ConsumerState<SettingNotificationS
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
-                  color: platformBrightness == Brightness.dark ? Colors.white : Colors.black54,
                 ),
               ),
             ),

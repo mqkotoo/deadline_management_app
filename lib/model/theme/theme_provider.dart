@@ -18,4 +18,34 @@ class Theme extends ChangeNotifier {
     notifyListeners();
   }
 
+  void changeLightTheme() {
+    currentTheme = lightTheme;
+    notifyListeners();
+  }
+
+  void changeBlueTheme() {
+    currentTheme = blueTheme;
+    notifyListeners();
+  }
+
+  void changeOrangeTheme() {
+    currentTheme = orangeTheme;
+    notifyListeners();
+  }
+
+  void changeRedTheme() {
+    currentTheme = redTheme;
+    notifyListeners();
+  }
+
+  void changeGreenTheme() {
+    currentTheme = greenTheme;
+    notifyListeners();
+  }
+
+  void changeYellowTheme() {
+    currentTheme = yellowTheme;
+    notifyListeners();
+  }
+
 }

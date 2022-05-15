@@ -17,7 +17,13 @@ class SettingScreen extends StatelessWidget {
       appBar: AppBar(
           elevation: 0,
           backgroundColor: Theme.of(context).primaryColor,
-          title: Text('設定'),
+          title: Text('設定',style: TextStyle(color: Theme.of(context).selectedRowColor)),
+        leading: IconButton(
+          onPressed: () => Navigator.pop(context),
+          icon: Icon(Icons.arrow_back_ios,
+            color: Theme.of(context).selectedRowColor,
+          ),
+        ),
         ),
       body:  ListView(
           children: [
@@ -34,9 +40,6 @@ class SettingScreen extends StatelessWidget {
 
   Widget _menuItem(BuildContext context,
       {required String title, required Icon icon,required void Function()? onPress}) {
-
-    //テーマ別に色を変えられるようにするためのやつ
-    final platformBrightness = MediaQuery.platformBrightnessOf(context);
 
     return GestureDetector(
       onTap: onPress,

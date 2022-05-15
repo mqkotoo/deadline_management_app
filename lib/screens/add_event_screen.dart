@@ -50,11 +50,12 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
         title: Text(
           //編集か追加でボタンのテキストを変える
           arguments.isUpdate ? '締め切りを編集する' : '締め切りを追加する',
+          style: TextStyle(color: Theme.of(context).selectedRowColor),
         ),
         leading: IconButton(
           //calendarページのisAddにfalseを返している
           onPressed: () => Navigator.pop(context,false),
-          icon: Icon(Icons.clear),
+          icon: Icon(Icons.clear,color: Theme.of(context).selectedRowColor),
         ),
         actions: [
           Visibility(
@@ -152,7 +153,8 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                   enabledBorder: OutlineInputBorder(
                       borderSide:
                           BorderSide(color: Theme.of(context).primaryColor),
-                      borderRadius: BorderRadius.circular(8)),
+                      borderRadius: BorderRadius.circular(8),
+                  ),
                   //focusした時のフォームのスタイル
                   focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(
@@ -161,9 +163,8 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                   labelStyle: TextStyle(
                       fontWeight: FontWeight.w400,
                       //テーマによってラベルテキストの色を変える
-                      color: platformBrightness == Brightness.dark
-                          ? Colors.white
-                          : Colors.pink[400]),
+                      color: Theme.of(context).bottomAppBarColor,
+                  ),
 
                   //編集か追加でヒント、ラベルテキストを変える
                   labelText: arguments.isUpdate ? '締め切り変更' : '締め切り追加',
@@ -211,9 +212,8 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                   labelStyle: TextStyle(
                       fontWeight: FontWeight.w400,
                       //テーマによってラベルテキストの色を変える
-                      color: platformBrightness == Brightness.dark
-                          ? Colors.white
-                          : Colors.pink[400]),
+                      color: Theme.of(context).bottomAppBarColor,
+                  ),
 
                   //編集か追加でヒント,ラベルテキストを変える
                   labelText: arguments.isUpdate ? '詳細の変更' : '詳細の追加',
@@ -239,9 +239,7 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                 child: TextButton(
                   style: TextButton.styleFrom(
                       //テーマによってbuttonの色を変える
-                      backgroundColor: platformBrightness == Brightness.dark
-                          ? Colors.indigo
-                          : Theme.of(context).primaryColor),
+                      backgroundColor: Theme.of(context).primaryColor),
                   onPressed: () {
                     if (_eventController.text.isEmpty) {
                       return;
