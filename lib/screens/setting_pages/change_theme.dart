@@ -103,7 +103,7 @@ class _ChangeThemeScreenState extends ConsumerState<ChangeThemeScreen> {
                 //  yellow
                 _colorContainer(
                   onPress: () => themeProvider.changeYellowTheme(),
-                  color: Colors.yellow,
+                  color: Color(0xffF3D800),
                 ),
               ],
             ),

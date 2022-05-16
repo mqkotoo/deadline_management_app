@@ -87,11 +87,12 @@ ThemeData greenTheme = ThemeData(
 
 //yellow
 ThemeData yellowTheme = ThemeData(
-  primaryColor: Colors.yellow,
-  accentColor: Colors.yellow,
+  primaryColor: Color(0xffF3D800),
+  accentColor: Color(0xffF3D800),
   hoverColor: Colors.yellow[100],
   indicatorColor: Colors.red[300],
-  selectedRowColor: Colors.black,
-  bottomAppBarColor:Colors.black,
-  disabledColor: Colors.yellow
+  selectedRowColor: Colors.white,
+  // bottomAppBarColor:Colors.black,
+    bottomAppBarColor: Color(0xffF3D800),
+  disabledColor: Color(0xffF3D800)
 );

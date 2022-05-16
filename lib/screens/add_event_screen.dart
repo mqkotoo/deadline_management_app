@@ -95,7 +95,7 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                   ),
                 );
               },
-              icon: Icon(Icons.delete, size: 28),
+              icon: Icon(Icons.delete, size: 28,color: Theme.of(context).selectedRowColor),
             ),
           ),
         ],
@@ -161,7 +161,7 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                           width: 2.0, color: Theme.of(context).disabledColor),
                       borderRadius: BorderRadius.circular(8)),
                   labelStyle: TextStyle(
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.w700,
                       //テーマによってラベルテキストの色を変える
                       color: Theme.of(context).bottomAppBarColor,
                   ),
@@ -210,7 +210,7 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                           width: 2.0, color: Theme.of(context).disabledColor),
                       borderRadius: BorderRadius.circular(8)),
                   labelStyle: TextStyle(
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.w700,
                       //テーマによってラベルテキストの色を変える
                       color: Theme.of(context).bottomAppBarColor,
                   ),

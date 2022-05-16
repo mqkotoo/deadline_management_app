@@ -6,6 +6,7 @@ final ThemeProvider = ChangeNotifierProvider((ref) => Theme());
 
 
 class Theme extends ChangeNotifier {
+
   ThemeData currentTheme = lightTheme;
 
   void changeDarkTheme() {
