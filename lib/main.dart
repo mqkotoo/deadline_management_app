@@ -31,6 +31,7 @@ class MyApp extends ConsumerWidget {
 
 
     return MaterialApp(
+
       //IPHONEの設定でダークモードにした時のテーマ
       theme: themeProvider.currentTheme,
       debugShowCheckedModeBanner: false,
@@ -42,7 +43,10 @@ class MyApp extends ConsumerWidget {
         SettingNotificationScreen.id : (BuildContext context) => SettingNotificationScreen(),
         ChangeThemeScreen.id : (BuildContext context) => ChangeThemeScreen(),
       },
+
       home: StartUpPage(),
+
     );
+
   }
 }

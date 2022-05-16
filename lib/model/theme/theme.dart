@@ -13,18 +13,21 @@ ThemeData darkTheme = ThemeData.dark().copyWith(
   selectedRowColor: Colors.white,
 //  add pageのラベルテキストの色
   bottomAppBarColor: Colors.white,
-
-
+//  add pageのボタン、テキストの枠、ボタン、日付表示(primarycolorと一緒(lighttheme意外))
+  disabledColor:Color(0xff212121)
 );
 
 //LIGHT
 ThemeData lightTheme = ThemeData(
-  primaryColor: Color(0xFFfffaf0),
+  primaryColor: Colors.white,
+  // accentColor: Colors.red[300],
   accentColor: Colors.indigo,
+  // hoverColor: Colors.red[50],
   hoverColor: Colors.grey[200],
   indicatorColor: Colors.red[300],
   selectedRowColor: Colors.black87,
   bottomAppBarColor: Colors.black,
+  disabledColor: Colors.grey
 );
 
 //PINK
@@ -35,6 +38,7 @@ ThemeData pinkTheme = ThemeData(
   indicatorColor: Colors.pink[200],
   selectedRowColor: Colors.white,
   bottomAppBarColor:Colors.pink[100],
+  disabledColor: Colors.pink[100]
 );
 
 //BLUE
@@ -45,7 +49,7 @@ ThemeData blueTheme = ThemeData(
   indicatorColor: Colors.red[300],
   selectedRowColor: Colors.white,
   bottomAppBarColor:Colors.blue,
-
+  disabledColor: Colors.blue
 );
 
 //orange
@@ -56,6 +60,7 @@ ThemeData orangeTheme = ThemeData(
   indicatorColor: Colors.red[300],
   selectedRowColor: Colors.white,
   bottomAppBarColor:Colors.orange,
+  disabledColor: Colors.orange
 );
 
 //red
@@ -66,7 +71,7 @@ ThemeData redTheme = ThemeData(
   indicatorColor: Colors.black54,
   selectedRowColor: Colors.white,
   bottomAppBarColor:Colors.red,
-
+  disabledColor: Colors.red
 );
 
 //green
@@ -77,7 +82,7 @@ ThemeData greenTheme = ThemeData(
   indicatorColor: Colors.red[300],
   selectedRowColor: Colors.white,
   bottomAppBarColor:Colors.green,
-
+  disabledColor: Colors.green
 );
 
 //yellow
@@ -88,4 +93,5 @@ ThemeData yellowTheme = ThemeData(
   indicatorColor: Colors.red[300],
   selectedRowColor: Colors.black,
   bottomAppBarColor:Colors.black,
+  disabledColor: Colors.yellow
 );

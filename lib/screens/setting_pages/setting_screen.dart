@@ -15,7 +15,6 @@ class SettingScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          elevation: 0,
           backgroundColor: Theme.of(context).primaryColor,
           title: Text('設定',style: TextStyle(color: Theme.of(context).selectedRowColor)),
         leading: IconButton(

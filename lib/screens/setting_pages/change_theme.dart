@@ -109,10 +109,18 @@ class _ChangeThemeScreenState extends ConsumerState<ChangeThemeScreen> {
             ),
           ),
           SizedBox(height: 40),
-          ElevatedButton(
-            onPressed: () =>  Navigator.popUntil(
-              context, ModalRoute.withName(CalendarScreen.id)),
-              child: Text('決定'),
+          SizedBox(
+            height: 43,
+            width: 70,
+            child: ElevatedButton(
+              onPressed: () =>  Navigator.popUntil(
+                context, ModalRoute.withName(CalendarScreen.id)),
+                child: Text('決定',style: TextStyle(fontSize: 17),),
+              style: ElevatedButton.styleFrom(
+                primary: Colors.indigo,
+                onPrimary: Colors.white,
+              ),
+            ),
           )
         ],
       ),

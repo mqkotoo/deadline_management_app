@@ -9,7 +9,6 @@ import 'package:table_calendar/table_calendar.dart';
 import '../component/constants.dart';
 import '../component/selectedDay.dart';
 import 'add_event_screen.dart';
-import 'dart:io';
 
 class CalendarScreen extends StatefulHookConsumerWidget {
   static const String id = 'calendar';
@@ -77,7 +76,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(45),
         child: AppBar(
-          elevation: 0.0,
+          // elevation: 0.0,
           backgroundColor: Theme.of(context).primaryColor,
           title: Text(
             "カレンダー",
