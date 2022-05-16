@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_deadline_management/screens/calendar_screen.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
-
 import '../model/calendar_model.dart';
+
+
 
 //calendarスクリーンから追加、編集の時に持ってくる値をいい感じにする
 class Arguments {
@@ -43,73 +44,72 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
     //テーマ別に色を変えられるようにするためのやつ
     final platformBrightness = MediaQuery.platformBrightnessOf(context);
 
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColor,
         title: Text(
           //編集か追加でボタンのテキストを変える
           arguments.isUpdate ? '締め切りを編集する' : '締め切りを追加する',
+          style: TextStyle(color: Theme.of(context).selectedRowColor),
         ),
         leading: IconButton(
-          onPressed: () => Navigator.pop(context),
-          icon: Icon(Icons.clear),
+          //calendarページのisAddにfalseを返している
+          onPressed: () => Navigator.pop(context,false),
+          icon: Icon(Icons.clear,color: Theme.of(context).selectedRowColor),
         ),
         actions: [
           Visibility(
             //編集時はアップバーの右上に削除ボタンを設ける
             visible: arguments.isUpdate,
             child: IconButton(
-                onPressed: () {
-                  showDialog(
-                                barrierDismissible: false,
-                                context: context,
-                                builder: (context) => AlertDialog(
-                                  title: Text("タスク削除"),
-                                  content: Text(
-                                      '"${arguments.events['title']}"を削除しますか？'),
-                                  actions: [
-                                    // キャンセルボタン
-                                    TextButton(
-                                      onPressed: () =>
-                                          Navigator.pop(context),
-                                      child: Text('キャンセル'),
-                                    ),
-                                    // OKボタン
-                                    TextButton(
-                                      onPressed: () async {
-                                        await ref
-                                            .read(calendarProvider)
-                                            .delete(arguments.events);
-                                        // Navigator.pop(context);
-                                        //カレンダー画面まで一気にポップする
-                                        Navigator.popUntil(context,ModalRoute.withName(CalendarScreen.id));
+              onPressed: () {
+                showDialog(
+                  barrierDismissible: false,
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: Text("タスク削除"),
+                    content: Text('"${arguments.events['title']}"を削除しますか？'),
+                    actions: [
+                      // キャンセルボタン
+                      TextButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: Text('キャンセル'),
+                      ),
+                      // OKボタン
+                      TextButton(
+                        onPressed: () async {
+                          await ref
+                              .read(calendarProvider)
+                              .delete(arguments.events);
+                          // Navigator.pop(context);
+                          //カレンダー画面まで一気にポップする
+                          Navigator.popUntil(
+                              context, ModalRoute.withName(CalendarScreen.id));
 
-                                        // 更新する
-                                        setState(() {});
-                                      },
-                                      child: Text('OK'),
-                                    ),
-                                  ],
-                                ),
-                              );
-                },
-                icon: Icon(Icons.delete,size: 28),
+                          // 更新する
+                          setState(() {});
+                        },
+                        child: Text('OK'),
+                      ),
+                    ],
+                  ),
+                );
+              },
+              icon: Icon(Icons.delete, size: 28),
             ),
           ),
         ],
       ),
-      body: SingleChildScrollView(
+      body: SingleChildScrollView(  //ここをWILLPOPで囲む
         child: Padding(
           padding: const EdgeInsets.all(40.0),
           child: Column(
             children: [
               Container(
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(8),
                     //テーマによってラベルテキストの色を変える
-                    color: Theme.of(context).primaryColor
-                ),
+                    color: Theme.of(context).disabledColor),
                 // alignment: Alignment.centerLeft,
                 width: MediaQuery.of(context).size.width,
                 height: 54.78,
@@ -130,9 +130,9 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                       Text(
                         DateFormat.MMMEd('ja').format(arguments.selectedDay),
                         style: TextStyle(
-                            fontSize: 17,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
+                          fontSize: 17,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
                         ),
                       ),
                     ],
@@ -151,21 +151,19 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                 decoration: InputDecoration(
                   //通常の時のフォームのスタイル
                   enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Theme.of(context).primaryColor),
-                    borderRadius: BorderRadius.circular(8)
+                      borderSide:
+                          BorderSide(color: Theme.of(context).disabledColor),
+                      borderRadius: BorderRadius.circular(8),
                   ),
                   //focusした時のフォームのスタイル
                   focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                        width: 2.0, color: Theme.of(context).primaryColor),
-                      borderRadius: BorderRadius.circular(8)
-                  ),
+                      borderSide: BorderSide(
+                          width: 2.0, color: Theme.of(context).disabledColor),
+                      borderRadius: BorderRadius.circular(8)),
                   labelStyle: TextStyle(
-                      fontWeight: FontWeight.w400,
+                      fontWeight: FontWeight.w600,
                       //テーマによってラベルテキストの色を変える
-                      color: platformBrightness == Brightness.dark
-                          ? Colors.white
-                          :Colors.pink[400]
+                      color: Theme.of(context).bottomAppBarColor,
                   ),
 
                   //編集か追加でヒント、ラベルテキストを変える
@@ -190,7 +188,6 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                   }
                   return null;
                 },
-
               ),
 
               SizedBox(
@@ -204,27 +201,25 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                 decoration: InputDecoration(
                   //通常時のフォームのスタイル
                   enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Theme.of(context).primaryColor),
-                      borderRadius: BorderRadius.circular(8)
-                  ),
+                      borderSide:
+                          BorderSide(color: Theme.of(context).disabledColor),
+                      borderRadius: BorderRadius.circular(8)),
                   //focusした時のフォームのスタイル
                   focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                        width: 2.0, color: Theme.of(context).primaryColor),
-                      borderRadius: BorderRadius.circular(8)
-                  ),
+                      borderSide: BorderSide(
+                          width: 2.0, color: Theme.of(context).disabledColor),
+                      borderRadius: BorderRadius.circular(8)),
                   labelStyle: TextStyle(
-                      fontWeight: FontWeight.w400,
+                      fontWeight: FontWeight.w600,
                       //テーマによってラベルテキストの色を変える
-                      color: platformBrightness == Brightness.dark
-                          ? Colors.white
-                          :Colors.pink[400]
+                      color: Theme.of(context).bottomAppBarColor,
                   ),
 
                   //編集か追加でヒント,ラベルテキストを変える
                   labelText: arguments.isUpdate ? '詳細の変更' : '詳細の追加',
-                  hintText:
-                      arguments.isUpdate ? null : '（任意）\n原稿用紙2枚以上\n体育が終わったら〇〇先生に提出する',
+                  hintText: arguments.isUpdate
+                      ? null
+                      : '（任意）\n原稿用紙2枚以上\n体育が終わったら〇〇先生に提出する',
 
                   //ラベルテキスト枠の上に固定する
                   floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -243,11 +238,8 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                 height: 40,
                 child: TextButton(
                   style: TextButton.styleFrom(
-                    //テーマによってbuttonの色を変える
-                      backgroundColor: platformBrightness == Brightness.dark
-                          ? Colors.indigo
-                          :Theme.of(context).primaryColor
-                  ),
+                      //テーマによってbuttonの色を変える
+                      backgroundColor: Theme.of(context).disabledColor),
                   onPressed: () {
                     if (_eventController.text.isEmpty) {
                       return;
@@ -271,7 +263,8 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                       }
                     }
                     print(_eventController.text);
-                    Navigator.pop(context);
+                    //calendarページのisAddにTRUEを返している
+                    Navigator.pop(context,true);
                     _eventController.clear();
 
                     return;
@@ -279,10 +272,7 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                   child: Text(
                     //編集か追加でボタンのテキストを変える
                     arguments.isUpdate ? '変更' : '追加',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16
-                    ),
+                    style: TextStyle(color: Colors.white, fontSize: 16),
                   ),
                 ),
               ),

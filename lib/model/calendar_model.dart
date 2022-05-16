@@ -1,4 +1,5 @@
 //モデルの作成
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_deadline_management/model/fireauth.dart';
 import 'package:flutter_deadline_management/model/firestore.dart';

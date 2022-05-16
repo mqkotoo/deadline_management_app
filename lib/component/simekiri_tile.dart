@@ -7,14 +7,12 @@ class CustomTile extends StatelessWidget {
   CustomTile(
       {required this.title,
       required this.subtitle,
-      this.popUpMenu,
       required this.icon,
       Key? key})
       : super(key: key);
 
   String title;
   String subtitle;
-  Widget? popUpMenu;
   Icon icon;
 
   @override

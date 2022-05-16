@@ -6,11 +6,8 @@ CalendarStyle calendarStyle(context) {
   return CalendarStyle(
     // 選択した日のまるいやつのスタイル
     selectedDecoration: BoxDecoration(
-
         // テーマ別に色変えてる
-        color: platformBrightness == Brightness.dark
-            ? Theme.of(context).accentColor
-            : Theme.of(context).primaryColor,
+        color: Theme.of(context).accentColor,
         shape: BoxShape.circle),
     // 今の日にちの選択のスタイル
     todayDecoration: BoxDecoration(
@@ -34,16 +31,12 @@ HeaderStyle calendarHeadStyle(context) {
     leftChevronIcon: Icon(
       Icons.chevron_left,
       // テーマ別に矢印の色変えてる
-      color: platformBrightness == Brightness.dark
-          ? Theme.of(context).accentColor
-          : Theme.of(context).primaryColor,
+      color:Theme.of(context).accentColor
     ),
     rightChevronIcon: Icon(
         Icons.chevron_right,
       // テーマ別に矢印の色変えてる
-      color: platformBrightness == Brightness.dark
-          ? Theme.of(context).accentColor
-          : Theme.of(context).primaryColor,
+      color: Theme.of(context).accentColor
     ),
   );
 }

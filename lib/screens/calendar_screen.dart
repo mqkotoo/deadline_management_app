@@ -9,7 +9,6 @@ import 'package:table_calendar/table_calendar.dart';
 import '../component/constants.dart';
 import '../component/selectedDay.dart';
 import 'add_event_screen.dart';
-import 'dart:io';
 
 class CalendarScreen extends StatefulHookConsumerWidget {
   static const String id = 'calendar';
@@ -71,24 +70,21 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
       return contents;
     }
 
-    //テーマ別に色を変えられるようにするためのやつ
-    final platformBrightness = MediaQuery.platformBrightnessOf(context);
-
     return Scaffold(
-      backgroundColor:
-          platformBrightness == Brightness.dark ? Colors.grey : Colors.pink[50],
+      backgroundColor:Theme.of(context).hoverColor,
       resizeToAvoidBottomInset: false,
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(45),
         child: AppBar(
-          elevation: 0.0,
+          // elevation: 0.0,
           backgroundColor: Theme.of(context).primaryColor,
           title: Text(
             "カレンダー",
+            style: TextStyle(color: Theme.of(context).selectedRowColor),
           ),
           actions: [
             IconButton(
-              icon: Icon(Icons.settings),
+              icon: Icon(Icons.settings,color: Theme.of(context).selectedRowColor),
               onPressed: () => Navigator.pushNamed(context, SettingScreen.id),
             ),
           ],
@@ -100,6 +96,10 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
           Expanded(
             flex: 5,
             child: Card(
+              elevation: 3.0,
+              // shape: RoundedRectangleBorder(
+              //     borderRadius: BorderRadius.circular(10),
+              //   ),
               // テーブルカレンダーを実装
               child: TableCalendar(
                 //カレンダーの大きさ変えれるようにするやつ
@@ -165,23 +165,6 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
           // 今選択している日付をリストの上に表示する
           selectedDay(
               selectedDay: _selectedDay,
-              // onTap: () async {
-              //   await Navigator.pushNamed(context, AddEventScreen.id,
-              //       //add_pageで使うやつを渡す
-              //       arguments: Arguments(_selectedDay, false, {}));
-              //
-              //   //上で帰ってくるの待って、setStateで画面ぎゅいーん
-              //   setState(() {});
-              //
-              //   //締め切りの追加が終わったら、1番下のリスト表示
-              //   // その日の締め切りがなかったら、スクロールのやつ、つかわない
-              //   if (_getEventsfromDay(_selectedDay).isEmpty) {
-              //     return; //何も処理しない
-              //   } else {
-              //     itemScrollController.jumpTo(
-              //         index: _getEventsfromDay(_selectedDay).length);
-              //   }
-              // },
           ),
 
           //ちょっと隙間小さかったから空白を足してるよ
@@ -217,25 +200,6 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                         //cardをタップすると締め切りの詳細が見れるようにする
                         child: GestureDetector(
                           onTap: () async {
-                            // showDialog(
-                            //   context: context,
-                            //   builder: (context) => AlertDialog(
-                            //     title: Text(event['title']),
-                            //     content: Text(event['detail']),
-                            //     actions: [
-                            //       // 閉じるボタン
-                            //       TextButton(
-                            //         onPressed: () {
-                            //           Navigator.pop(context);
-                            //         },
-                            //         child: Text(
-                            //             '閉じる'
-                            //             ),
-                            //       ),
-                            //     ],
-                            //   ),
-                            // );
-
                             await Navigator.pushNamed(
                                 context, AddEventScreen.id,
                                 arguments:
@@ -256,87 +220,6 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                               title: event['title'].toString(),
                               subtitle: event['detail'].toString(),
                               icon: Icon(Icons.navigate_next),
-
-                              // //popupmenuの実装ここから！　↓
-                              // popUpMenu: PopupMenuButton(
-                              //   // menuを丸くする
-                              //   shape: RoundedRectangleBorder(
-                              //     borderRadius: BorderRadius.circular(10),
-                              //   ),
-                              //   onSelected: (selectedMenu) async {
-                              //     switch (selectedMenu) {
-                              //       case Menu.edit:
-                              //         await Navigator.pushNamed(
-                              //             context, AddEventScreen.id,
-                              //             arguments: Arguments(
-                              //                 _selectedDay, true, event));
-                              //         //編集のページから帰ってきてからSETSTATEで更新する
-                              //         setState(() {});
-                              //         break;
-                              //
-                              //       //  削除を選択した時の処理
-                              //       case Menu.delete:
-                              //         showDialog(
-                              //           barrierDismissible: false,
-                              //           context: context,
-                              //           builder: (context) => AlertDialog(
-                              //             title: Text("タスク削除"),
-                              //             content: Text(
-                              //                 '"${event['title']}"を削除しますか？'),
-                              //             actions: [
-                              //               // キャンセルボタン
-                              //               TextButton(
-                              //                 onPressed: () =>
-                              //                     Navigator.pop(context),
-                              //                 child: Text('キャンセル'),
-                              //               ),
-                              //               // OKボタン
-                              //               TextButton(
-                              //                 onPressed: () async {
-                              //                   await ref
-                              //                       .read(calendarProvider)
-                              //                       .delete(event);
-                              //                   Navigator.pop(context);
-                              //
-                              //                   // 更新する
-                              //                   setState(() {});
-                              //                 },
-                              //                 child: Text('OK'),
-                              //               ),
-                              //             ],
-                              //           ),
-                              //         );
-                              //         break;
-                              //       //  例外の時の処理はなし
-                              //       default:
-                              //         break;
-                              //     }
-                              //   },
-                              //   child: Icon(Icons.more_vert,size: 27),
-                              //   itemBuilder: (BuildContext context) =>
-                              //       <PopupMenuEntry<Menu>>[
-                              //     //編集要素
-                              //     PopupMenuItem(
-                              //       child: ListTile(
-                              //         leading: Icon(Icons.edit),
-                              //         title: Text('編集'),
-                              //       ),
-                              //       value: Menu.edit,
-                              //     ),
-                              //
-                              //     //divider
-                              //     PopupMenuDivider(),
-                              //
-                              //     //削除要素
-                              //     PopupMenuItem(
-                              //       child: ListTile(
-                              //         leading: Icon(Icons.delete),
-                              //         title: Text('削除'),
-                              //       ),
-                              //       value: Menu.delete,
-                              //     ),
-                              //   ],
-                              // ),
                             ),
                           ),
                         ),
@@ -347,40 +230,44 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
       ),
 
       // タスク作成ボタン
-      floatingActionButton: FloatingActionButton(
-        // テーマがDARKだったらとかのやつ
-        backgroundColor: platformBrightness == Brightness.dark
-            ? Theme.of(context).accentColor
-            : Theme.of(context).primaryColor,
+      floatingActionButton: SizedBox(
+        width: 60,
+        height: 60,
+        child: FloatingActionButton(
+          backgroundColor: Theme.of(context).accentColor,
+          // イベント追加ページに遷移
+          onPressed: () async {
+            final isAdd = await Navigator.pushNamed(
+                context,
+                AddEventScreen.id,
+                //add_pageで使うやつを渡す
+                arguments: Arguments(_selectedDay, false, {}),
+            );
 
-        // foregroundColor: Colors.red,
-        // イベント追加ページに遷移
-        onPressed: () async {
-          await Navigator.pushNamed(context, AddEventScreen.id,
-              //add_pageで使うやつを渡す
-              arguments: Arguments(_selectedDay, false, {}));
+            //上で帰ってくるの待って、setStateで画面ぎゅいーん
+            setState(() {});
 
-          //上で帰ってくるの待って、setStateで画面ぎゅいーん
-          setState(() {});
+            //締め切りの追加が終わったら、1番下のリスト表示
+            // もし締め切りを追加しなかったらスクロールしない
+            if (isAdd == true && _getEventsfromDay(_selectedDay).isNotEmpty) {
+              itemScrollController.jumpTo(
+                  index: _getEventsfromDay(_selectedDay).length);
+            }
+            else {}
+            print(isAdd);
 
-          //締め切りの追加が終わったら、1番下のリスト表示
-          // その日の締め切りがなかったら、スクロールのやつ、つかわない
-          if (_getEventsfromDay(_selectedDay).isEmpty) {
-            return; //何も処理しない
-          } else {
-            itemScrollController.jumpTo(
-                index: _getEventsfromDay(_selectedDay).length);
-          }
-        },
-        child: Icon(
-          Icons.add,
-          color: Colors.white,
-          size: 34.99,
+          },
+          child: Icon(
+            Icons.add,
+            color: Colors.white,
+            size: 38,
+          ),
         ),
       ),
     );
   }
 }
+
 
 // イベントの数を数字で表示するためのウィジェット
 Widget _buildEventsMarker(DateTime date, List events, context) {
@@ -394,9 +281,7 @@ Widget _buildEventsMarker(DateTime date, List events, context) {
       duration: const Duration(milliseconds: 300),
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: platformBrightness == Brightness.dark
-            ? Colors.red[300]
-            : Colors.pink[200],
+        color: Theme.of(context).indicatorColor
         // : Theme.of(context).primaryColor
       ),
       width: 16.0,
