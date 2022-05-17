@@ -92,7 +92,6 @@ ThemeData yellowTheme = ThemeData(
   hoverColor: Colors.yellow[100],
   indicatorColor: Colors.red[300],
   selectedRowColor: Colors.white,
-  // bottomAppBarColor:Colors.black,
     bottomAppBarColor: Color(0xffF3D800),
   disabledColor: Color(0xffF3D800)
 );

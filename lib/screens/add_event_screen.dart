@@ -11,7 +11,6 @@ class Arguments {
   final DateTime selectedDay;
   final bool isUpdate;
   final Map events;
-
   Arguments(this.selectedDay, this.isUpdate, this.events);
 }
 
@@ -41,8 +40,6 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
     //イベント追加した後にボタンだけで詳細追加のところにフォーカスできるようにするやつ
     final _detailFocusNode = FocusNode();
 
-    //テーマ別に色を変えられるようにするためのやつ
-    final platformBrightness = MediaQuery.platformBrightnessOf(context);
 
     return Scaffold(
       appBar: AppBar(

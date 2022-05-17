@@ -54,6 +54,6 @@ class DefaultFirebaseOptions {
     projectId: 'flutter-deadline-management',
     storageBucket: 'flutter-deadline-management.appspot.com',
     iosClientId: '263814749904-d340q7mv0640sge550oq3lt46so0e3d8.apps.googleusercontent.com',
-    iosBundleId: 'com.example.flutterDeadlineManagem',
+    iosBundleId: 'com.murakami.flutterDeadlineManagem',
   );
 }

@@ -3,11 +3,13 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../model/theme/theme.dart';
 import '../../model/theme/theme_provider.dart' as theme;
 import '../calendar_screen.dart';
 
-class ChangeThemeScreen extends StatefulHookConsumerWidget {
+enum ColorList { dark, pink, light, blue, orange, red, green, yellow }
 
+class ChangeThemeScreen extends StatefulHookConsumerWidget {
   static const String id = 'changeTheme';
 
   @override
@@ -17,21 +19,22 @@ class ChangeThemeScreen extends StatefulHookConsumerWidget {
 class _ChangeThemeScreenState extends ConsumerState<ChangeThemeScreen> {
   @override
   Widget build(BuildContext context) {
-
     var themeProvider = ref.watch(theme.ThemeProvider);
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('テーマ着せ替え',style: TextStyle(color: Theme.of(context).selectedRowColor)),
+        title: Text('テーマ着せ替え',
+            style: TextStyle(color: Theme.of(context).selectedRowColor)),
         backgroundColor: Theme.of(context).primaryColor,
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
-          icon: Icon(Icons.arrow_back_ios,
+          icon: Icon(
+            Icons.arrow_back_ios,
             color: Theme.of(context).selectedRowColor,
           ),
         ),
       ),
-      body : Column(
+      body: Column(
         children: [
           Padding(
             padding: const EdgeInsets.all(50.0),
@@ -42,6 +45,12 @@ class _ChangeThemeScreenState extends ConsumerState<ChangeThemeScreen> {
                 _colorContainer(
                   onPress: () => themeProvider.changeDarkTheme(),
                   color: Color(0xff212121),
+                  //コンテナの真ん中にチェックボタンつけてる
+                  child: themeProvider.currentTheme == darkTheme
+                      ? Center(
+                      child: Icon(
+                          Icons.done, color: Colors.brown, size: 37))
+                      : SizedBox.shrink(),
                 ),
 
                 Spacer(),
@@ -50,6 +59,12 @@ class _ChangeThemeScreenState extends ConsumerState<ChangeThemeScreen> {
                 _colorContainer(
                   onPress: () => themeProvider.changePinkTheme(),
                   color: Colors.pink[200],
+                  //コンテナの真ん中にチェックボタンつけてる
+                  child: themeProvider.currentTheme == pinkTheme
+                      ? Center(
+                      child: Icon(
+                          Icons.done, color: Colors.brown, size: 37))
+                      : SizedBox.shrink(),
                 ),
 
                 Spacer(),
@@ -57,7 +72,13 @@ class _ChangeThemeScreenState extends ConsumerState<ChangeThemeScreen> {
                 //light
                 _colorContainer(
                   onPress: () => themeProvider.changeLightTheme(),
-                  color: Color(0xFFfffaf0),
+                  color: Colors.white,
+                  //コンテナの真ん中にチェックボタンつけてる
+                  child: themeProvider.currentTheme == lightTheme
+                      ? Center(
+                      child: Icon(
+                          Icons.done, color: Colors.brown, size: 37))
+                      : SizedBox.shrink(),
                 ),
 
                 Spacer(),
@@ -66,11 +87,16 @@ class _ChangeThemeScreenState extends ConsumerState<ChangeThemeScreen> {
                 _colorContainer(
                   onPress: () => themeProvider.changeBlueTheme(),
                   color: Colors.blue,
+                  //コンテナの真ん中にチェックボタンつけてる
+                  child: themeProvider.currentTheme == blueTheme
+                      ? Center(
+                      child: Icon(
+                          Icons.done, color: Colors.brown, size: 37))
+                      : SizedBox.shrink(),
                 ),
               ],
             ),
           ),
-
           Padding(
             padding: const EdgeInsets.all(50.0),
             child: Row(
@@ -80,6 +106,12 @@ class _ChangeThemeScreenState extends ConsumerState<ChangeThemeScreen> {
                 _colorContainer(
                   onPress: () => themeProvider.changeOrangeTheme(),
                   color: Colors.orange,
+                  //コンテナの真ん中にチェックボタンつけてる
+                  child: themeProvider.currentTheme == orangeTheme
+                      ? Center(
+                      child: Icon(
+                          Icons.done, color: Colors.brown, size: 37))
+                      : SizedBox.shrink(),
                 ),
 
                 Spacer(),
@@ -88,6 +120,12 @@ class _ChangeThemeScreenState extends ConsumerState<ChangeThemeScreen> {
                 _colorContainer(
                   onPress: () => themeProvider.changeRedTheme(),
                   color: Colors.red,
+                  //コンテナの真ん中にチェックボタンつけてる
+                  child: themeProvider.currentTheme == redTheme
+                      ? Center(
+                      child: Icon(
+                          Icons.done, color: Colors.brown, size: 37))
+                      : SizedBox.shrink(),
                 ),
 
                 Spacer(),
@@ -96,6 +134,12 @@ class _ChangeThemeScreenState extends ConsumerState<ChangeThemeScreen> {
                 _colorContainer(
                   onPress: () => themeProvider.changeGreenTheme(),
                   color: Colors.green,
+                  //コンテナの真ん中にチェックボタンつけてる
+                  child: themeProvider.currentTheme == greenTheme
+                      ? Center(
+                      child: Icon(
+                          Icons.done, color: Colors.brown, size: 37))
+                      : SizedBox.shrink(),
                 ),
 
                 Spacer(),
@@ -104,6 +148,12 @@ class _ChangeThemeScreenState extends ConsumerState<ChangeThemeScreen> {
                 _colorContainer(
                   onPress: () => themeProvider.changeYellowTheme(),
                   color: Color(0xffF3D800),
+                  //コンテナの真ん中にチェックボタンつけてる
+                  child: themeProvider.currentTheme == yellowTheme
+                      ? Center(
+                          child: Icon(
+                              Icons.done, color: Colors.brown, size: 37))
+                      : SizedBox.shrink(),
                 ),
               ],
             ),
@@ -113,11 +163,14 @@ class _ChangeThemeScreenState extends ConsumerState<ChangeThemeScreen> {
             height: 43,
             width: 70,
             child: ElevatedButton(
-              onPressed: () =>  Navigator.popUntil(
-                context, ModalRoute.withName(CalendarScreen.id)),
-                child: Text('決定',style: TextStyle(fontSize: 17),),
+              onPressed: () => Navigator.popUntil(
+                  context, ModalRoute.withName(CalendarScreen.id)),
+              child: Text(
+                '決定',
+                style: TextStyle(fontSize: 17),
+              ),
               style: ElevatedButton.styleFrom(
-                primary: Colors.indigo,
+                primary: Theme.of(context).disabledColor,
                 onPrimary: Colors.white,
               ),
             ),
@@ -127,7 +180,10 @@ class _ChangeThemeScreenState extends ConsumerState<ChangeThemeScreen> {
     );
   }
 
-  Widget _colorContainer({required void Function()? onPress,required Color? color}) {
+  Widget _colorContainer(
+      {required void Function()? onPress,
+      required Color? color,
+      Widget? child}) {
     return GestureDetector(
       onTap: onPress,
       child: Container(
@@ -138,10 +194,8 @@ class _ChangeThemeScreenState extends ConsumerState<ChangeThemeScreen> {
         ),
         width: 70,
         height: 70,
+        child: child,
       ),
     );
   }
 }
-
-
-
