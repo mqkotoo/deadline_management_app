@@ -49,4 +49,20 @@ class Theme extends ChangeNotifier {
     notifyListeners();
   }
 
+  static ThemeData getThemeIndex(int index) {
+    switch(index) {
+      case 1 : return darkTheme;
+      case 2 : return pinkTheme;
+      case 3 : return lightTheme;
+      case 4 : return blueTheme;
+      case 5 : return orangeTheme;
+      case 6 : return redTheme;
+      case 7 : return greenTheme;
+      case 8 : return yellowTheme;
+    }
+    return lightTheme;
+  }
+
+
+
 }

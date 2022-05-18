@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_deadline_management/component/simekiri_tile.dart';
 import 'package:flutter_deadline_management/model/calendar_model.dart';
+import 'package:flutter_deadline_management/model/theme/theme_provider.dart' as theme;
 import 'package:flutter_deadline_management/screens/setting_pages/setting_screen.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../component/constants.dart';
 import '../component/selectedDay.dart';
@@ -33,8 +35,17 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
   final ItemPositionsListener itemPositionsListener =
       ItemPositionsListener.create();
 
+  Future getColorTheme() async{
+    var prefs = await SharedPreferences.getInstance();
+    int index  = prefs.getInt('theme') ?? 0;
+    var themeProvider =  ref.watch(theme.ThemeProvider);
+    themeProvider.currentTheme = themeProvider.getThemeIndex(index);
+    setState(() {});
+  }
+
   @override
   void initState() {
+
     super.initState();
   }
 

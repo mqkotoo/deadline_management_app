@@ -6,8 +6,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../model/theme/theme.dart';
 import '../../model/theme/theme_provider.dart' as theme;
 import '../calendar_screen.dart';
-
-enum ColorList { dark, pink, light, blue, orange, red, green, yellow }
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ChangeThemeScreen extends StatefulHookConsumerWidget {
   static const String id = 'changeTheme';
@@ -19,7 +18,14 @@ class ChangeThemeScreen extends StatefulHookConsumerWidget {
 class _ChangeThemeScreenState extends ConsumerState<ChangeThemeScreen> {
   @override
   Widget build(BuildContext context) {
+
     var themeProvider = ref.watch(theme.ThemeProvider);
+
+    Future _saveColorTheme(int index) async{
+      var prefs = await SharedPreferences.getInstance();
+      await prefs.setInt('theme',index);
+    }
+
 
     return Scaffold(
       appBar: AppBar(
@@ -92,8 +98,7 @@ class _ChangeThemeScreenState extends ConsumerState<ChangeThemeScreen> {
                       ? Center(
                       child: Icon(
                           Icons.done, color: Colors.brown, size: 37))
-                      : SizedBox.shrink(),
-                ),
+                      : SizedBox.shrink()),
               ],
             ),
           ),
