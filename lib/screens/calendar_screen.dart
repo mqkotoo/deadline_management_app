@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_deadline_management/component/simekiri_tile.dart';
 import 'package:flutter_deadline_management/model/calendar_model.dart';
 import 'package:flutter_deadline_management/screens/setting_pages/setting_screen.dart';
-import 'package:flutter_deadline_management/screens/setting_pages/theme/theme_provider.dart'as theme;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../component/constants.dart';
 import '../component/selectedDay.dart';
@@ -34,21 +32,6 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
   final ItemScrollController itemScrollController = ItemScrollController();
   final ItemPositionsListener itemPositionsListener =
       ItemPositionsListener.create();
-
-  // Future getColorTheme() async{
-  //   var prefs = await SharedPreferences.getInstance();
-  //   int index  = prefs.getInt('theme') ?? 0;
-  //   print(index);
-  //   var themeProvider =  ref.watch(theme.ThemeProvider);
-  //   themeProvider.currentTheme = getThemeIndex(index);
-  //   setState(() {});
-  // }
-
-  @override
-  void initState() {
-    // getColorTheme();
-    super.initState();
-  }
 
   @override
   void dispose() {
@@ -185,13 +168,16 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
           Expanded(
             flex: 4,
             child: _getEventsfromDay(_selectedDay).isEmpty
-                ? Center(
-                    child: Text(
-                      DateFormat.MMMEd('ja').format(_selectedDay) +
-                          'の締め切りはありません',
-                      style: TextStyle(fontSize: 16),
+                ? Padding(
+                  padding: const EdgeInsets.only(bottom: 25.0),
+                  child: Center(
+                      child: Text(
+                        DateFormat.MMMEd('ja').format(_selectedDay) +
+                            'の締め切りはありません',
+                        style: TextStyle(fontSize: 16),
+                      ),
                     ),
-                  )
+                )
                 : ScrollablePositionedList.builder(
                     itemCount: _getEventsfromDay(_selectedDay).length,
                     //スクロール関係のコントローラとリスナー追加
