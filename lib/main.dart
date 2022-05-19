@@ -9,8 +9,11 @@ import 'package:flutter_deadline_management/screens/setting_pages/theme/theme_pr
 import 'package:flutter_deadline_management/start_up.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'component/constants.dart';
 import 'firebase_options.dart';
 import 'package:flutter/services.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,15 +24,35 @@ void main() async {
       .then((_) => runApp(ProviderScope(child: MyApp())));
 }
 
-class MyApp extends ConsumerWidget {
+class MyApp extends StatefulHookConsumerWidget {
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  _MyAppState createState() => _MyAppState();
+}
+
+
+class _MyAppState extends ConsumerState<MyApp> {
+
+  @override
+  void initState() {
+    getColorTheme();
+    super.initState();
+  }
+
+  Future getColorTheme() async{
+    var prefs = await SharedPreferences.getInstance();
+    int index  = prefs.getInt('theme') ?? 0;
+    print(index);
+    var themeProvider =  ref.watch(ThemeProvider);
+    themeProvider.currentTheme = getThemeIndex(index);
+    setState(() {});
+  }
+
+  @override
+  Widget build(BuildContext context) {
 
     var themeProvider = ref.watch(ThemeProvider);
 
-
     return MaterialApp(
-
       theme: themeProvider.currentTheme,
       debugShowCheckedModeBanner: false,
       routes: <String, WidgetBuilder>{

@@ -35,18 +35,18 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
   final ItemPositionsListener itemPositionsListener =
       ItemPositionsListener.create();
 
-  Future getColorTheme() async{
-    var prefs = await SharedPreferences.getInstance();
-    int index  = prefs.getInt('theme') ?? 0;
-    print(index);
-    var themeProvider =  ref.watch(theme.ThemeProvider);
-    themeProvider.currentTheme = getThemeIndex(index);
-    setState(() {});
-  }
+  // Future getColorTheme() async{
+  //   var prefs = await SharedPreferences.getInstance();
+  //   int index  = prefs.getInt('theme') ?? 0;
+  //   print(index);
+  //   var themeProvider =  ref.watch(theme.ThemeProvider);
+  //   themeProvider.currentTheme = getThemeIndex(index);
+  //   setState(() {});
+  // }
 
   @override
   void initState() {
-    getColorTheme();
+    // getColorTheme();
     super.initState();
   }
 
@@ -116,7 +116,6 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
               child: TableCalendar(
                 //カレンダーの大きさ変えれるようにするやつ
                 shouldFillViewport: true,
-
                 locale: 'ja_JP',
                 firstDay: DateTime.utc(now.year - 1, 1, 1),
                 lastDay: DateTime.utc(now.year + 1, 12, 31),
