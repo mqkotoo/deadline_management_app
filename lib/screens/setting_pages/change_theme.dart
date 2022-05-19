@@ -1,11 +1,10 @@
 // 赤、青、黒、白、黄色、緑、オレンジ、ピンク、
 
 import 'package:flutter/material.dart';
+import 'package:flutter_deadline_management/screens/setting_pages/theme/theme.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-
-import '../../model/theme/theme.dart';
-import '../../model/theme/theme_provider.dart' as theme;
 import '../calendar_screen.dart';
+import 'package:flutter_deadline_management/screens/setting_pages/theme/theme_provider.dart'as theme;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ChangeThemeScreen extends StatefulHookConsumerWidget {
@@ -49,7 +48,10 @@ class _ChangeThemeScreenState extends ConsumerState<ChangeThemeScreen> {
               children: [
                 //dark
                 _colorContainer(
-                  onPress: () => themeProvider.changeDarkTheme(),
+                  onPress: () {
+                    themeProvider.changeDarkTheme();
+                    _saveColorTheme(1);
+                  },
                   color: Color(0xff212121),
                   //コンテナの真ん中にチェックボタンつけてる
                   child: themeProvider.currentTheme == darkTheme
@@ -63,7 +65,10 @@ class _ChangeThemeScreenState extends ConsumerState<ChangeThemeScreen> {
 
                 //pink
                 _colorContainer(
-                  onPress: () => themeProvider.changePinkTheme(),
+                  onPress: () {
+                    themeProvider.changePinkTheme();
+                    _saveColorTheme(2);
+                  },
                   color: Colors.pink[200],
                   //コンテナの真ん中にチェックボタンつけてる
                   child: themeProvider.currentTheme == pinkTheme
@@ -77,7 +82,10 @@ class _ChangeThemeScreenState extends ConsumerState<ChangeThemeScreen> {
 
                 //light
                 _colorContainer(
-                  onPress: () => themeProvider.changeLightTheme(),
+                  onPress: () {
+                    themeProvider.changeLightTheme();
+                    _saveColorTheme(3);
+                  },
                   color: Colors.white,
                   //コンテナの真ん中にチェックボタンつけてる
                   child: themeProvider.currentTheme == lightTheme
@@ -91,7 +99,10 @@ class _ChangeThemeScreenState extends ConsumerState<ChangeThemeScreen> {
 
                 //  blue
                 _colorContainer(
-                  onPress: () => themeProvider.changeBlueTheme(),
+                  onPress: () {
+                    themeProvider.changeBlueTheme();
+                    _saveColorTheme(4);
+                  },
                   color: Colors.blue,
                   //コンテナの真ん中にチェックボタンつけてる
                   child: themeProvider.currentTheme == blueTheme
@@ -109,7 +120,10 @@ class _ChangeThemeScreenState extends ConsumerState<ChangeThemeScreen> {
               children: [
                 //  orange
                 _colorContainer(
-                  onPress: () => themeProvider.changeOrangeTheme(),
+                  onPress: () {
+                    themeProvider.changeOrangeTheme();
+                    _saveColorTheme(5);
+                  },
                   color: Colors.orange,
                   //コンテナの真ん中にチェックボタンつけてる
                   child: themeProvider.currentTheme == orangeTheme
@@ -123,7 +137,10 @@ class _ChangeThemeScreenState extends ConsumerState<ChangeThemeScreen> {
 
                 //  red
                 _colorContainer(
-                  onPress: () => themeProvider.changeRedTheme(),
+                  onPress: () {
+                    themeProvider.changeRedTheme();
+                    _saveColorTheme(6);
+                  },
                   color: Colors.red,
                   //コンテナの真ん中にチェックボタンつけてる
                   child: themeProvider.currentTheme == redTheme
@@ -137,7 +154,10 @@ class _ChangeThemeScreenState extends ConsumerState<ChangeThemeScreen> {
 
                 //  green
                 _colorContainer(
-                  onPress: () => themeProvider.changeGreenTheme(),
+                  onPress: () {
+                    themeProvider.changeGreenTheme();
+                    _saveColorTheme(7);
+                  },
                   color: Colors.green,
                   //コンテナの真ん中にチェックボタンつけてる
                   child: themeProvider.currentTheme == greenTheme
@@ -151,7 +171,10 @@ class _ChangeThemeScreenState extends ConsumerState<ChangeThemeScreen> {
 
                 //  yellow
                 _colorContainer(
-                  onPress: () => themeProvider.changeYellowTheme(),
+                  onPress: () {
+                    themeProvider.changeYellowTheme();
+                    _saveColorTheme(8);
+                  },
                   color: Color(0xffF3D800),
                   //コンテナの真ん中にチェックボタンつけてる
                   child: themeProvider.currentTheme == yellowTheme

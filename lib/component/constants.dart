@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+import '../screens/setting_pages/theme/theme.dart';
+
+
 CalendarStyle calendarStyle(context) {
   final platformBrightness = MediaQuery.platformBrightnessOf(context);
   return CalendarStyle(
@@ -39,4 +42,22 @@ HeaderStyle calendarHeadStyle(context) {
       color: Theme.of(context).accentColor
     ),
   );
+}
+
+
+
+
+//themeを保存するためにインデックスで色を管理するためにやつ
+ThemeData getThemeIndex(int index) {
+  switch(index) {
+    case 1 : return darkTheme;
+    case 2 : return pinkTheme;
+    case 3 : return lightTheme;
+    case 4 : return blueTheme;
+    case 5 : return orangeTheme;
+    case 6 : return redTheme;
+    case 7 : return greenTheme;
+    case 8 : return yellowTheme;
+  }
+  return lightTheme;
 }

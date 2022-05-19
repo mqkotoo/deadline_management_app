@@ -9,6 +9,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 
 
+
+
 class StartUpPage extends HookConsumerWidget {
   static const String id = 'start';
 
@@ -41,6 +43,7 @@ class StartUpPage extends HookConsumerWidget {
         });
         print('匿名ログイン');
       }
+
       return null;
     }, const []);
 

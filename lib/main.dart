@@ -5,14 +5,12 @@ import 'package:flutter_deadline_management/screens/calendar_screen.dart';
 import 'package:flutter_deadline_management/screens/setting_pages/change_theme.dart';
 import 'package:flutter_deadline_management/screens/setting_pages/notification.dart';
 import 'package:flutter_deadline_management/screens/setting_pages/setting_screen.dart';
+import 'package:flutter_deadline_management/screens/setting_pages/theme/theme_provider.dart';
 import 'package:flutter_deadline_management/start_up.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'firebase_options.dart';
 import 'package:flutter/services.dart';
-
-import 'model/theme/theme_provider.dart';
-
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -44,7 +42,6 @@ class MyApp extends ConsumerWidget {
       },
 
       home: StartUpPage(),
-
     );
 
   }
