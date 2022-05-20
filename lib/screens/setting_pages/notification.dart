@@ -20,16 +20,11 @@ class _SettingNotificationScreenState extends ConsumerState<SettingNotificationS
   //タイムピッカーデフォルトの変数
   TimeOfDay _selectedTime = TimeOfDay(hour: 10, minute: 00);
 
-  // String _selectedTimeValue = _selectedTime.toString();
 
+  //通知オンオフの値を保存している
   _saveBool(String key, bool value) async {
     var prefs = await SharedPreferences.getInstance();
     prefs.setBool(key, value);
-  }
-
-  _saveText(String key, String value) async{
-    var prefs = await SharedPreferences.getInstance();
-    prefs.setString(key, value);
   }
 
   _restoreValues() async {
