@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_deadline_management/screens/add_event_screen.dart';
 import 'package:flutter_deadline_management/screens/calendar_screen.dart';
 import 'package:flutter_deadline_management/screens/setting_pages/change_theme.dart';
-import 'package:flutter_deadline_management/screens/setting_pages/notification.dart';
+import 'package:flutter_deadline_management/screens/setting_pages/notification/notification.dart';
 import 'package:flutter_deadline_management/screens/setting_pages/setting_screen.dart';
 import 'package:flutter_deadline_management/screens/setting_pages/theme/theme_provider.dart';
 import 'package:flutter_deadline_management/start_up.dart';

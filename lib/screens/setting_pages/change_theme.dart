@@ -57,7 +57,7 @@ class _ChangeThemeScreenState extends ConsumerState<ChangeThemeScreen> {
                   child: themeProvider.currentTheme == darkTheme
                       ? Center(
                       child: Icon(
-                          Icons.done, color: Colors.brown, size: 37))
+                          Icons.done, color: Colors.brown[300], size: 40))
                       : SizedBox.shrink(),
                 ),
 
@@ -74,7 +74,7 @@ class _ChangeThemeScreenState extends ConsumerState<ChangeThemeScreen> {
                   child: themeProvider.currentTheme == pinkTheme
                       ? Center(
                       child: Icon(
-                          Icons.done, color: Colors.brown, size: 37))
+                          Icons.done, color: Colors.brown, size: 40))
                       : SizedBox.shrink(),
                 ),
 
@@ -91,7 +91,7 @@ class _ChangeThemeScreenState extends ConsumerState<ChangeThemeScreen> {
                   child: themeProvider.currentTheme == lightTheme
                       ? Center(
                       child: Icon(
-                          Icons.done, color: Colors.brown, size: 37))
+                          Icons.done, color: Colors.brown, size: 40))
                       : SizedBox.shrink(),
                 ),
 
@@ -108,7 +108,7 @@ class _ChangeThemeScreenState extends ConsumerState<ChangeThemeScreen> {
                   child: themeProvider.currentTheme == blueTheme
                       ? Center(
                       child: Icon(
-                          Icons.done, color: Colors.brown, size: 37))
+                          Icons.done, color: Colors.brown, size: 40))
                       : SizedBox.shrink()),
               ],
             ),
@@ -129,7 +129,7 @@ class _ChangeThemeScreenState extends ConsumerState<ChangeThemeScreen> {
                   child: themeProvider.currentTheme == orangeTheme
                       ? Center(
                       child: Icon(
-                          Icons.done, color: Colors.brown, size: 37))
+                          Icons.done, color: Colors.brown, size: 40))
                       : SizedBox.shrink(),
                 ),
 
@@ -146,7 +146,7 @@ class _ChangeThemeScreenState extends ConsumerState<ChangeThemeScreen> {
                   child: themeProvider.currentTheme == redTheme
                       ? Center(
                       child: Icon(
-                          Icons.done, color: Colors.brown, size: 37))
+                          Icons.done, color: Colors.brown, size: 40))
                       : SizedBox.shrink(),
                 ),
 
@@ -163,7 +163,7 @@ class _ChangeThemeScreenState extends ConsumerState<ChangeThemeScreen> {
                   child: themeProvider.currentTheme == greenTheme
                       ? Center(
                       child: Icon(
-                          Icons.done, color: Colors.brown, size: 37))
+                          Icons.done, color: Colors.brown, size: 40))
                       : SizedBox.shrink(),
                 ),
 
@@ -180,7 +180,7 @@ class _ChangeThemeScreenState extends ConsumerState<ChangeThemeScreen> {
                   child: themeProvider.currentTheme == yellowTheme
                       ? Center(
                           child: Icon(
-                              Icons.done, color: Colors.brown, size: 37))
+                              Icons.done, color: Colors.brown, size: 40))
                       : SizedBox.shrink(),
                 ),
               ],

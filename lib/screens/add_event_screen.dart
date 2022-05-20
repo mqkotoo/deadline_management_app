@@ -236,7 +236,9 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                 child: TextButton(
                   style: TextButton.styleFrom(
                       //テーマによってbuttonの色を変える
-                      backgroundColor: Theme.of(context).disabledColor),
+                      backgroundColor: Theme.of(context).disabledColor,
+                      elevation: 10,
+                  ),
                   onPressed: () {
                     if (_eventController.text.isEmpty) {
                       return;

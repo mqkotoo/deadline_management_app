@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_deadline_management/screens/setting_pages/notification.dart';
+import 'package:flutter_deadline_management/screens/setting_pages/notification/notification.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'change_theme.dart';
 

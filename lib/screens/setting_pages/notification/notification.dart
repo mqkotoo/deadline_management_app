@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_deadline_management/screens/setting_pages/notification/notify_provider.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 class SettingNotificationScreen extends StatefulHookConsumerWidget {
   static const String id = 'notification';
 
@@ -47,6 +46,8 @@ class _SettingNotificationScreenState extends ConsumerState<SettingNotificationS
 
   @override
   Widget build(BuildContext context) {
+
+    var notifyProvider = ref.read(NotifyProvider);
 
     //  timePickerを呼ぶための関数ーーーーーーーーーーーーーーーーーーーーーーーーー
     Future _pickTime(BuildContext context) async{
@@ -141,16 +142,27 @@ class _SettingNotificationScreenState extends ConsumerState<SettingNotificationS
           ),
         ),
       ),
-      body:  ListView(
-          children: [
-            _menuItem(context,title: "通知", child: _switch()),
+      body:  Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Expanded(
+            child: ListView(
+                children: [
+                  _menuItem(context,title: "通知", child: _switch()),
 
-            //通知がオフだったら「通知を受け取る時間」を非表示にする
-            isOn
-                ? _menuItem(context,title: "通知を受け取る時間",
-                child: _displayTimeBox(onTap : () => _pickTime(context)))
-                : SizedBox.shrink()
-          ]
+                  //通知がオフだったら「通知を受け取る時間」を非表示にする
+                  isOn
+                      ? _menuItem(context,title: "通知を受け取る時間",
+                      child: _displayTimeBox(onTap : () => _pickTime(context)))
+                      : SizedBox.shrink()
+                ]
+            ),
+          ),
+          SizedBox(height: 50),
+          ElevatedButton(
+              onPressed: () => notifyProvider.notify(),
+              child: Text('通知'))
+        ],
       ),
     );
   }
