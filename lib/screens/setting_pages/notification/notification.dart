@@ -158,9 +158,11 @@ class _SettingNotificationScreenState extends ConsumerState<SettingNotificationS
                 ]
             ),
           ),
-          SizedBox(height: 50),
           ElevatedButton(
-              onPressed: () => notifyProvider.notify(),
+              onPressed: () {
+                notifyProvider.iosNotify();
+                notifyProvider.androidNotify();
+              },
               child: Text('通知'))
         ],
       ),
