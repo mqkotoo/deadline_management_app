@@ -15,9 +15,12 @@ class _SettingNotificationScreenState extends ConsumerState<SettingNotificationS
   //スイッチのオンオフのBOOL値
   bool isOn = false;
 
+  String timeText = '';
+
   //タイムピッカーデフォルトの変数
   TimeOfDay _selectedTime = TimeOfDay(hour: 10, minute: 00);
 
+  // String _selectedTimeValue = _selectedTime.toString();
 
   _saveBool(String key, bool value) async {
     var prefs = await SharedPreferences.getInstance();
@@ -29,28 +32,26 @@ class _SettingNotificationScreenState extends ConsumerState<SettingNotificationS
     prefs.setString(key, value);
   }
 
+  _restoreValues() async {
+    var prefs = await SharedPreferences.getInstance();
+    setState(() {
+      isOn = prefs.getBool('isOn') ?? false;
+      print(isOn);
+      // _selectedTimeValue = prefs.getString('timeText') ?? '無理';
+      // print(timeText);
+    });
+  }
+
 
 
   @override
   void initState() {
     super.initState();
+    _restoreValues();
   }
 
   @override
   Widget build(BuildContext context) {
-
-    final timeText = useState("10:00");
-
-    useEffect(() {
-      Future(() async {
-        var prefs = await SharedPreferences.getInstance();
-        setState(() {
-          isOn = prefs.getBool('isOn') ?? false;
-          timeText.value = (prefs.getString('timeText') ?? '10:00');
-        });
-      });
-      return null;
-    }, const []);
 
     //  timePickerを呼ぶための関数ーーーーーーーーーーーーーーーーーーーーーーーーー
     Future _pickTime(BuildContext context) async{
@@ -100,11 +101,13 @@ class _SettingNotificationScreenState extends ConsumerState<SettingNotificationS
           hours = '12';
         }
 
-          timeText.value = '$hours : $minutes';
-          _saveText('timeText', timeText.value);
+        timeText = '$hours : $minutes';
 
-        print(timeText.value);
-        return timeText.value;
+        // _saveText('timeText', timeText);
+
+
+        print(timeText);
+        return timeText;
       }
     }
 
@@ -159,9 +162,6 @@ class _SettingNotificationScreenState extends ConsumerState<SettingNotificationS
 
   Widget _menuItem(BuildContext context,
       {required String title, required Widget child}) {
-
-    //テーマ別に色を変えられるようにするためのやつ
-    final platformBrightness = MediaQuery.platformBrightnessOf(context);
 
     return Container(
         padding: EdgeInsets.symmetric(vertical: 14.0),
