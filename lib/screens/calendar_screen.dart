@@ -268,8 +268,6 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
 
 // イベントの数を数字で表示するためのウィジェット
 Widget _buildEventsMarker(DateTime date, List events, context) {
-  //テーマ別に色を変えられるようにするためのやつ
-  final platformBrightness = MediaQuery.platformBrightnessOf(context);
 
   return Positioned(
     right: 5,

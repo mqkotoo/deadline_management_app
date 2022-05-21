@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_deadline_management/screens/setting_pages/notification/notify_provider.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../../model/calendar_model.dart';
+
 class SettingNotificationScreen extends StatefulHookConsumerWidget {
   static const String id = 'notification';
 
@@ -48,6 +51,9 @@ class _SettingNotificationScreenState extends ConsumerState<SettingNotificationS
   Widget build(BuildContext context) {
 
     var notifyProvider = ref.read(NotifyProvider);
+
+    final events = ref.watch(calendarProvider).eventsList;
+
 
     //  timePickerを呼ぶための関数ーーーーーーーーーーーーーーーーーーーーーーーーー
     Future _pickTime(BuildContext context) async{
@@ -160,8 +166,13 @@ class _SettingNotificationScreenState extends ConsumerState<SettingNotificationS
           ),
           ElevatedButton(
               onPressed: () {
-                notifyProvider.iosNotify();
-                notifyProvider.androidNotify();
+                notifyProvider.iosNotify(
+                    //締め切りの数
+                    events.length.toString(),
+                //  締め切りの内容
+                  events.toString(),
+                );
+                // notifyProvider.androidNotify();
               },
               child: Text('通知'))
         ],
