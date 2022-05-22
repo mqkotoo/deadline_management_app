@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_deadline_management/model/calendar_model.dart';
 import 'package:flutter_deadline_management/screens/calendar_screen.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -51,7 +50,7 @@ class StartUpPage extends HookConsumerWidget {
     return const Scaffold(
       body: Center(
         // indicator変更
-        child: CircularProgressIndicator(),
+        child: Text('Loading...',style: TextStyle(fontSize: 20)),
         ),
       );
   }

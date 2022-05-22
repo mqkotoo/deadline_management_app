@@ -18,6 +18,7 @@ class CalendarScreen extends StatefulHookConsumerWidget {
 }
 
 class _CalendarScreenState extends ConsumerState<CalendarScreen> {
+  
   //日にち分けしたときに一時的に予定が入るリスト
   List selectDatEvents = [];
 
@@ -25,6 +26,8 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
   DateTime _focusedDay = DateTime.now();
   DateTime _selectedDay = DateTime.now();
   final now = DateTime.now();
+
+
 
   TextEditingController _eventController = TextEditingController();
 
@@ -38,6 +41,8 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
     _eventController.dispose();
     super.dispose();
   }
+
+  
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +71,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
     }
 
     return Scaffold(
-      backgroundColor:Theme.of(context).hoverColor,
+      backgroundColor: Theme.of(context).hoverColor,
       resizeToAvoidBottomInset: false,
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(45),
@@ -79,7 +84,8 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
           ),
           actions: [
             IconButton(
-              icon: Icon(Icons.settings,color: Theme.of(context).selectedRowColor),
+              icon: Icon(Icons.settings,
+                  color: Theme.of(context).selectedRowColor),
               onPressed: () => Navigator.pushNamed(context, SettingScreen.id),
             ),
           ],
@@ -158,7 +164,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
 
           // 今選択している日付をリストの上に表示する
           selectedDay(
-              selectedDay: _selectedDay,
+            selectedDay: _selectedDay,
           ),
 
           //ちょっと隙間小さかったから空白を足してるよ
@@ -169,15 +175,15 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
             flex: 4,
             child: _getEventsfromDay(_selectedDay).isEmpty
                 ? Padding(
-                  padding: const EdgeInsets.only(bottom: 25.0),
-                  child: Center(
+                    padding: const EdgeInsets.only(bottom: 25.0),
+                    child: Center(
                       child: Text(
                         DateFormat.MMMEd('ja').format(_selectedDay) +
                             'の締め切りはありません',
                         style: TextStyle(fontSize: 16),
                       ),
                     ),
-                )
+                  )
                 : ScrollablePositionedList.builder(
                     itemCount: _getEventsfromDay(_selectedDay).length,
                     //スクロール関係のコントローラとリスナー追加
@@ -235,10 +241,10 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
           // イベント追加ページに遷移
           onPressed: () async {
             final isAdd = await Navigator.pushNamed(
-                context,
-                AddEventScreen.id,
-                //add_pageで使うやつを渡す
-                arguments: Arguments(_selectedDay, false, {}),
+              context,
+              AddEventScreen.id,
+              //add_pageで使うやつを渡す
+              arguments: Arguments(_selectedDay, false, {}),
             );
 
             //上で帰ってくるの待って、setStateで画面ぎゅいーん
@@ -249,11 +255,10 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
             if (isAdd == true && _getEventsfromDay(_selectedDay).isNotEmpty) {
               itemScrollController.jumpTo(
                   index: _getEventsfromDay(_selectedDay).length);
-            }
-            else {}
+            } else {}
             print(isAdd);
-
           },
+
           child: Icon(
             Icons.add,
             color: Colors.white,
@@ -265,20 +270,17 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
   }
 }
 
-
 // イベントの数を数字で表示するためのウィジェット
 Widget _buildEventsMarker(DateTime date, List events, context) {
-
   return Positioned(
     right: 5,
     bottom: 5,
     child: AnimatedContainer(
       duration: const Duration(milliseconds: 300),
       decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: Theme.of(context).indicatorColor
-        // : Theme.of(context).primaryColor
-      ),
+          shape: BoxShape.circle, color: Theme.of(context).indicatorColor
+          // : Theme.of(context).primaryColor
+          ),
       width: 16.0,
       height: 16.0,
       child: Center(
