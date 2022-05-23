@@ -24,7 +24,7 @@ class StartUpPage extends HookConsumerWidget {
       //takuma:Futureを使って非同期処理を行うため。それと、awaitがあるからCALENDARPROVIDERの中身を取得するまで先に進まない。
 
       if (FirebaseAuth.instance.currentUser != null) {
-          Future(() async {
+          Future(() async{
           //CALENDARPROVIDERの中身を取得する
           await ref.read(calendarProvider).get();
           //カレンダースクリーンに飛ぶ
@@ -42,7 +42,6 @@ class StartUpPage extends HookConsumerWidget {
         });
         print('匿名ログイン');
       }
-
       return null;
     }, const []);
 
