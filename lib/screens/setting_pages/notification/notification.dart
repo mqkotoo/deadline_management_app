@@ -172,7 +172,7 @@ class _SettingNotificationScreenState extends ConsumerState<SettingNotificationS
                 //  締め切りの内容
                   events.toString(),
                 );
-                // notifyProvider.androidNotify();
+                notifyProvider.androidNotify();
               },
               child: Text('通知'))
         ],

@@ -25,7 +25,7 @@ class notifyProvider {
       InitializationSettings(
         android: AndroidInitializationSettings('@mipmap/ic_launcher'),
       ),
-    ).then((_) => flnp.show(0, 'title', 'body', NotificationDetails(
+    ).then((_) => flnp.show(0, '今日の締め切りが〇件あります', '〇〇、〇〇　です', NotificationDetails(
       android: AndroidNotificationDetails(
         'id',
         'name',

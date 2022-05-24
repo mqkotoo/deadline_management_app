@@ -143,6 +143,7 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
 
               //締め切り追加用テキストフィールド
               TextFormField(
+                autofocus: true,
                 controller: _eventController,
                 // autofocus: true,
                 decoration: InputDecoration(
@@ -178,13 +179,13 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                 onFieldSubmitted: (_) {
                   FocusScope.of(context).requestFocus(_detailFocusNode);
                 },
-                //バリデーション処理
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return '締め切りを入力してください';
-                  }
-                  return null;
-                },
+                // //バリデーション処理
+                // validator: (value) {
+                //   if (value == null || value.isEmpty) {
+                //     return '締め切りを入力してください';
+                //   }
+                //   return null;
+                // },
               ),
 
               SizedBox(
