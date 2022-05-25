@@ -9,6 +9,7 @@ import 'package:flutter_deadline_management/screens/setting_pages/theme/theme_pr
 import 'package:flutter_deadline_management/start_up.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'component/constants.dart';
 import 'firebase_options.dart';
@@ -65,6 +66,25 @@ class _MyAppState extends ConsumerState<MyApp> {
       },
 
       home: StartUpPage(),
+
+      //add event page に遷移するときにしたからのアニメーションをつけるためのセッティング
+      onGenerateRoute: (settings) {
+        switch (settings.name) {
+          case '/add':
+            return PageTransition(
+              child: AddEventScreen(),
+              duration: Duration(milliseconds: 200),
+              reverseDuration: Duration(milliseconds: 200),
+              curve: Curves.linear,
+              type: PageTransitionType.bottomToTop,
+              settings: settings,
+            );
+            break;
+          default:
+            return null;
+        }
+      },
+
     );
 
   }
