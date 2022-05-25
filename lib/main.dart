@@ -70,7 +70,7 @@ class _MyAppState extends ConsumerState<MyApp> {
       //add event page に遷移するときにしたからのアニメーションをつけるためのセッティング
       onGenerateRoute: (settings) {
         switch (settings.name) {
-          case '/add':
+          case '/add_ver':
             return PageTransition(
               child: AddEventScreen(),
               duration: Duration(milliseconds: 200),
@@ -79,7 +79,14 @@ class _MyAppState extends ConsumerState<MyApp> {
               type: PageTransitionType.bottomToTop,
               settings: settings,
             );
-            break;
+          case '/add_hori':
+            return PageTransition(
+              child: AddEventScreen(),
+              duration: Duration(milliseconds: 200),
+              reverseDuration: Duration(milliseconds: 200),
+              type: PageTransitionType.rightToLeft,
+              settings: settings,
+            );
           default:
             return null;
         }

@@ -205,9 +205,9 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                           child: GestureDetector(
                             onTap: () async {
                               await Navigator.pushNamed(
-                                  context, AddEventScreen.id,
-                                  arguments:
-                                      Arguments(_selectedDay, true, event));
+                                  context,
+                                  '/add_hori',
+                                  arguments: Arguments(_selectedDay, true, event));
                               //編集のページから帰ってきてからSETSTATEで更新する
                               setState(() {});
                             },
@@ -244,7 +244,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
               final isAdd = await Navigator.pushNamed(
                 context,
                 //add eventにしたからのアニメーションをつけて画面遷移する main.dart L71参照
-                '/add',
+                '/add_ver',
                 //add_pageで使うやつを渡す
                 arguments: Arguments(_selectedDay, false, {}),
               );
