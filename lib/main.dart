@@ -73,8 +73,8 @@ class _MyAppState extends ConsumerState<MyApp> {
           case '/add_ver':
             return PageTransition(
               child: AddEventScreen(),
-              duration: Duration(milliseconds: 200),
-              reverseDuration: Duration(milliseconds: 200),
+              duration: Duration(milliseconds: 150),
+              reverseDuration: Duration(milliseconds: 150),
               curve: Curves.linear,
               type: PageTransitionType.bottomToTop,
               settings: settings,
@@ -82,8 +82,8 @@ class _MyAppState extends ConsumerState<MyApp> {
           case '/add_hori':
             return PageTransition(
               child: AddEventScreen(),
-              duration: Duration(milliseconds: 200),
-              reverseDuration: Duration(milliseconds: 200),
+              duration: Duration(milliseconds: 150),
+              reverseDuration: Duration(milliseconds: 150),
               type: PageTransitionType.rightToLeft,
               settings: settings,
             );
