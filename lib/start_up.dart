@@ -1,11 +1,12 @@
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_deadline_management/model/calendar_model.dart';
 import 'package:flutter_deadline_management/screens/calendar_screen.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+
 
 
 
@@ -23,7 +24,7 @@ class StartUpPage extends HookConsumerWidget {
       //takuma:Futureを使って非同期処理を行うため。それと、awaitがあるからCALENDARPROVIDERの中身を取得するまで先に進まない。
 
       if (FirebaseAuth.instance.currentUser != null) {
-          Future(() async {
+          Future(() async{
           //CALENDARPROVIDERの中身を取得する
           await ref.read(calendarProvider).get();
           //カレンダースクリーンに飛ぶ
@@ -48,7 +49,7 @@ class StartUpPage extends HookConsumerWidget {
     return const Scaffold(
       body: Center(
         // indicator変更
-        child: CircularProgressIndicator(),
+        child: Text('Loading...',style: TextStyle(fontSize: 20)),
         ),
       );
   }

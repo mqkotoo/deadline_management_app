@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_deadline_management/screens/setting_pages/notification/notify_provider.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../../model/calendar_model.dart';
 
 class SettingNotificationScreen extends StatefulHookConsumerWidget {
   static const String id = 'notification';
@@ -15,18 +17,26 @@ class _SettingNotificationScreenState extends ConsumerState<SettingNotificationS
   //スイッチのオンオフのBOOL値
   bool isOn = false;
 
+  String timeText = '';
+
   //タイムピッカーデフォルトの変数
   TimeOfDay _selectedTime = TimeOfDay(hour: 10, minute: 00);
 
 
+  //通知オンオフの値を保存している
   _saveBool(String key, bool value) async {
     var prefs = await SharedPreferences.getInstance();
     prefs.setBool(key, value);
   }
 
-  _saveText(String key, String value) async{
+  _restoreValues() async {
     var prefs = await SharedPreferences.getInstance();
-    prefs.setString(key, value);
+    setState(() {
+      isOn = prefs.getBool('isOn') ?? false;
+      print(isOn);
+      // _selectedTimeValue = prefs.getString('timeText') ?? '無理';
+      // print(timeText);
+    });
   }
 
 
@@ -34,23 +44,16 @@ class _SettingNotificationScreenState extends ConsumerState<SettingNotificationS
   @override
   void initState() {
     super.initState();
+    _restoreValues();
   }
 
   @override
   Widget build(BuildContext context) {
 
-    final timeText = useState("10:00");
+    var notifyProvider = ref.read(NotifyProvider);
 
-    useEffect(() {
-      Future(() async {
-        var prefs = await SharedPreferences.getInstance();
-        setState(() {
-          isOn = prefs.getBool('isOn') ?? false;
-          timeText.value = (prefs.getString('timeText') ?? '10:00');
-        });
-      });
-      return null;
-    }, const []);
+    final events = ref.watch(calendarProvider).eventsList;
+
 
     //  timePickerを呼ぶための関数ーーーーーーーーーーーーーーーーーーーーーーーーー
     Future _pickTime(BuildContext context) async{
@@ -100,11 +103,13 @@ class _SettingNotificationScreenState extends ConsumerState<SettingNotificationS
           hours = '12';
         }
 
-          timeText.value = '$hours : $minutes';
-          _saveText('timeText', timeText.value);
+        timeText = '$hours : $minutes';
 
-        print(timeText.value);
-        return timeText.value;
+        // _saveText('timeText', timeText);
+
+
+        print(timeText);
+        return timeText;
       }
     }
 
@@ -143,25 +148,40 @@ class _SettingNotificationScreenState extends ConsumerState<SettingNotificationS
           ),
         ),
       ),
-      body:  ListView(
-          children: [
-            _menuItem(context,title: "通知", child: _switch()),
+      body:  Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Expanded(
+            child: ListView(
+                children: [
+                  _menuItem(context,title: "通知", child: _switch()),
 
-            //通知がオフだったら「通知を受け取る時間」を非表示にする
-            isOn
-                ? _menuItem(context,title: "通知を受け取る時間",
-                child: _displayTimeBox(onTap : () => _pickTime(context)))
-                : SizedBox.shrink()
-          ]
+                  //通知がオフだったら「通知を受け取る時間」を非表示にする
+                  isOn
+                      ? _menuItem(context,title: "通知を受け取る時間",
+                      child: _displayTimeBox(onTap : () => _pickTime(context)))
+                      : SizedBox.shrink()
+                ]
+            ),
+          ),
+          ElevatedButton(
+              onPressed: () {
+                notifyProvider.iosNotify(
+                    //締め切りの数
+                    events.length.toString(),
+                //  締め切りの内容
+                  events.toString(),
+                );
+                notifyProvider.androidNotify();
+              },
+              child: Text('通知'))
+        ],
       ),
     );
   }
 
   Widget _menuItem(BuildContext context,
       {required String title, required Widget child}) {
-
-    //テーマ別に色を変えられるようにするためのやつ
-    final platformBrightness = MediaQuery.platformBrightnessOf(context);
 
     return Container(
         padding: EdgeInsets.symmetric(vertical: 14.0),

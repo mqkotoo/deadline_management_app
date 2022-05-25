@@ -4,6 +4,7 @@ import 'package:flutter_deadline_management/model/calendar_model.dart';
 import 'package:flutter_deadline_management/screens/setting_pages/setting_screen.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../component/constants.dart';
@@ -18,6 +19,7 @@ class CalendarScreen extends StatefulHookConsumerWidget {
 }
 
 class _CalendarScreenState extends ConsumerState<CalendarScreen> {
+  
   //日にち分けしたときに一時的に予定が入るリスト
   List selectDatEvents = [];
 
@@ -25,6 +27,8 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
   DateTime _focusedDay = DateTime.now();
   DateTime _selectedDay = DateTime.now();
   final now = DateTime.now();
+
+
 
   TextEditingController _eventController = TextEditingController();
 
@@ -34,15 +38,12 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
       ItemPositionsListener.create();
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   void dispose() {
     _eventController.dispose();
     super.dispose();
   }
+
+  
 
   @override
   Widget build(BuildContext context) {
@@ -71,219 +72,217 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
     }
 
     return Scaffold(
-      backgroundColor:Theme.of(context).hoverColor,
-      resizeToAvoidBottomInset: false,
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(45),
-        child: AppBar(
-          // elevation: 0.0,
-          backgroundColor: Theme.of(context).primaryColor,
-          title: Text(
-            "カレンダー",
-            style: TextStyle(color: Theme.of(context).selectedRowColor),
+        backgroundColor: Theme.of(context).hoverColor,
+        resizeToAvoidBottomInset: false,
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(45),
+          child: AppBar(
+            // elevation: 0.0,
+            backgroundColor: Theme.of(context).primaryColor,
+            title: Text(
+              "カレンダー",
+              style: TextStyle(color: Theme.of(context).selectedRowColor),
+            ),
+            actions: [
+              IconButton(
+                icon: Icon(Icons.settings,
+                    color: Theme.of(context).selectedRowColor),
+                onPressed: () => Navigator.pushNamed(context, SettingScreen.id),
+              ),
+            ],
           ),
-          actions: [
-            IconButton(
-              icon: Icon(Icons.settings,color: Theme.of(context).selectedRowColor),
-              onPressed: () => Navigator.pushNamed(context, SettingScreen.id),
+        ),
+        body: Column(
+          children: [
+            //カレンダーの大きさ変えてる
+            Expanded(
+              flex: 5,
+              child: Card(
+                elevation: 3.0,
+                // shape: RoundedRectangleBorder(
+                //     borderRadius: BorderRadius.circular(10),
+                //   ),
+                // テーブルカレンダーを実装
+                child: TableCalendar(
+                  //カレンダーの大きさ変えれるようにするやつ
+                  shouldFillViewport: true,
+                  locale: 'ja_JP',
+                  firstDay: DateTime.utc(now.year - 1, 1, 1),
+                  lastDay: DateTime.utc(now.year + 1, 12, 31),
+                  focusedDay: _focusedDay,
+                  calendarFormat: _calendarFormat,
+
+                  //カレンダーのマーカー表示するためのビルダー
+                  calendarBuilders: CalendarBuilders(
+                    markerBuilder: (context, date, events) {
+                      if (events.isNotEmpty) {
+                        return _buildEventsMarker(date, events, context);
+                      }
+                    },
+                  ),
+
+                  // カレンダーのフォーマットを月毎にしかできなくする
+                  availableCalendarFormats: const {
+                    CalendarFormat.month: 'Month',
+                  },
+
+                  selectedDayPredicate: (day) {
+                    return isSameDay(_selectedDay, day);
+                  },
+                  onDaySelected: (selectedDay, focusedDay) {
+                    if (!isSameDay(_selectedDay, selectedDay)) {
+                      setState(() {
+                        _selectedDay = selectedDay;
+                        _focusedDay = focusedDay;
+                      });
+                      _getEventsfromDay(_selectedDay);
+                    }
+                  },
+                  onFormatChanged: (format) {
+                    if (_calendarFormat != format) {
+                      setState(() {
+                        _calendarFormat = format;
+                      });
+                    }
+                  },
+                  onPageChanged: (focusedDay) {
+                    _focusedDay = focusedDay;
+                  },
+
+                  // イベントを読み込む
+                  eventLoader: _getEventsfromDay,
+                  // カレンダーのスタイル
+                  calendarStyle: calendarStyle(context),
+                  daysOfWeekStyle: dayStyle,
+                  // カレンダーの上の部分のスタイル
+                  headerStyle: calendarHeadStyle(context),
+                ),
+              ),
+            ),
+
+            //ちょっと隙間小さかったから空白を足してるよ
+            const SizedBox(height: 3),
+
+            // 今選択している日付をリストの上に表示する
+            selectedDay(
+              selectedDay: _selectedDay,
+            ),
+
+            //ちょっと隙間小さかったから空白を足してるよ
+            SizedBox(height: 3),
+
+            // タスクのリストを表示する
+            Expanded(
+              flex: 4,
+              child: _getEventsfromDay(_selectedDay).isEmpty
+                  ? Padding(
+                      padding: const EdgeInsets.only(bottom: 25.0),
+                      child: Center(
+                        child: Text(
+                          DateFormat.MMMEd('ja').format(_selectedDay) +
+                              'の締め切りはありません',
+                          style: TextStyle(fontSize: 16),
+                        ),
+                      ),
+                    )
+                  : ScrollablePositionedList.builder(
+                      itemCount: _getEventsfromDay(_selectedDay).length,
+                      //スクロール関係のコントローラとリスナー追加
+                      itemScrollController: itemScrollController,
+                      itemPositionsListener: itemPositionsListener,
+                      //itembuilderでひとつずつカードを生成していく(INDEX)が1,2,3..というふうになる
+                      itemBuilder: (context, index) {
+                        // 下の定義の[index]にも1,2,3..というふうに数字が流れる、
+                        // 最終的には最後のカードの要素の値が入る
+                        final event = _getEventsfromDay(_selectedDay)[index];
+                        return Container(
+                          //その日のリストの最後のインデックスのカードの中身と、
+                          // その日のリストの最後のカードの要素が一緒だったら、そのカードには下の余白を追加する
+                          margin: event == _getEventsfromDay(_selectedDay).last
+                              ? EdgeInsets.only(bottom: 22)
+                              : EdgeInsets.only(),
+                          //cardをタップすると締め切りの詳細が見れるようにする
+                          child: GestureDetector(
+                            onTap: () async {
+                              await Navigator.pushNamed(
+                                  context,
+                                  '/add_hori',
+                                  arguments: Arguments(_selectedDay, true, event));
+                              //編集のページから帰ってきてからSETSTATEで更新する
+                              setState(() {});
+                            },
+                            child: Card(
+                              //影設定
+                              elevation: 5,
+                              //カードの形の角を取る
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+
+                              //自作のリストタイルを使う
+                              child: CustomTile(
+                                title: event['title'].toString(),
+                                subtitle: event['detail'].toString(),
+                                icon: Icon(Icons.navigate_next),
+                              ),
+                            ),
+                          ),
+                        );
+                      }),
             ),
           ],
         ),
-      ),
-      body: Column(
-        children: [
-          //カレンダーの大きさ変えてる
-          Expanded(
-            flex: 5,
-            child: Card(
-              elevation: 3.0,
-              // shape: RoundedRectangleBorder(
-              //     borderRadius: BorderRadius.circular(10),
-              //   ),
-              // テーブルカレンダーを実装
-              child: TableCalendar(
-                //カレンダーの大きさ変えれるようにするやつ
-                shouldFillViewport: true,
 
-                locale: 'ja_JP',
-                firstDay: DateTime.utc(now.year - 1, 1, 1),
-                lastDay: DateTime.utc(now.year + 1, 12, 31),
-                focusedDay: _focusedDay,
-                calendarFormat: _calendarFormat,
-
-                //カレンダーのマーカー表示するためのビルダー
-                calendarBuilders: CalendarBuilders(
-                  markerBuilder: (context, date, events) {
-                    if (events.isNotEmpty) {
-                      return _buildEventsMarker(date, events, context);
-                    }
-                  },
-                ),
-
-                // カレンダーのフォーマットを月毎にしかできなくする
-                availableCalendarFormats: const {
-                  CalendarFormat.month: 'Month',
-                },
-
-                selectedDayPredicate: (day) {
-                  return isSameDay(_selectedDay, day);
-                },
-                onDaySelected: (selectedDay, focusedDay) {
-                  if (!isSameDay(_selectedDay, selectedDay)) {
-                    setState(() {
-                      _selectedDay = selectedDay;
-                      _focusedDay = focusedDay;
-                    });
-                    _getEventsfromDay(_selectedDay);
-                  }
-                },
-                onFormatChanged: (format) {
-                  if (_calendarFormat != format) {
-                    setState(() {
-                      _calendarFormat = format;
-                    });
-                  }
-                },
-                onPageChanged: (focusedDay) {
-                  _focusedDay = focusedDay;
-                },
-
-                // イベントを読み込む
-                eventLoader: _getEventsfromDay,
-                // カレンダーのスタイル
-                calendarStyle: calendarStyle(context),
-                daysOfWeekStyle: dayStyle,
-                // カレンダーの上の部分のスタイル
-                headerStyle: calendarHeadStyle(context),
-              ),
-            ),
-          ),
-
-          //ちょっと隙間小さかったから空白を足してるよ
-          const SizedBox(height: 3),
-
-          // 今選択している日付をリストの上に表示する
-          selectedDay(
-              selectedDay: _selectedDay,
-          ),
-
-          //ちょっと隙間小さかったから空白を足してるよ
-          SizedBox(height: 3),
-
-          // タスクのリストを表示する
-          Expanded(
-            flex: 4,
-            child: _getEventsfromDay(_selectedDay).isEmpty
-                ? Center(
-                    child: Text(
-                      DateFormat.MMMEd('ja').format(_selectedDay) +
-                          'の締め切りはありません',
-                      style: TextStyle(fontSize: 16),
-                    ),
-                  )
-                : ScrollablePositionedList.builder(
-                    itemCount: _getEventsfromDay(_selectedDay).length,
-                    //スクロール関係のコントローラとリスナー追加
-                    itemScrollController: itemScrollController,
-                    itemPositionsListener: itemPositionsListener,
-                    //itembuilderでひとつずつカードを生成していく(INDEX)が1,2,3..というふうになる
-                    itemBuilder: (context, index) {
-                      // 下の定義の[index]にも1,2,3..というふうに数字が流れる、
-                      // 最終的には最後のカードの要素の値が入る
-                      final event = _getEventsfromDay(_selectedDay)[index];
-                      return Container(
-                        //その日のリストの最後のインデックスのカードの中身と、
-                        // その日のリストの最後のカードの要素が一緒だったら、そのカードには下の余白を追加する
-                        margin: event == _getEventsfromDay(_selectedDay).last
-                            ? EdgeInsets.only(bottom: 22)
-                            : EdgeInsets.only(),
-                        //cardをタップすると締め切りの詳細が見れるようにする
-                        child: GestureDetector(
-                          onTap: () async {
-                            await Navigator.pushNamed(
-                                context, AddEventScreen.id,
-                                arguments:
-                                    Arguments(_selectedDay, true, event));
-                            //編集のページから帰ってきてからSETSTATEで更新する
-                            setState(() {});
-                          },
-                          child: Card(
-                            //影設定
-                            elevation: 5,
-                            //カードの形の角を取る
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-
-                            //自作のリストタイルを使う
-                            child: CustomTile(
-                              title: event['title'].toString(),
-                              subtitle: event['detail'].toString(),
-                              icon: Icon(Icons.navigate_next),
-                            ),
-                          ),
-                        ),
-                      );
-                    }),
-          ),
-        ],
-      ),
-
-      // タスク作成ボタン
-      floatingActionButton: SizedBox(
-        width: 60,
-        height: 60,
-        child: FloatingActionButton(
-          backgroundColor: Theme.of(context).accentColor,
-          // イベント追加ページに遷移
-          onPressed: () async {
-            final isAdd = await Navigator.pushNamed(
+        // タスク作成ボタン
+        floatingActionButton: SizedBox(
+          width: 60,
+          height: 60,
+          child: FloatingActionButton(
+            backgroundColor: Theme.of(context).accentColor,
+            // イベント追加ページに遷移
+            onPressed: () async {
+              final isAdd = await Navigator.pushNamed(
                 context,
-                AddEventScreen.id,
+                //add eventにしたからのアニメーションをつけて画面遷移する main.dart L71参照
+                '/add_ver',
                 //add_pageで使うやつを渡す
                 arguments: Arguments(_selectedDay, false, {}),
-            );
+              );
 
-            //上で帰ってくるの待って、setStateで画面ぎゅいーん
-            setState(() {});
+              //上で帰ってくるの待って、setStateで画面ぎゅいーん
+              setState(() {});
 
-            //締め切りの追加が終わったら、1番下のリスト表示
-            // もし締め切りを追加しなかったらスクロールしない
-            if (isAdd == true && _getEventsfromDay(_selectedDay).isNotEmpty) {
-              itemScrollController.jumpTo(
-                  index: _getEventsfromDay(_selectedDay).length);
-            }
-            else {}
-            print(isAdd);
+              //締め切りの追加が終わったら、1番下のリスト表示
+              // もし締め切りを追加しなかったらスクロールしない
+              if (isAdd == true && _getEventsfromDay(_selectedDay).isNotEmpty) {
+                itemScrollController.jumpTo(
+                    index: _getEventsfromDay(_selectedDay).length);
+              } else {}
+              print(isAdd);
+            },
 
-          },
-          child: Icon(
-            Icons.add,
-            color: Colors.white,
-            size: 38,
+            child: Icon(
+              Icons.add,
+              color: Colors.white,
+              size: 38,
+            ),
           ),
         ),
-      ),
-    );
+      );
   }
 }
 
-
 // イベントの数を数字で表示するためのウィジェット
 Widget _buildEventsMarker(DateTime date, List events, context) {
-  //テーマ別に色を変えられるようにするためのやつ
-  final platformBrightness = MediaQuery.platformBrightnessOf(context);
-
   return Positioned(
     right: 5,
     bottom: 5,
     child: AnimatedContainer(
       duration: const Duration(milliseconds: 300),
       decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: Theme.of(context).indicatorColor
-        // : Theme.of(context).primaryColor
-      ),
+          shape: BoxShape.circle, color: Theme.of(context).indicatorColor
+          // : Theme.of(context).primaryColor
+          ),
       width: 16.0,
       height: 16.0,
       child: Center(

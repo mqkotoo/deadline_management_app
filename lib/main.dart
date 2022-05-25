@@ -3,15 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_deadline_management/screens/add_event_screen.dart';
 import 'package:flutter_deadline_management/screens/calendar_screen.dart';
 import 'package:flutter_deadline_management/screens/setting_pages/change_theme.dart';
-import 'package:flutter_deadline_management/screens/setting_pages/notification.dart';
+import 'package:flutter_deadline_management/screens/setting_pages/notification/notification.dart';
 import 'package:flutter_deadline_management/screens/setting_pages/setting_screen.dart';
+import 'package:flutter_deadline_management/screens/setting_pages/theme/theme_provider.dart';
 import 'package:flutter_deadline_management/start_up.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:page_transition/page_transition.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'component/constants.dart';
 import 'firebase_options.dart';
 import 'package:flutter/services.dart';
-
-import 'model/theme/theme_provider.dart';
 
 
 void main() async {
@@ -23,16 +25,35 @@ void main() async {
       .then((_) => runApp(ProviderScope(child: MyApp())));
 }
 
-class MyApp extends ConsumerWidget {
+class MyApp extends StatefulHookConsumerWidget {
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  _MyAppState createState() => _MyAppState();
+}
+
+
+class _MyAppState extends ConsumerState<MyApp> {
+
+  @override
+  void initState() {
+    getColorTheme();
+    super.initState();
+  }
+
+  Future getColorTheme() async{
+    var prefs = await SharedPreferences.getInstance();
+    int index  = prefs.getInt('theme') ?? 0;
+    print(index);
+    var themeProvider =  ref.watch(ThemeProvider);
+    themeProvider.currentTheme = getThemeIndex(index);
+    setState(() {});
+  }
+
+  @override
+  Widget build(BuildContext context) {
 
     var themeProvider = ref.watch(ThemeProvider);
 
-
     return MaterialApp(
-
-      //IPHONEの設定でダークモードにした時のテーマ
       theme: themeProvider.currentTheme,
       debugShowCheckedModeBanner: false,
       routes: <String, WidgetBuilder>{
@@ -45,6 +66,31 @@ class MyApp extends ConsumerWidget {
       },
 
       home: StartUpPage(),
+
+      //add event page に遷移するときにしたからのアニメーションをつけるためのセッティング
+      onGenerateRoute: (settings) {
+        switch (settings.name) {
+          case '/add_ver':
+            return PageTransition(
+              child: AddEventScreen(),
+              duration: Duration(milliseconds: 200),
+              reverseDuration: Duration(milliseconds: 200),
+              curve: Curves.linear,
+              type: PageTransitionType.bottomToTop,
+              settings: settings,
+            );
+          case '/add_hori':
+            return PageTransition(
+              child: AddEventScreen(),
+              duration: Duration(milliseconds: 200),
+              reverseDuration: Duration(milliseconds: 200),
+              type: PageTransitionType.rightToLeft,
+              settings: settings,
+            );
+          default:
+            return null;
+        }
+      },
 
     );
 

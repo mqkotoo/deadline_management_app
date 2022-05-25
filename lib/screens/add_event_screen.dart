@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_deadline_management/screens/calendar_screen.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import '../model/calendar_model.dart';
@@ -11,7 +12,6 @@ class Arguments {
   final DateTime selectedDay;
   final bool isUpdate;
   final Map events;
-
   Arguments(this.selectedDay, this.isUpdate, this.events);
 }
 
@@ -24,32 +24,49 @@ class AddEventScreen extends StatefulHookConsumerWidget {
 
 class _AddEventScreenState extends ConsumerState<AddEventScreen> {
   // late final List list;
+
+  final TextEditingController _eventController = TextEditingController();
+
+  final TextEditingController _detailEventController = TextEditingController();
+
+
   @override
   Widget build(BuildContext context) {
     //argumentsのなかにline7で作った形式で値を扱えるようになった
     final Arguments? arguments =
         ModalRoute.of(context)!.settings.arguments as Arguments?;
+    
+    useEffect(() {
 
-    //イベント追加用テキストコントローラー
-    TextEditingController _eventController =
-        TextEditingController(text: arguments!.events['title'] ?? '');
+      _eventController.text = arguments!.events['title'] ?? '';
 
-    //詳細用テキストコントローラー
-    TextEditingController _detailEventController =
-        TextEditingController(text: arguments.events['detail'] ?? '');
+      _detailEventController.text = arguments.events['detail'] ?? '';
+
+      // //イベント追加用テキストコントローラー
+      // TextEditingController _eventController =
+      // TextEditingController(text: arguments!.events['title'] ?? '');
+      //
+      // //詳細用テキストコントローラー
+      // TextEditingController _detailEventController =
+      // TextEditingController(text: arguments.events['detail'] ?? '');
+
+
+
+      return null;
+
+    },const []);
+
 
     //イベント追加した後にボタンだけで詳細追加のところにフォーカスできるようにするやつ
-    final _detailFocusNode = FocusNode();
+    // final _detailFocusNode = FocusNode();
 
-    //テーマ別に色を変えられるようにするためのやつ
-    final platformBrightness = MediaQuery.platformBrightnessOf(context);
 
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColor,
         title: Text(
           //編集か追加でボタンのテキストを変える
-          arguments.isUpdate ? '締め切りを編集する' : '締め切りを追加する',
+          arguments!.isUpdate ? '締め切りを編集する' : '締め切りを追加する',
           style: TextStyle(color: Theme.of(context).selectedRowColor),
         ),
         leading: IconButton(
@@ -95,7 +112,7 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                   ),
                 );
               },
-              icon: Icon(Icons.delete, size: 28),
+              icon: Icon(Icons.delete, size: 28,color: Theme.of(context).selectedRowColor),
             ),
           ),
         ],
@@ -161,7 +178,7 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                           width: 2.0, color: Theme.of(context).disabledColor),
                       borderRadius: BorderRadius.circular(8)),
                   labelStyle: TextStyle(
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.w700,
                       //テーマによってラベルテキストの色を変える
                       color: Theme.of(context).bottomAppBarColor,
                   ),
@@ -177,17 +194,10 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                 //  キーパッドの左下の「確定」→「次へ」みたいにする
                 textInputAction: TextInputAction.next,
 
-                //  次へ　を押したら詳細入力フォームにフォーカスを移すようにする
-                onFieldSubmitted: (_) {
-                  FocusScope.of(context).requestFocus(_detailFocusNode);
-                },
-                //バリデーション処理
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return '締め切りを入力してください';
-                  }
-                  return null;
-                },
+                // //  次へ　を押したら詳細入力フォームにフォーカスを移すようにする
+                // onFieldSubmitted: (_) {
+                //   FocusScope.of(context).requestFocus(_detailFocusNode);
+                // },
               ),
 
               SizedBox(
@@ -210,7 +220,7 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                           width: 2.0, color: Theme.of(context).disabledColor),
                       borderRadius: BorderRadius.circular(8)),
                   labelStyle: TextStyle(
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.w700,
                       //テーマによってラベルテキストの色を変える
                       color: Theme.of(context).bottomAppBarColor,
                   ),
@@ -225,8 +235,8 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                   floatingLabelBehavior: FloatingLabelBehavior.always,
                 ),
 
-                //  詳細入力フォームにフォーカスを移すためにここの入力フォームにFOCUSNODEを設定してあげる
-                focusNode: _detailFocusNode,
+                // //  詳細入力フォームにフォーカスを移すためにここの入力フォームにFOCUSNODEを設定してあげる
+                // focusNode: _detailFocusNode,
               ),
 
               SizedBox(
@@ -239,7 +249,9 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                 child: TextButton(
                   style: TextButton.styleFrom(
                       //テーマによってbuttonの色を変える
-                      backgroundColor: Theme.of(context).disabledColor),
+                      backgroundColor: Theme.of(context).disabledColor,
+                      elevation: 10,
+                  ),
                   onPressed: () {
                     if (_eventController.text.isEmpty) {
                       return;

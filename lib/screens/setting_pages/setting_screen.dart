@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_deadline_management/screens/setting_pages/notification.dart';
+import 'package:flutter_deadline_management/screens/setting_pages/notification/notification.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'change_theme.dart';
 
@@ -7,9 +7,9 @@ class SettingScreen extends StatelessWidget {
   static const String id = 'setting';
 
   //プライバシーポリシーのURL
-  final privacyPolicyUrl = 'https://qiita.com/mqkotoo/private/67e00cec34ce2ff84d63';
+  final privacyPolicyUrl = 'https://qiita.com/mqkotoo/private/67e00cec34ce2ff84d63/';
   //お問い合わせ用TWITTERのURL
-  final twitterUrl = 'https://twitter.com/Ldcax2BkFS3UuQW';
+  final twitterUrl = 'https://twitter.com/Ldcax2BkFS3UuQW/';
 
   @override
   Widget build(BuildContext context) {
@@ -81,6 +81,7 @@ Future _opnePrivacyPolicyUrl(String url) async {
       url,
       forceSafariVC: true,
       forceWebView: true,
+      enableJavaScript: true,
     );
   } else {
     throw 'このURLにはアクセスできません';
@@ -94,6 +95,7 @@ Future _opneInquiryUrl(String url) async {
       url,
       forceSafariVC: true,
       forceWebView: true,
+      enableJavaScript: true,
     );
   } else {
     throw 'このURLにはアクセスできません';
