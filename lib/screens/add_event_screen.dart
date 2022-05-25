@@ -58,7 +58,7 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
 
 
     //イベント追加した後にボタンだけで詳細追加のところにフォーカスできるようにするやつ
-    final _detailFocusNode = FocusNode();
+    // final _detailFocusNode = FocusNode();
 
 
     return Scaffold(
@@ -194,10 +194,10 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                 //  キーパッドの左下の「確定」→「次へ」みたいにする
                 textInputAction: TextInputAction.next,
 
-                //  次へ　を押したら詳細入力フォームにフォーカスを移すようにする
-                onFieldSubmitted: (_) {
-                  FocusScope.of(context).requestFocus(_detailFocusNode);
-                },
+                // //  次へ　を押したら詳細入力フォームにフォーカスを移すようにする
+                // onFieldSubmitted: (_) {
+                //   FocusScope.of(context).requestFocus(_detailFocusNode);
+                // },
               ),
 
               SizedBox(
@@ -235,8 +235,8 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                   floatingLabelBehavior: FloatingLabelBehavior.always,
                 ),
 
-                //  詳細入力フォームにフォーカスを移すためにここの入力フォームにFOCUSNODEを設定してあげる
-                focusNode: _detailFocusNode,
+                // //  詳細入力フォームにフォーカスを移すためにここの入力フォームにFOCUSNODEを設定してあげる
+                // focusNode: _detailFocusNode,
               ),
 
               SizedBox(
