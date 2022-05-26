@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_deadline_management/screens/setting_pages/notification/notify_provider.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../../../model/calendar_model.dart';
 
 class SettingNotificationScreen extends StatefulHookConsumerWidget {

@@ -4,12 +4,13 @@ import 'package:flutter_deadline_management/model/calendar_model.dart';
 import 'package:flutter_deadline_management/screens/setting_pages/setting_screen.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../component/constants.dart';
 import '../component/selectedDay.dart';
 import 'add_event_screen.dart';
+import 'dart:io';
+
 
 class CalendarScreen extends StatefulHookConsumerWidget {
   static const String id = 'calendar';
@@ -206,7 +207,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                             onTap: () async {
                               await Navigator.pushNamed(
                                   context,
-                                  '/add_hori',
+                                  Platform.isAndroid ? '/add_hori' : AddEventScreen.id,
                                   arguments: Arguments(_selectedDay, true, event));
                               //編集のページから帰ってきてからSETSTATEで更新する
                               setState(() {});
@@ -244,7 +245,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
               final isAdd = await Navigator.pushNamed(
                 context,
                 //add eventにしたからのアニメーションをつけて画面遷移する main.dart L71参照
-                '/add_ver',
+                Platform.isIOS ? '/add_ver' : AddEventScreen.id,
                 //add_pageで使うやつを渡す
                 arguments: Arguments(_selectedDay, false, {}),
               );
