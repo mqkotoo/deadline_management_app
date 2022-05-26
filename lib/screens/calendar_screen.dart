@@ -207,6 +207,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                             onTap: () async {
                               await Navigator.pushNamed(
                                   context,
+                                  // IOSにもPAGE_TRANSITIONを使うとスワイプでポップできなくなるからANDROIDだけ適応
                                   Platform.isAndroid ? '/add_hori' : AddEventScreen.id,
                                   arguments: Arguments(_selectedDay, true, event));
                               //編集のページから帰ってきてからSETSTATEで更新する
