@@ -72,7 +72,7 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
         leading: IconButton(
           //calendarページのisAddにfalseを返している
           onPressed: () => Navigator.pop(context,false),
-          icon: Icon(Icons.clear,color: Theme.of(context).selectedRowColor),
+          icon: Icon(Icons.clear,size: 37,color: Theme.of(context).selectedRowColor),
         ),
         actions: [
           Visibility(
