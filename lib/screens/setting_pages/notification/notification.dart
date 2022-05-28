@@ -147,34 +147,16 @@ class _SettingNotificationScreenState extends ConsumerState<SettingNotificationS
           ),
         ),
       ),
-      body:  Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Expanded(
-            child: ListView(
-                children: [
-                  _menuItem(context,title: "通知", child: _switch()),
+      body:  ListView(
+          children: [
+            _menuItem(context,title: "通知", child: _switch()),
 
-                  //通知がオフだったら「通知を受け取る時間」を非表示にする
-                  isOn
-                      ? _menuItem(context,title: "通知を受け取る時間",
-                      child: _displayTimeBox(onTap : () => _pickTime(context)))
-                      : SizedBox.shrink()
-                ]
-            ),
-          ),
-          ElevatedButton(
-              onPressed: () {
-                notifyProvider.iosNotify(
-                    //締め切りの数
-                    events.length.toString(),
-                //  締め切りの内容
-                  events.toString(),
-                );
-                notifyProvider.androidNotify();
-              },
-              child: Text('通知'))
-        ],
+            //通知がオフだったら「通知を受け取る時間」を非表示にする
+            isOn
+                ? _menuItem(context,title: "通知を受け取る時間",
+                child: _displayTimeBox(onTap : () => _pickTime(context)))
+                : SizedBox.shrink()
+          ]
       ),
     );
   }
