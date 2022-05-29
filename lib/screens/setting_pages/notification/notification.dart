@@ -205,6 +205,7 @@ class _SettingNotificationScreenState extends ConsumerState<SettingNotificationS
             print("$isOn");
           });
         }
+        notifyProvider.selectOnOff(isOn);
       },
     );
   }
