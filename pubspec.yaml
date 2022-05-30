@@ -12,6 +12,8 @@ dependencies:
   flutter:
     sdk: flutter
 
+
+
   cupertino_icons: ^1.0.2
   firebase_core: ^1.14.0
   firebase_auth: ^3.3.12
@@ -37,4 +39,7 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+
+  assets:
+    - images/
 

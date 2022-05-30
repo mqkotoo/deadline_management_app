@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_deadline_management/screens/setting_pages/notification/notify_provider.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../../model/calendar_model.dart';
 
 class SettingNotificationScreen extends StatefulHookConsumerWidget {
   static const String id = 'notification';
@@ -28,13 +27,16 @@ class _SettingNotificationScreenState extends ConsumerState<SettingNotificationS
     prefs.setBool(key, value);
   }
 
+  _saveTime(String key, String value) async{
+    var prefs = await SharedPreferences.getInstance();
+    prefs.setString(key, value);
+  }
+
   _restoreValues() async {
     var prefs = await SharedPreferences.getInstance();
     setState(() {
       isOn = prefs.getBool('isOn') ?? false;
       print(isOn);
-      // _selectedTimeValue = prefs.getString('timeText') ?? '無理';
-      // print(timeText);
     });
   }
 
@@ -48,11 +50,6 @@ class _SettingNotificationScreenState extends ConsumerState<SettingNotificationS
 
   @override
   Widget build(BuildContext context) {
-
-    var notifyProvider = ref.read(NotifyProvider);
-
-    final events = ref.watch(calendarProvider).eventsList;
-
 
     //  timePickerを呼ぶための関数ーーーーーーーーーーーーーーーーーーーーーーーーー
     Future _pickTime(BuildContext context) async{

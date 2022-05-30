@@ -2,7 +2,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_deadline_management/screens/add_event_screen.dart';
 import 'package:flutter_deadline_management/screens/calendar_screen.dart';
-import 'package:flutter_deadline_management/screens/setting_pages/change_theme.dart';
+import 'package:flutter_deadline_management/screens/setting_pages/theme/change_theme.dart';
+import 'package:flutter_deadline_management/screens/setting_pages/how_to_use/how_to_use.dart';
 import 'package:flutter_deadline_management/screens/setting_pages/notification/notification.dart';
 import 'package:flutter_deadline_management/screens/setting_pages/setting_screen.dart';
 import 'package:flutter_deadline_management/screens/setting_pages/theme/theme_provider.dart';
@@ -63,6 +64,7 @@ class _MyAppState extends ConsumerState<MyApp> {
         AddEventScreen.id: (BuildContext context) => AddEventScreen(),
         SettingNotificationScreen.id : (BuildContext context) => SettingNotificationScreen(),
         ChangeThemeScreen.id : (BuildContext context) => ChangeThemeScreen(),
+        HowToUseScreen.id : (BuildContext context) => HowToUseScreen()
       },
 
       home: StartUpPage(),

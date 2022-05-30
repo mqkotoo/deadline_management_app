@@ -5,7 +5,6 @@ import '../screens/setting_pages/theme/theme.dart';
 
 
 CalendarStyle calendarStyle(context) {
-  final platformBrightness = MediaQuery.platformBrightnessOf(context);
   return CalendarStyle(
     // 選択した日のまるいやつのスタイル
     selectedDecoration: BoxDecoration(

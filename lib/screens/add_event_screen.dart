@@ -198,6 +198,7 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                 // onFieldSubmitted: (_) {
                 //   FocusScope.of(context).requestFocus(_detailFocusNode);
                 // },
+
               ),
 
               SizedBox(
@@ -229,7 +230,7 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                   labelText: arguments.isUpdate ? '詳細の変更' : '詳細の追加',
                   hintText: arguments.isUpdate
                       ? null
-                      : '（任意）\n原稿用紙2枚以上\n体育が終わったら〇〇先生に提出する',
+                      : '（任意）\n原稿用紙2枚以上\n体育が終わったら〇〇先生に提出する\n14:30まで',
 
                   //ラベルテキスト枠の上に固定する
                   floatingLabelBehavior: FloatingLabelBehavior.always,
