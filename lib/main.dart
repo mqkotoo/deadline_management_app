@@ -15,10 +15,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'component/constants.dart';
 import 'firebase_options.dart';
 import 'package:flutter/services.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  MobileAds.instance.initialize();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   //画面を縦に固定　横向きにならないようにする
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);

@@ -62,6 +62,7 @@ class HowToUseScreen extends StatelessWidget {
                   _spaceS(),
                   _imageContainer(context, 'images/notification_on.png'),
                   _spaceS(),
+                  _text("設定 >  通知"),
                   _text("①で通知のオンオフを設定する"),
                   _text("通知をオンにしている場合には、②をタップすると通知を受け取る時間を指定することができる"),
                   _spaceL(),

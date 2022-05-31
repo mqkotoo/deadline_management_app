@@ -3,6 +3,7 @@ import 'package:flutter_deadline_management/screens/setting_pages/notification/n
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+
 class SettingNotificationScreen extends StatefulHookConsumerWidget {
   static const String id = 'notification';
 
@@ -144,16 +145,22 @@ class _SettingNotificationScreenState extends ConsumerState<SettingNotificationS
           ),
         ),
       ),
-      body:  ListView(
-          children: [
-            _menuItem(context,title: "通知", child: _switch()),
+      body:  Column(
+        children: [
+          Expanded(
+            child: ListView(
+                children: [
+                  _menuItem(context,title: "通知", child: _switch()),
 
-            //通知がオフだったら「通知を受け取る時間」を非表示にする
-            isOn
-                ? _menuItem(context,title: "通知を受け取る時間",
-                child: _displayTimeBox(onTap : () => _pickTime(context)))
-                : SizedBox.shrink()
-          ]
+                  //通知がオフだったら「通知を受け取る時間」を非表示にする
+                  isOn
+                      ? _menuItem(context,title: "通知を受け取る時間",
+                      child: _displayTimeBox(onTap : () => _pickTime(context)))
+                      : SizedBox.shrink()
+                ]
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -192,6 +199,7 @@ class _SettingNotificationScreenState extends ConsumerState<SettingNotificationS
 
   //オンオフのスイッチのウィジェットーーーーーーーーーーーーーーーーー
   Widget _switch() {
+    var notifyProvider = ref.read(NotifyProvider);
     return Switch(
       value: isOn,
       onChanged: (bool? value) {

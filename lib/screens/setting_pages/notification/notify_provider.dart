@@ -36,13 +36,14 @@ class notifyProvider {
     )));
   }
 
-  static Future<void> selectOnOff(bool isOn)  async {
+  Future<void> selectOnOff(bool isOn)  async {
     if(isOn == false) {
       offNotification();
     }
   }
 
-  static Future<void> offNotification() async{
+
+  Future<void> offNotification() async{
     final flnp = FlutterLocalNotificationsPlugin();
      await flnp.cancelAll();
      print("通知オフ");
