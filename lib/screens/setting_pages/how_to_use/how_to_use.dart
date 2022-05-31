@@ -65,7 +65,7 @@ class HowToUseScreen extends StatelessWidget {
                   _text("①で通知のオンオフを設定する"),
                   _text("通知をオンにしている場合には、②をタップすると通知を受け取る時間を指定することができる"),
                   _spaceL(),
-                  _spaceL(),
+                  _spaceS(),
                 ],
               ),
             ),
@@ -98,13 +98,6 @@ class HowToUseScreen extends StatelessWidget {
       height: 40,
     );
   }
-
-  Widget _lineSpace() {
-    return SizedBox(
-      height: 5,
-    );
-  }
-
 
 
   Widget _text(String text) {
