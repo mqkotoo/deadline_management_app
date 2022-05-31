@@ -181,7 +181,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                       child: Center(
                         child: Text(
                           DateFormat.MMMEd('ja').format(_selectedDay) +
-                              'の締め切りはありません',
+                              'のタスクはありません',
                           style: TextStyle(fontSize: 16),
                         ),
                       ),

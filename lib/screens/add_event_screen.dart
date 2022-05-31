@@ -66,7 +66,7 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
         backgroundColor: Theme.of(context).primaryColor,
         title: Text(
           //編集か追加でボタンのテキストを変える
-          arguments!.isUpdate ? '締め切りを編集する' : '締め切りを追加する',
+          arguments!.isUpdate ? 'タスクを編集する' : 'タスクを追加する',
           style: TextStyle(color: Theme.of(context).selectedRowColor),
         ),
         leading: IconButton(
@@ -184,7 +184,7 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                   ),
 
                   //編集か追加でヒント、ラベルテキストを変える
-                  labelText: arguments.isUpdate ? '締め切り変更' : '締め切り追加',
+                  labelText: arguments.isUpdate ? 'タスク変更' : 'タスク追加',
                   hintText: arguments.isUpdate ? null : '（必須）読書感想文',
 
                   //ラベルテキスト枠の上に固定する
