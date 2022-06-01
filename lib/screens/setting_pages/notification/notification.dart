@@ -3,6 +3,8 @@ import 'package:flutter_deadline_management/screens/setting_pages/notification/n
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../ads/AdBanner.dart';
+
 
 class SettingNotificationScreen extends StatefulHookConsumerWidget {
   static const String id = 'notification';
@@ -110,6 +112,8 @@ class _SettingNotificationScreenState extends ConsumerState<SettingNotificationS
       }
     }
 
+    var deviceSize = MediaQuery.of(context).size;
+
     //時刻をリストの右側におくウィジェット
     Widget _displayTimeBox({void Function()? onTap}) {
       return GestureDetector(
@@ -160,6 +164,12 @@ class _SettingNotificationScreenState extends ConsumerState<SettingNotificationS
                 ]
             ),
           ),
+          SizedBox(
+            width: deviceSize.width,
+            height: deviceSize.height*0.07,
+            child: AdBanner(),
+          ),
+          SizedBox(height: deviceSize.height * 0.04)
         ],
       ),
     );

@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_deadline_management/screens/setting_pages/theme/theme.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import '../../../ads/AdBanner.dart';
 import '../../calendar_screen.dart';
 import 'package:flutter_deadline_management/screens/setting_pages/theme/theme_provider.dart'as theme;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -25,6 +26,8 @@ class _ChangeThemeScreenState extends ConsumerState<ChangeThemeScreen> {
       await prefs.setInt('theme',index);
     }
 
+    var deviceSize = MediaQuery.of(context).size;
+
 
     return Scaffold(
       appBar: AppBar(
@@ -41,169 +44,181 @@ class _ChangeThemeScreenState extends ConsumerState<ChangeThemeScreen> {
       ),
       body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(50.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+          Expanded(
+            child: Column(
               children: [
-                //dark
-                _colorContainer(
-                  onPress: () {
-                    themeProvider.changeDarkTheme();
-                    _saveColorTheme(1);
-                  },
-                  color: Color(0xff212121),
-                  //コンテナの真ん中にチェックボタンつけてる
-                  child: themeProvider.currentTheme == darkTheme
-                      ? Center(
-                      child: Icon(
-                          Icons.done, color: Colors.brown[300], size: 40))
-                      : SizedBox.shrink(),
+                Padding(
+                  padding: const EdgeInsets.all(50.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      //dark
+                      _colorContainer(
+                        onPress: () {
+                          themeProvider.changeDarkTheme();
+                          _saveColorTheme(1);
+                        },
+                        color: Color(0xff212121),
+                        //コンテナの真ん中にチェックボタンつけてる
+                        child: themeProvider.currentTheme == darkTheme
+                            ? Center(
+                            child: Icon(
+                                Icons.done, color: Colors.brown[300], size: 40))
+                            : SizedBox.shrink(),
+                      ),
+
+                      Spacer(),
+
+                      //pink
+                      _colorContainer(
+                        onPress: () {
+                          themeProvider.changePinkTheme();
+                          _saveColorTheme(2);
+                        },
+                        color: Colors.pink[200],
+                        //コンテナの真ん中にチェックボタンつけてる
+                        child: themeProvider.currentTheme == pinkTheme
+                            ? Center(
+                            child: Icon(
+                                Icons.done, color: Colors.brown, size: 40))
+                            : SizedBox.shrink(),
+                      ),
+
+                      Spacer(),
+
+                      //light
+                      _colorContainer(
+                        onPress: () {
+                          themeProvider.changeLightTheme();
+                          _saveColorTheme(3);
+                        },
+                        color: Colors.white,
+                        //コンテナの真ん中にチェックボタンつけてる
+                        child: themeProvider.currentTheme == lightTheme
+                            ? Center(
+                            child: Icon(
+                                Icons.done, color: Colors.brown, size: 40))
+                            : SizedBox.shrink(),
+                      ),
+
+                      Spacer(),
+
+                      //  blue
+                      _colorContainer(
+                        onPress: () {
+                          themeProvider.changeBlueTheme();
+                          _saveColorTheme(4);
+                        },
+                        color: Colors.blue,
+                        //コンテナの真ん中にチェックボタンつけてる
+                        child: themeProvider.currentTheme == blueTheme
+                            ? Center(
+                            child: Icon(
+                                Icons.done, color: Colors.brown, size: 40))
+                            : SizedBox.shrink()),
+                    ],
+                  ),
                 ),
+                Padding(
+                  padding: const EdgeInsets.all(50.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      //  orange
+                      _colorContainer(
+                        onPress: () {
+                          themeProvider.changeOrangeTheme();
+                          _saveColorTheme(5);
+                        },
+                        color: Colors.orange,
+                        //コンテナの真ん中にチェックボタンつけてる
+                        child: themeProvider.currentTheme == orangeTheme
+                            ? Center(
+                            child: Icon(
+                                Icons.done, color: Colors.brown, size: 40))
+                            : SizedBox.shrink(),
+                      ),
 
-                Spacer(),
+                      Spacer(),
 
-                //pink
-                _colorContainer(
-                  onPress: () {
-                    themeProvider.changePinkTheme();
-                    _saveColorTheme(2);
-                  },
-                  color: Colors.pink[200],
-                  //コンテナの真ん中にチェックボタンつけてる
-                  child: themeProvider.currentTheme == pinkTheme
-                      ? Center(
-                      child: Icon(
-                          Icons.done, color: Colors.brown, size: 40))
-                      : SizedBox.shrink(),
+                      //  red
+                      _colorContainer(
+                        onPress: () {
+                          themeProvider.changeRedTheme();
+                          _saveColorTheme(6);
+                        },
+                        color: Colors.red,
+                        //コンテナの真ん中にチェックボタンつけてる
+                        child: themeProvider.currentTheme == redTheme
+                            ? Center(
+                            child: Icon(
+                                Icons.done, color: Colors.brown, size: 40))
+                            : SizedBox.shrink(),
+                      ),
+
+                      Spacer(),
+
+                      //  green
+                      _colorContainer(
+                        onPress: () {
+                          themeProvider.changeGreenTheme();
+                          _saveColorTheme(7);
+                        },
+                        color: Colors.green,
+                        //コンテナの真ん中にチェックボタンつけてる
+                        child: themeProvider.currentTheme == greenTheme
+                            ? Center(
+                            child: Icon(
+                                Icons.done, color: Colors.brown, size: 40))
+                            : SizedBox.shrink(),
+                      ),
+
+                      Spacer(),
+
+                      //  yellow
+                      _colorContainer(
+                        onPress: () {
+                          themeProvider.changeYellowTheme();
+                          _saveColorTheme(8);
+                        },
+                        color: Color(0xffF3D800),
+                        //コンテナの真ん中にチェックボタンつけてる
+                        child: themeProvider.currentTheme == yellowTheme
+                            ? Center(
+                                child: Icon(
+                                    Icons.done, color: Colors.brown, size: 40))
+                            : SizedBox.shrink(),
+                      ),
+                    ],
+                  ),
                 ),
-
-                Spacer(),
-
-                //light
-                _colorContainer(
-                  onPress: () {
-                    themeProvider.changeLightTheme();
-                    _saveColorTheme(3);
-                  },
-                  color: Colors.white,
-                  //コンテナの真ん中にチェックボタンつけてる
-                  child: themeProvider.currentTheme == lightTheme
-                      ? Center(
-                      child: Icon(
-                          Icons.done, color: Colors.brown, size: 40))
-                      : SizedBox.shrink(),
-                ),
-
-                Spacer(),
-
-                //  blue
-                _colorContainer(
-                  onPress: () {
-                    themeProvider.changeBlueTheme();
-                    _saveColorTheme(4);
-                  },
-                  color: Colors.blue,
-                  //コンテナの真ん中にチェックボタンつけてる
-                  child: themeProvider.currentTheme == blueTheme
-                      ? Center(
-                      child: Icon(
-                          Icons.done, color: Colors.brown, size: 40))
-                      : SizedBox.shrink()),
+                SizedBox(height: 40),
+                SizedBox(
+                  height: 43,
+                  width: 70,
+                  child: ElevatedButton(
+                    onPressed: () => Navigator.popUntil(
+                        context, ModalRoute.withName(CalendarScreen.id)),
+                    child: Text(
+                      '決定',
+                      style: TextStyle(fontSize: 17),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      primary: Theme.of(context).disabledColor,
+                      onPrimary: Colors.white,
+                      elevation: 10
+                    ),
+                  ),
+                )
               ],
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(50.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                //  orange
-                _colorContainer(
-                  onPress: () {
-                    themeProvider.changeOrangeTheme();
-                    _saveColorTheme(5);
-                  },
-                  color: Colors.orange,
-                  //コンテナの真ん中にチェックボタンつけてる
-                  child: themeProvider.currentTheme == orangeTheme
-                      ? Center(
-                      child: Icon(
-                          Icons.done, color: Colors.brown, size: 40))
-                      : SizedBox.shrink(),
-                ),
-
-                Spacer(),
-
-                //  red
-                _colorContainer(
-                  onPress: () {
-                    themeProvider.changeRedTheme();
-                    _saveColorTheme(6);
-                  },
-                  color: Colors.red,
-                  //コンテナの真ん中にチェックボタンつけてる
-                  child: themeProvider.currentTheme == redTheme
-                      ? Center(
-                      child: Icon(
-                          Icons.done, color: Colors.brown, size: 40))
-                      : SizedBox.shrink(),
-                ),
-
-                Spacer(),
-
-                //  green
-                _colorContainer(
-                  onPress: () {
-                    themeProvider.changeGreenTheme();
-                    _saveColorTheme(7);
-                  },
-                  color: Colors.green,
-                  //コンテナの真ん中にチェックボタンつけてる
-                  child: themeProvider.currentTheme == greenTheme
-                      ? Center(
-                      child: Icon(
-                          Icons.done, color: Colors.brown, size: 40))
-                      : SizedBox.shrink(),
-                ),
-
-                Spacer(),
-
-                //  yellow
-                _colorContainer(
-                  onPress: () {
-                    themeProvider.changeYellowTheme();
-                    _saveColorTheme(8);
-                  },
-                  color: Color(0xffF3D800),
-                  //コンテナの真ん中にチェックボタンつけてる
-                  child: themeProvider.currentTheme == yellowTheme
-                      ? Center(
-                          child: Icon(
-                              Icons.done, color: Colors.brown, size: 40))
-                      : SizedBox.shrink(),
-                ),
-              ],
-            ),
-          ),
-          SizedBox(height: 40),
           SizedBox(
-            height: 43,
-            width: 70,
-            child: ElevatedButton(
-              onPressed: () => Navigator.popUntil(
-                  context, ModalRoute.withName(CalendarScreen.id)),
-              child: Text(
-                '決定',
-                style: TextStyle(fontSize: 17),
-              ),
-              style: ElevatedButton.styleFrom(
-                primary: Theme.of(context).disabledColor,
-                onPrimary: Colors.white,
-                elevation: 10
-              ),
-            ),
-          )
+            width: deviceSize.width,
+            height: deviceSize.height*0.07,
+            child: AdBanner(),
+          ),
+          SizedBox(height: deviceSize.height * 0.04)
         ],
       ),
     );
