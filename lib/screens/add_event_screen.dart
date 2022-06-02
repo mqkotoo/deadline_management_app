@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_deadline_management/screens/calendar_screen.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import '../ads/AdBanner.dart';
@@ -63,6 +62,7 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
 
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColor,
         title: Text(
@@ -121,7 +121,7 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
       body: Column(
         children: [
           Expanded(
-            child: SingleChildScrollView(  //ここをWILLPOPで囲む
+            child: SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.all(40.0),
                 child: Column(
@@ -197,11 +197,6 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
 
                       //  キーパッドの左下の「確定」→「次へ」みたいにする
                       textInputAction: TextInputAction.next,
-
-                      // //  次へ　を押したら詳細入力フォームにフォーカスを移すようにする
-                      // onFieldSubmitted: (_) {
-                      //   FocusScope.of(context).requestFocus(_detailFocusNode);
-                      // },
 
                     ),
 
@@ -297,13 +292,13 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                 ),
               ),
             ),
-          ), 
-          SizedBox(
-            width: deviceSize.width,
+          ),
+            SizedBox(
+              width: deviceSize.width,
               height: deviceSize.height*0.07,
               child: AdBanner(),
-          ),
-          SizedBox(height: deviceSize.height * 0.04)
+            ),
+            SizedBox(height: deviceSize.height * 0.04),
         ],
       ),
     );
