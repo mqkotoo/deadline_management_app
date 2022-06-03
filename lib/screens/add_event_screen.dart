@@ -59,7 +59,15 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
         leading: IconButton(
           //calendarページのisAddにfalseを返している
           onPressed: () => Navigator.pop(context,false),
-          icon: Icon(Icons.clear,size: 37,color: Theme.of(context).selectedRowColor),
+          icon: Padding(
+            padding: EdgeInsets.only(right: deviceSize.width * 0.03),
+            child: Icon(
+                Icons.clear,
+                //28↓
+                size: deviceSize.height * 0.032,
+                color: Theme.of(context).selectedRowColor,
+            ),
+          ),
         ),
         actions: [
           Visibility(
@@ -99,7 +107,12 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                   ),
                 );
               },
-              icon: Icon(Icons.delete, size: 28,color: Theme.of(context).selectedRowColor),
+              icon: Icon(
+                  Icons.delete,
+                  //28↓
+                  size: deviceSize.height * 0.032,
+                  color: Theme.of(context).selectedRowColor,
+              ),
             ),
           ),
         ],
@@ -111,7 +124,8 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
             Expanded(
               child: SingleChildScrollView(
                 child: Padding(
-                  padding: const EdgeInsets.all(40.0),
+                  //40↓
+                  padding: EdgeInsets.all(deviceSize.height * 0.046),
                   child: Column(
                     children: [
                       Container(
@@ -120,8 +134,9 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                             //テーマによってラベルテキストの色を変える
                             color: Theme.of(context).disabledColor),
                         // alignment: Alignment.centerLeft,
-                        width: MediaQuery.of(context).size.width,
-                        height: 54.78,
+                        width: deviceSize.width,
+                        //55↓
+                        height: deviceSize.height * 0.061,
                         child: Center(
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -130,16 +145,19 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                               Icon(
                                 // color: Colors.white,
                                 Icons.calendar_month,
-                                size: 40,
+                                //40↓
+                                size: deviceSize.height * 0.046,
                                 color: Colors.white,
                               ),
                               //アイコンとテキストのスペース調節
-                              SizedBox(width: 15),
+                              //17↓
+                              SizedBox(width: deviceSize.width * 0.036),
                               //選択している日付
                               Text(
                                 DateFormat.MMMEd('ja').format(arguments.selectedDay),
                                 style: TextStyle(
-                                  fontSize: 17,
+                                  // 17↓
+                                  fontSize: deviceSize.height * 0.02,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.white,
                                 ),
@@ -150,7 +168,8 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                       ),
 
                       SizedBox(
-                        height: 40,
+                        // 40↓
+                        height: deviceSize.height * 0.046,
                       ),
 
                       //締め切り追加用テキストフィールド
@@ -189,7 +208,8 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                       ),
 
                       SizedBox(
-                        height: 15,
+                        // 17↓
+                        height: deviceSize.height * 0.017,
                       ),
 
                       //詳細追加用テキストフィールド
@@ -228,12 +248,15 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                       ),
 
                       SizedBox(
-                        height: 50,
+                        //50↓
+                        height: deviceSize.height * 0.058,
                       ),
 
                       SizedBox(
-                        width: 85,
-                        height: 40,
+                        //85↓
+                        width: deviceSize.width * 0.2,
+                        //40↓
+                        height: deviceSize.height * 0.046,
                         child: TextButton(
                           style: TextButton.styleFrom(
                               //テーマによってbuttonの色を変える
@@ -272,7 +295,11 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                           child: Text(
                             //編集か追加でボタンのテキストを変える
                             arguments.isUpdate ? '変更' : '追加',
-                            style: TextStyle(color: Colors.white, fontSize: 16),
+                            style: TextStyle(
+                                color: Colors.white,
+                                //16↓
+                                fontSize: deviceSize.height * 0.018,
+                            ),
                           ),
                         ),
                       ),

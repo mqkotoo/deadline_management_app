@@ -48,12 +48,13 @@ class _ChangeThemeScreenState extends ConsumerState<ChangeThemeScreen> {
             child: Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.all(50.0),
+                  padding: EdgeInsets.all(deviceSize.width * 0.12),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       //dark
                       _colorContainer(
+                        context : context,
                         onPress: () {
                           themeProvider.changeDarkTheme();
                           _saveColorTheme(1);
@@ -63,7 +64,7 @@ class _ChangeThemeScreenState extends ConsumerState<ChangeThemeScreen> {
                         child: themeProvider.currentTheme == darkTheme
                             ? Center(
                             child: Icon(
-                                Icons.done, color: Colors.brown[300], size: 40))
+                                Icons.done, color: Colors.brown[300], size: deviceSize.width * 0.1))
                             : SizedBox.shrink(),
                       ),
 
@@ -71,6 +72,7 @@ class _ChangeThemeScreenState extends ConsumerState<ChangeThemeScreen> {
 
                       //pink
                       _colorContainer(
+                        context : context,
                         onPress: () {
                           themeProvider.changePinkTheme();
                           _saveColorTheme(2);
@@ -80,7 +82,7 @@ class _ChangeThemeScreenState extends ConsumerState<ChangeThemeScreen> {
                         child: themeProvider.currentTheme == pinkTheme
                             ? Center(
                             child: Icon(
-                                Icons.done, color: Colors.brown, size: 40))
+                                Icons.done, color: Colors.brown, size: deviceSize.width * 0.1))
                             : SizedBox.shrink(),
                       ),
 
@@ -88,6 +90,7 @@ class _ChangeThemeScreenState extends ConsumerState<ChangeThemeScreen> {
 
                       //light
                       _colorContainer(
+                        context : context,
                         onPress: () {
                           themeProvider.changeLightTheme();
                           _saveColorTheme(3);
@@ -97,7 +100,7 @@ class _ChangeThemeScreenState extends ConsumerState<ChangeThemeScreen> {
                         child: themeProvider.currentTheme == lightTheme
                             ? Center(
                             child: Icon(
-                                Icons.done, color: Colors.brown, size: 40))
+                                Icons.done, color: Colors.brown, size: deviceSize.width * 0.1))
                             : SizedBox.shrink(),
                       ),
 
@@ -105,6 +108,7 @@ class _ChangeThemeScreenState extends ConsumerState<ChangeThemeScreen> {
 
                       //  blue
                       _colorContainer(
+                          context : context,
                         onPress: () {
                           themeProvider.changeBlueTheme();
                           _saveColorTheme(4);
@@ -114,18 +118,20 @@ class _ChangeThemeScreenState extends ConsumerState<ChangeThemeScreen> {
                         child: themeProvider.currentTheme == blueTheme
                             ? Center(
                             child: Icon(
-                                Icons.done, color: Colors.brown, size: 40))
-                            : SizedBox.shrink()),
+                                Icons.done, color: Colors.brown, size: deviceSize.width * 0.1))
+                            : SizedBox.shrink(),
+                      ),
                     ],
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(50.0),
+                  padding: EdgeInsets.all(deviceSize.width * 0.12),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       //  orange
                       _colorContainer(
+                        context : context,
                         onPress: () {
                           themeProvider.changeOrangeTheme();
                           _saveColorTheme(5);
@@ -135,7 +141,7 @@ class _ChangeThemeScreenState extends ConsumerState<ChangeThemeScreen> {
                         child: themeProvider.currentTheme == orangeTheme
                             ? Center(
                             child: Icon(
-                                Icons.done, color: Colors.brown, size: 40))
+                                Icons.done, color: Colors.brown, size: deviceSize.width * 0.1))
                             : SizedBox.shrink(),
                       ),
 
@@ -143,6 +149,7 @@ class _ChangeThemeScreenState extends ConsumerState<ChangeThemeScreen> {
 
                       //  red
                       _colorContainer(
+                        context : context,
                         onPress: () {
                           themeProvider.changeRedTheme();
                           _saveColorTheme(6);
@@ -152,7 +159,7 @@ class _ChangeThemeScreenState extends ConsumerState<ChangeThemeScreen> {
                         child: themeProvider.currentTheme == redTheme
                             ? Center(
                             child: Icon(
-                                Icons.done, color: Colors.brown, size: 40))
+                                Icons.done, color: Colors.brown, size: deviceSize.width * 0.1))
                             : SizedBox.shrink(),
                       ),
 
@@ -160,6 +167,7 @@ class _ChangeThemeScreenState extends ConsumerState<ChangeThemeScreen> {
 
                       //  green
                       _colorContainer(
+                        context : context,
                         onPress: () {
                           themeProvider.changeGreenTheme();
                           _saveColorTheme(7);
@@ -169,7 +177,7 @@ class _ChangeThemeScreenState extends ConsumerState<ChangeThemeScreen> {
                         child: themeProvider.currentTheme == greenTheme
                             ? Center(
                             child: Icon(
-                                Icons.done, color: Colors.brown, size: 40))
+                                Icons.done, color: Colors.brown, size: deviceSize.width * 0.1))
                             : SizedBox.shrink(),
                       ),
 
@@ -177,6 +185,7 @@ class _ChangeThemeScreenState extends ConsumerState<ChangeThemeScreen> {
 
                       //  yellow
                       _colorContainer(
+                        context : context,
                         onPress: () {
                           themeProvider.changeYellowTheme();
                           _saveColorTheme(8);
@@ -186,7 +195,7 @@ class _ChangeThemeScreenState extends ConsumerState<ChangeThemeScreen> {
                         child: themeProvider.currentTheme == yellowTheme
                             ? Center(
                                 child: Icon(
-                                    Icons.done, color: Colors.brown, size: 40))
+                                    Icons.done, color: Colors.brown, size: deviceSize.width * 0.1))
                             : SizedBox.shrink(),
                       ),
                     ],
@@ -194,14 +203,19 @@ class _ChangeThemeScreenState extends ConsumerState<ChangeThemeScreen> {
                 ),
                 SizedBox(height: 40),
                 SizedBox(
-                  height: 43,
-                  width: 70,
+                  //85↓
+                  width: deviceSize.width * 0.2,
+                  //40↓
+                  height: deviceSize.height * 0.046,
                   child: ElevatedButton(
                     onPressed: () => Navigator.popUntil(
                         context, ModalRoute.withName(CalendarScreen.id)),
                     child: Text(
                       '決定',
-                      style: TextStyle(fontSize: 17),
+                      style: TextStyle(
+                      //16↓
+                      fontSize: deviceSize.height * 0.018,
+                      ),
                     ),
                     style: ElevatedButton.styleFrom(
                       primary: Theme.of(context).disabledColor,
@@ -227,7 +241,8 @@ class _ChangeThemeScreenState extends ConsumerState<ChangeThemeScreen> {
   Widget _colorContainer(
       {required void Function()? onPress,
       required Color? color,
-      Widget? child}) {
+      Widget? child,required BuildContext context}) {
+    var deviceSize = MediaQuery.of(context).size;
     return GestureDetector(
       onTap: onPress,
       child: Container(
@@ -236,8 +251,8 @@ class _ChangeThemeScreenState extends ConsumerState<ChangeThemeScreen> {
           border: Border.all(color: Colors.black),
           borderRadius: BorderRadius.circular(10),
         ),
-        width: 70,
-        height: 70,
+        width: deviceSize.width * 0.17,
+        height: deviceSize.height * 0.08,
         child: child,
       ),
     );

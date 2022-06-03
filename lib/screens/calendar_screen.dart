@@ -48,6 +48,9 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
 
   @override
   Widget build(BuildContext context) {
+
+    var deviceSize = MediaQuery.of(context).size;
+
     //calendarモデルのeventsListを常に監視
     final events = ref.watch(calendarProvider).eventsList;
 
@@ -74,9 +77,8 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
 
     return Scaffold(
         backgroundColor: Theme.of(context).hoverColor,
-        resizeToAvoidBottomInset: false,
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(45),
+          preferredSize: Size.fromHeight(deviceSize.height * 0.052),
           child: AppBar(
             // elevation: 0.0,
             backgroundColor: Theme.of(context).primaryColor,
@@ -86,8 +88,12 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
             ),
             actions: [
               IconButton(
-                icon: Icon(Icons.settings,
-                    color: Theme.of(context).selectedRowColor),
+                icon: Padding(
+                  padding: EdgeInsets.only(right: deviceSize.width * 0.03),
+                  child: Icon(Icons.settings,
+                      size: deviceSize.height * 0.032,
+                      color: Theme.of(context).selectedRowColor),
+                ),
                 onPressed: () => Navigator.pushNamed(context, SettingScreen.id),
               ),
             ],
@@ -162,7 +168,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
             ),
 
             //ちょっと隙間小さかったから空白を足してるよ
-            const SizedBox(height: 3),
+            SizedBox(height: deviceSize.height * 0.0034),
 
             // 今選択している日付をリストの上に表示する
             selectedDay(
@@ -170,19 +176,19 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
             ),
 
             //ちょっと隙間小さかったから空白を足してるよ
-            SizedBox(height: 3),
+            SizedBox(height: deviceSize.height * 0.0034),
 
             // タスクのリストを表示する
             Expanded(
               flex: 4,
               child: _getEventsfromDay(_selectedDay).isEmpty
                   ? Padding(
-                      padding: const EdgeInsets.only(bottom: 25.0),
+                      padding: EdgeInsets.only(bottom: deviceSize.height * 0.029),
                       child: Center(
                         child: Text(
                           DateFormat.MMMEd('ja').format(_selectedDay) +
                               'のタスクはありません',
-                          style: TextStyle(fontSize: 16),
+                          style: TextStyle(fontSize: deviceSize.height * 0.017),
                         ),
                       ),
                     )
@@ -200,7 +206,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                           //その日のリストの最後のインデックスのカードの中身と、
                           // その日のリストの最後のカードの要素が一緒だったら、そのカードには下の余白を追加する
                           margin: event == _getEventsfromDay(_selectedDay).last
-                              ? EdgeInsets.only(bottom: 22)
+                              ? EdgeInsets.only(bottom: deviceSize.height * 0.025)
                               : EdgeInsets.only(),
                           //cardをタップすると締め切りの詳細が見れるようにする
                           child: GestureDetector(
@@ -237,8 +243,10 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
 
         // タスク作成ボタン
         floatingActionButton: SizedBox(
-          width: 60,
-          height: 60,
+          // 60↓
+          width: deviceSize.width * 0.145,
+          //60↓
+          height: deviceSize.height * 0.069,
           child: FloatingActionButton(
             backgroundColor: Theme.of(context).accentColor,
             // イベント追加ページに遷移
@@ -266,7 +274,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
             child: Icon(
               Icons.add,
               color: Colors.white,
-              size: 38,
+              size: deviceSize.height * 0.044,
             ),
           ),
         ),
@@ -276,6 +284,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
 
 // イベントの数を数字で表示するためのウィジェット
 Widget _buildEventsMarker(DateTime date, List events, context) {
+  var deviceSize = MediaQuery.of(context).size;
   return Positioned(
     right: 5,
     bottom: 5,
@@ -285,8 +294,10 @@ Widget _buildEventsMarker(DateTime date, List events, context) {
           shape: BoxShape.circle, color: Theme.of(context).indicatorColor
           // : Theme.of(context).primaryColor
           ),
-      width: 16.0,
-      height: 16.0,
+      // 16↓
+      width: deviceSize.width * 0.04,
+      //16↓
+      height: deviceSize.height * 0.018,
       child: Center(
         child: Text(
           '${events.length}',
