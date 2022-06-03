@@ -38,23 +38,9 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
         ModalRoute.of(context)!.settings.arguments as Arguments?;
     
     useEffect(() {
-
       _eventController.text = arguments!.events['title'] ?? '';
-
       _detailEventController.text = arguments.events['detail'] ?? '';
-
-      // //イベント追加用テキストコントローラー
-      // TextEditingController _eventController =
-      // TextEditingController(text: arguments!.events['title'] ?? '');
-      //
-      // //詳細用テキストコントローラー
-      // TextEditingController _detailEventController =
-      // TextEditingController(text: arguments.events['detail'] ?? '');
-
-
-
       return null;
-
     },const []);
 
 
@@ -118,188 +104,191 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
           ),
         ],
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(40.0),
-                child: Column(
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                          //テーマによってラベルテキストの色を変える
-                          color: Theme.of(context).disabledColor),
-                      // alignment: Alignment.centerLeft,
-                      width: MediaQuery.of(context).size.width,
-                      height: 54.78,
-                      child: Center(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            //カレンダーアイコン
-                            Icon(
-                              // color: Colors.white,
-                              Icons.calendar_month,
-                              size: 40,
-                              color: Colors.white,
-                            ),
-                            //アイコンとテキストのスペース調節
-                            SizedBox(width: 15),
-                            //選択している日付
-                            Text(
-                              DateFormat.MMMEd('ja').format(arguments.selectedDay),
-                              style: TextStyle(
-                                fontSize: 17,
-                                fontWeight: FontWeight.bold,
+      body: GestureDetector(
+        onTap: () => FocusScope.of(context).unfocus(),
+        child: Column(
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.all(40.0),
+                  child: Column(
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            //テーマによってラベルテキストの色を変える
+                            color: Theme.of(context).disabledColor),
+                        // alignment: Alignment.centerLeft,
+                        width: MediaQuery.of(context).size.width,
+                        height: 54.78,
+                        child: Center(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              //カレンダーアイコン
+                              Icon(
+                                // color: Colors.white,
+                                Icons.calendar_month,
+                                size: 40,
                                 color: Colors.white,
                               ),
-                            ),
-                          ],
+                              //アイコンとテキストのスペース調節
+                              SizedBox(width: 15),
+                              //選択している日付
+                              Text(
+                                DateFormat.MMMEd('ja').format(arguments.selectedDay),
+                                style: TextStyle(
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
 
-                    SizedBox(
-                      height: 40,
-                    ),
-
-                    //締め切り追加用テキストフィールド
-                    TextFormField(
-                      controller: _eventController,
-                      // autofocus: true,
-                      decoration: InputDecoration(
-                        //通常の時のフォームのスタイル
-                        enabledBorder: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: Theme.of(context).disabledColor),
-                            borderRadius: BorderRadius.circular(8),
-                        ),
-                        //focusした時のフォームのスタイル
-                        focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                                width: 2.0, color: Theme.of(context).disabledColor),
-                            borderRadius: BorderRadius.circular(8)),
-                        labelStyle: TextStyle(
-                            fontWeight: FontWeight.w700,
-                            //テーマによってラベルテキストの色を変える
-                            color: Theme.of(context).bottomAppBarColor,
-                        ),
-
-                        //編集か追加でヒント、ラベルテキストを変える
-                        labelText: arguments.isUpdate ? 'タスク変更' : 'タスク追加',
-                        hintText: arguments.isUpdate ? null : '（必須）読書感想文',
-
-                        //ラベルテキスト枠の上に固定する
-                        floatingLabelBehavior: FloatingLabelBehavior.always,
+                      SizedBox(
+                        height: 40,
                       ),
 
-                      //  キーパッドの左下の「確定」→「次へ」みたいにする
-                      textInputAction: TextInputAction.next,
+                      //締め切り追加用テキストフィールド
+                      TextFormField(
+                        controller: _eventController,
+                        // autofocus: true,
+                        decoration: InputDecoration(
+                          //通常の時のフォームのスタイル
+                          enabledBorder: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: Theme.of(context).disabledColor),
+                              borderRadius: BorderRadius.circular(8),
+                          ),
+                          //focusした時のフォームのスタイル
+                          focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  width: 2.0, color: Theme.of(context).disabledColor),
+                              borderRadius: BorderRadius.circular(8)),
+                          labelStyle: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              //テーマによってラベルテキストの色を変える
+                              color: Theme.of(context).bottomAppBarColor,
+                          ),
 
-                    ),
+                          //編集か追加でヒント、ラベルテキストを変える
+                          labelText: arguments.isUpdate ? 'タスク変更' : 'タスク追加',
+                          hintText: arguments.isUpdate ? null : '（必須）読書感想文',
 
-                    SizedBox(
-                      height: 15,
-                    ),
-
-                    //詳細追加用テキストフィールド
-                    TextFormField(
-                      maxLines: 5,
-                      controller: _detailEventController,
-                      decoration: InputDecoration(
-                        //通常時のフォームのスタイル
-                        enabledBorder: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: Theme.of(context).disabledColor),
-                            borderRadius: BorderRadius.circular(8)),
-                        //focusした時のフォームのスタイル
-                        focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                                width: 2.0, color: Theme.of(context).disabledColor),
-                            borderRadius: BorderRadius.circular(8)),
-                        labelStyle: TextStyle(
-                            fontWeight: FontWeight.w700,
-                            //テーマによってラベルテキストの色を変える
-                            color: Theme.of(context).bottomAppBarColor,
+                          //ラベルテキスト枠の上に固定する
+                          floatingLabelBehavior: FloatingLabelBehavior.always,
                         ),
 
-                        //編集か追加でヒント,ラベルテキストを変える
-                        labelText: arguments.isUpdate ? '詳細の変更' : '詳細の追加',
-                        hintText: arguments.isUpdate
-                            ? null
-                            : '（任意）\n原稿用紙2枚以上\n体育が終わったら〇〇先生に提出する\n14:30まで',
+                        //  キーパッドの左下の「確定」→「次へ」みたいにする
+                        textInputAction: TextInputAction.next,
 
-                        //ラベルテキスト枠の上に固定する
-                        floatingLabelBehavior: FloatingLabelBehavior.always,
                       ),
 
-                      // //  詳細入力フォームにフォーカスを移すためにここの入力フォームにFOCUSNODEを設定してあげる
-                      // focusNode: _detailFocusNode,
-                    ),
+                      SizedBox(
+                        height: 15,
+                      ),
 
-                    SizedBox(
-                      height: 50,
-                    ),
+                      //詳細追加用テキストフィールド
+                      TextFormField(
+                        maxLines: 5,
+                        controller: _detailEventController,
+                        decoration: InputDecoration(
+                          //通常時のフォームのスタイル
+                          enabledBorder: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: Theme.of(context).disabledColor),
+                              borderRadius: BorderRadius.circular(8)),
+                          //focusした時のフォームのスタイル
+                          focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  width: 2.0, color: Theme.of(context).disabledColor),
+                              borderRadius: BorderRadius.circular(8)),
+                          labelStyle: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              //テーマによってラベルテキストの色を変える
+                              color: Theme.of(context).bottomAppBarColor,
+                          ),
 
-                    SizedBox(
-                      width: 85,
-                      height: 40,
-                      child: TextButton(
-                        style: TextButton.styleFrom(
-                            //テーマによってbuttonの色を変える
-                            backgroundColor: Theme.of(context).disabledColor,
-                            elevation: 10,
+                          //編集か追加でヒント,ラベルテキストを変える
+                          labelText: arguments.isUpdate ? '詳細の変更' : '詳細の追加',
+                          hintText: arguments.isUpdate
+                              ? null
+                              : '（任意）\n原稿用紙2枚以上\n体育が終わったら〇〇先生に提出する\n14:30まで',
+
+                          //ラベルテキスト枠の上に固定する
+                          floatingLabelBehavior: FloatingLabelBehavior.always,
                         ),
-                        onPressed: () {
-                          if (_eventController.text.isEmpty) {
-                            return;
-                          } else {
-                            // isUpdateがtrueだったらupdateする
-                            if (arguments.isUpdate) {
-                              //UPDATEする
-                              ref.read(calendarProvider).update(
-                                    arguments.events,
-                                    _eventController.text,
-                                    _detailEventController.text,
-                                  );
+
+                        // //  詳細入力フォームにフォーカスを移すためにここの入力フォームにFOCUSNODEを設定してあげる
+                        // focusNode: _detailFocusNode,
+                      ),
+
+                      SizedBox(
+                        height: 50,
+                      ),
+
+                      SizedBox(
+                        width: 85,
+                        height: 40,
+                        child: TextButton(
+                          style: TextButton.styleFrom(
+                              //テーマによってbuttonの色を変える
+                              backgroundColor: Theme.of(context).disabledColor,
+                              elevation: 10,
+                          ),
+                          onPressed: () {
+                            if (_eventController.text.isEmpty) {
+                              return;
                             } else {
-                              // isUpdateがfalseだったらpostする
-                              //POSTする
-                              ref.read(calendarProvider).post(
-                                    arguments.selectedDay,
-                                    _eventController.text,
-                                    _detailEventController.text,
-                                  );
+                              // isUpdateがtrueだったらupdateする
+                              if (arguments.isUpdate) {
+                                //UPDATEする
+                                ref.read(calendarProvider).update(
+                                      arguments.events,
+                                      _eventController.text,
+                                      _detailEventController.text,
+                                    );
+                              } else {
+                                // isUpdateがfalseだったらpostする
+                                //POSTする
+                                ref.read(calendarProvider).post(
+                                      arguments.selectedDay,
+                                      _eventController.text,
+                                      _detailEventController.text,
+                                    );
+                              }
                             }
-                          }
-                          print(_eventController.text);
-                          //calendarページのisAddにTRUEを返している
-                          Navigator.pop(context,true);
-                          _eventController.clear();
+                            print(_eventController.text);
+                            //calendarページのisAddにTRUEを返している
+                            Navigator.pop(context,true);
+                            _eventController.clear();
 
-                          return;
-                        },
-                        child: Text(
-                          //編集か追加でボタンのテキストを変える
-                          arguments.isUpdate ? '変更' : '追加',
-                          style: TextStyle(color: Colors.white, fontSize: 16),
+                            return;
+                          },
+                          child: Text(
+                            //編集か追加でボタンのテキストを変える
+                            arguments.isUpdate ? '変更' : '追加',
+                            style: TextStyle(color: Colors.white, fontSize: 16),
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-            SizedBox(
-              width: deviceSize.width,
-              height: deviceSize.height*0.07,
-              child: AdBanner(),
-            ),
-            SizedBox(height: deviceSize.height * 0.04),
-        ],
+              SizedBox(
+                width: deviceSize.width,
+                height: deviceSize.height*0.07,
+                child: AdBanner(),
+              ),
+              SizedBox(height: deviceSize.height * 0.04),
+          ],
+        ),
       ),
     );
   }
