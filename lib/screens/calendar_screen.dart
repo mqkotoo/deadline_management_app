@@ -160,7 +160,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                   eventLoader: _getEventsfromDay,
                   // カレンダーのスタイル
                   calendarStyle: calendarStyle(context),
-                  daysOfWeekStyle: dayStyle,
+                  daysOfWeekStyle: dayStyle(),
                   // カレンダーの上の部分のスタイル
                   headerStyle: calendarHeadStyle(context),
                 ),

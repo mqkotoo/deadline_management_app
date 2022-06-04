@@ -119,8 +119,8 @@ class _SettingNotificationScreenState extends ConsumerState<SettingNotificationS
       return GestureDetector(
         onTap: onTap,
         child: Container(
-          width: MediaQuery.of(context).size.width * 0.2,
-          height: MediaQuery.of(context).size.height * 0.05,
+          width: deviceSize.width * 0.2,
+          height: deviceSize.height * 0.05,
           decoration: BoxDecoration(
               border : Border.all(color: Colors.grey)
           ),
@@ -130,7 +130,7 @@ class _SettingNotificationScreenState extends ConsumerState<SettingNotificationS
               style: TextStyle(
                 // color: Colors.white,
                   fontWeight: FontWeight.bold,
-                  fontSize: 18
+                  fontSize: deviceSize.width * 0.043
               ),
             ),
           ),
@@ -178,27 +178,30 @@ class _SettingNotificationScreenState extends ConsumerState<SettingNotificationS
   Widget _menuItem(BuildContext context,
       {required String title, required Widget child}) {
 
+    var deviceSize = MediaQuery.of(context).size;
+
     return Container(
-        padding: EdgeInsets.symmetric(vertical: 14.0),
+        padding: EdgeInsets.symmetric(vertical: deviceSize.width * 0.034),
         decoration: BoxDecoration(
             border: Border(bottom: BorderSide(width: 1.0, color: Colors.grey))
         ),
         child: Row(
           children: [
             SizedBox(
-              width: 20,
+              width: deviceSize.width * 0.05,
             ),
             Expanded(
               child: Text(
                 title,
                 style: TextStyle(
-                  fontSize: 18,
+                  fontSize: deviceSize.width * 0.043,
                   fontWeight: FontWeight.bold,
                 ),
               ),
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(0,0,20,0),
+              // padding: const EdgeInsets.fromLTRB(0,0,20,0),
+              padding: EdgeInsets.only(right: deviceSize.width * 0.05),
               child: child,
             ),
           ],

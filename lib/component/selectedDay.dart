@@ -21,13 +21,13 @@ class selectedDay extends StatelessWidget {
       // 55↓
       height: deviceSize.height * 0.061,
       child: Padding(
-        padding: EdgeInsets.only(left: 30),
+        padding: EdgeInsets.only(left: deviceSize.width * 0.072),
         child: Row(
           children: [
             Expanded(
               child: Text(DateFormat.MMMEd('ja').format(_selectedDay),
                 style: TextStyle(
-                    fontSize: 17,
+                    fontSize: deviceSize.width * 0.036,
                     fontWeight: FontWeight.bold,
                   color: Theme.of(context).selectedRowColor
                 ),

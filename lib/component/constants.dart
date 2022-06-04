@@ -5,7 +5,20 @@ import '../screens/setting_pages/theme/theme.dart';
 
 
 CalendarStyle calendarStyle(context) {
+
+  var deviceSize = MediaQuery.of(context).size;
+
   return CalendarStyle(
+    //カレンダーの数字の大きさ平日
+    defaultTextStyle: TextStyle(fontSize: deviceSize.width * 0.04),
+    //↑休日
+    weekendTextStyle: TextStyle(fontSize: deviceSize.width * 0.04),
+    //選択中の日付
+    selectedTextStyle: TextStyle(fontSize: deviceSize.width * 0.04,color: Colors.white),
+    //todayの選択中（グレーのとこ）
+    todayTextStyle: TextStyle(fontSize: deviceSize.width * 0.04,color: Color(0xFFFAFAFA)),
+    //選択月のあまりのスペースに前後の月の開始終わり日付
+    outsideTextStyle: TextStyle(color: const Color(0xFFAEAEAE),fontSize: deviceSize.width * 0.04),
     // 選択した日のまるいやつのスタイル
     selectedDecoration: BoxDecoration(
         // テーマ別に色変えてる
@@ -19,24 +32,28 @@ CalendarStyle calendarStyle(context) {
   );
 }
 
-final dayStyle = DaysOfWeekStyle(
-  weekdayStyle: TextStyle(fontWeight: FontWeight.bold,fontSize: 12.8),
-  weekendStyle: TextStyle(fontWeight: FontWeight.bold, color: Colors.red,fontSize: 12.8),
-);
+DaysOfWeekStyle dayStyle() {
+  return DaysOfWeekStyle(
+    weekdayStyle: TextStyle(fontWeight: FontWeight.bold,fontSize: 12.8),
+    weekendStyle: TextStyle(fontWeight: FontWeight.bold, color: Colors.red,fontSize: 12.8),
+  );
+}
 
 HeaderStyle calendarHeadStyle(context) {
-  final platformBrightness = MediaQuery.platformBrightnessOf(context);
+  var deviceSize = MediaQuery.of(context).size;
   return HeaderStyle(
     formatButtonVisible: false,
-    titleTextStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 17.0),
+    titleTextStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: deviceSize.width * 0.036),
     titleCentered: true,
     leftChevronIcon: Icon(
       Icons.chevron_left,
+      size: deviceSize.width * 0.058,
       // テーマ別に矢印の色変えてる
       color:Theme.of(context).accentColor
     ),
     rightChevronIcon: Icon(
         Icons.chevron_right,
+        size: deviceSize.width * 0.058,
       // テーマ別に矢印の色変えてる
       color: Theme.of(context).accentColor
     ),

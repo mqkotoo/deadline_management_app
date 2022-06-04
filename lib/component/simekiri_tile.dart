@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_deadline_management/screens/add_event_screen.dart';
 
 enum Menu { edit, delete }
 
@@ -29,7 +28,7 @@ class CustomTile extends StatelessWidget {
         children: [
           Padding(
             padding: EdgeInsets.fromLTRB(
-                deviceSize.height * 0.045,
+                deviceSize.width * 0.045,
                 deviceSize.height * 0.007,
                 deviceSize.width * 0.031,
                 deviceSize.height * 0.007,

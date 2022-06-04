@@ -27,11 +27,11 @@ class SettingScreen extends StatelessWidget {
         ),
       body:  ListView(
           children: [
-            _menuItem(context,title: "このアプリの使い方", icon: Icon(Icons.navigate_next),onPress: () => Navigator.pushNamed(context, HowToUseScreen.id)),
-            _menuItem(context,title: "テーマ着せ替え", icon: Icon(Icons.navigate_next),onPress: () => Navigator.pushNamed(context, ChangeThemeScreen.id)),
-            _menuItem(context,title: "通知", icon: Icon(Icons.navigate_next),onPress: () => Navigator.pushNamed(context, SettingNotificationScreen.id)),
-            _menuItem(context,title: "利用規約・プライバシーポリシー", icon: Icon(Icons.navigate_next),onPress: () => _opnePrivacyPolicyUrl(privacyPolicyUrl)),
-            _menuItem(context,title: "お問い合わせ", icon: Icon(Icons.navigate_next),onPress: () => _opneInquiryUrl(twitterUrl)),
+            _menuItem(context,title: "このアプリの使い方", onPress: () => Navigator.pushNamed(context, HowToUseScreen.id)),
+            _menuItem(context,title: "テーマ着せ替え", onPress: () => Navigator.pushNamed(context, ChangeThemeScreen.id)),
+            _menuItem(context,title: "通知", onPress: () => Navigator.pushNamed(context, SettingNotificationScreen.id)),
+            _menuItem(context,title: "利用規約・プライバシーポリシー", onPress: () => _opnePrivacyPolicyUrl(privacyPolicyUrl)),
+            _menuItem(context,title: "お問い合わせ", onPress: () => _opneInquiryUrl(twitterUrl)),
           ]
       ),
     );
@@ -39,32 +39,35 @@ class SettingScreen extends StatelessWidget {
 
 
   Widget _menuItem(BuildContext context,
-      {required String title, required Icon icon,required void Function()? onPress}) {
+      {required String title, required void Function()? onPress}) {
+
+    var deviceSize = MediaQuery.of(context).size;
 
     return GestureDetector(
       onTap: onPress,
       child:Container(
-          padding: EdgeInsets.symmetric(vertical: 14.0),
+          padding: EdgeInsets.symmetric(vertical: deviceSize.width * 0.034),
           decoration: BoxDecoration(
               border: Border(bottom: BorderSide(width: 1.0, color: Colors.grey))
           ),
           child: Row(
             children: [
               SizedBox(
-                width: 20,
+                width: deviceSize.width * 0.05,
               ),
               Expanded(
                 child: Text(
                   title,
                   style: TextStyle(
-                      fontSize: 18,
+                      fontSize: deviceSize.width * 0.04,
                       fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(0,0,13,0),
-                child: icon,
+                // padding: const EdgeInsets.fromLTRB(0,0,13,0),
+                padding: EdgeInsets.only(right: deviceSize.width * 0.031),
+                child: Icon(Icons.navigate_next,size: deviceSize.width * 0.058),
               ),
             ],
           )
