@@ -204,7 +204,7 @@ class _ChangeThemeScreenState extends ConsumerState<ChangeThemeScreen> {
                 SizedBox(height: 40),
                 SizedBox(
                   //85↓
-                  width: deviceSize.width * 0.2,
+                  width: deviceSize.height * 0.1,
                   //40↓
                   height: deviceSize.height * 0.046,
                   child: ElevatedButton(
@@ -251,7 +251,7 @@ class _ChangeThemeScreenState extends ConsumerState<ChangeThemeScreen> {
           border: Border.all(color: Colors.black),
           borderRadius: BorderRadius.circular(10),
         ),
-        width: deviceSize.width * 0.17,
+        width: deviceSize.height * 0.08,
         height: deviceSize.height * 0.08,
         child: child,
       ),

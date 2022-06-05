@@ -10,15 +10,15 @@ CalendarStyle calendarStyle(context) {
 
   return CalendarStyle(
     //カレンダーの数字の大きさ平日
-    defaultTextStyle: TextStyle(fontSize: deviceSize.width * 0.04),
+    defaultTextStyle: TextStyle(fontSize: deviceSize.width * 0.035),
     //↑休日
-    weekendTextStyle: TextStyle(fontSize: deviceSize.width * 0.04),
+    weekendTextStyle: TextStyle(fontSize: deviceSize.width * 0.035),
     //選択中の日付
-    selectedTextStyle: TextStyle(fontSize: deviceSize.width * 0.04,color: Colors.white),
+    selectedTextStyle: TextStyle(fontSize: deviceSize.width * 0.035,color: Colors.white),
     //todayの選択中（グレーのとこ）
-    todayTextStyle: TextStyle(fontSize: deviceSize.width * 0.04,color: Color(0xFFFAFAFA)),
+    todayTextStyle: TextStyle(fontSize: deviceSize.width * 0.035,color: Color(0xFFFAFAFA)),
     //選択月のあまりのスペースに前後の月の開始終わり日付
-    outsideTextStyle: TextStyle(color: const Color(0xFFAEAEAE),fontSize: deviceSize.width * 0.04),
+    outsideTextStyle: TextStyle(color: const Color(0xFFAEAEAE),fontSize: deviceSize.width * 0.035),
     // 選択した日のまるいやつのスタイル
     selectedDecoration: BoxDecoration(
         // テーマ別に色変えてる

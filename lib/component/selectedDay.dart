@@ -27,7 +27,7 @@ class selectedDay extends StatelessWidget {
             Expanded(
               child: Text(DateFormat.MMMEd('ja').format(_selectedDay),
                 style: TextStyle(
-                    fontSize: deviceSize.width * 0.036,
+                    fontSize: deviceSize.height * 0.017,
                     fontWeight: FontWeight.bold,
                   color: Theme.of(context).selectedRowColor
                 ),

@@ -75,16 +75,22 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
               child: IconButton(
                 onPressed: () {
                   showDialog(
-                    barrierDismissible: false,
+                    // barrierDismissible: false,
                     context: context,
                     builder: (context) => AlertDialog(
-                      title: Text("タスク削除"),
-                      content: Text('"${arguments.events['title']}"を削除しますか？'),
+                      insetPadding: EdgeInsets.all(8),
+                      title: Text("タスク削除",style: TextStyle(fontSize: deviceSize.height * 0.023)),
+                      content: Container(
+                        width: deviceSize.width * 0.6,
+                          height : deviceSize.height * 0.05,
+                          child: Text(
+                              '"${arguments.events['title']}"を削除しますか？',
+                              style: TextStyle(fontSize: deviceSize.height * 0.016))),
                       actions: [
                         // キャンセルボタン
                         TextButton(
                           onPressed: () => Navigator.pop(context),
-                          child: Text('キャンセル'),
+                          child: Text('キャンセル',style: TextStyle(fontSize: deviceSize.height * 0.016)),
                         ),
                         // OKボタン
                         TextButton(
@@ -100,14 +106,14 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                             // 更新する
                             setState(() {});
                           },
-                          child: Text('OK'),
+                          child: Text('削除',style: TextStyle(fontSize: deviceSize.height * 0.016,color: Colors.red)),
                         ),
                       ],
                     ),
                   );
                 },
                 icon: Icon(
-                    Icons.delete,
+                    Icons.delete_outline,
                     //28↓
                     size: deviceSize.height * 0.04,
                     color: Theme.of(context).selectedRowColor,
@@ -174,6 +180,7 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
 
                       //締め切り追加用テキストフィールド
                       TextFormField(
+                        style: TextStyle(fontSize: deviceSize.height * 0.016),
                         controller: _eventController,
                         // autofocus: true,
                         decoration: InputDecoration(
@@ -214,6 +221,7 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
 
                       //詳細追加用テキストフィールド
                       TextFormField(
+                        style: TextStyle(fontSize: deviceSize.height * 0.016),
                         maxLines: 5,
                         controller: _detailEventController,
                         decoration: InputDecoration(
@@ -254,7 +262,7 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
 
                       SizedBox(
                         //85↓
-                        width: deviceSize.width * 0.2,
+                        width: deviceSize.height * 0.1,
                         //40↓
                         height: deviceSize.height * 0.046,
                         child: TextButton(

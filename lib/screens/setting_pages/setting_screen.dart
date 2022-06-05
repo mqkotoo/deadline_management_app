@@ -59,7 +59,7 @@ class SettingScreen extends StatelessWidget {
                 child: Text(
                   title,
                   style: TextStyle(
-                      fontSize: deviceSize.width * 0.04,
+                      fontSize: deviceSize.height * 0.02,
                       fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -67,7 +67,7 @@ class SettingScreen extends StatelessWidget {
               Padding(
                 // padding: const EdgeInsets.fromLTRB(0,0,13,0),
                 padding: EdgeInsets.only(right: deviceSize.width * 0.031),
-                child: Icon(Icons.navigate_next,size: deviceSize.width * 0.058),
+                child: Icon(Icons.navigate_next,size: deviceSize.height * 0.03),
               ),
             ],
           )

@@ -87,14 +87,14 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
               style: TextStyle(color: Theme.of(context).selectedRowColor),
             ),
             actions: [
-              IconButton(
-                icon: Padding(
-                  padding: EdgeInsets.only(right: deviceSize.width * 0.03),
-                  child: Icon(Icons.settings,
+              Padding(
+                padding: EdgeInsets.only(right: deviceSize.width * 0.01),
+                child: IconButton(
+                  icon: Icon(Icons.settings,
                       size: deviceSize.height * 0.032,
                       color: Theme.of(context).selectedRowColor),
+                  onPressed: () => Navigator.pushNamed(context, SettingScreen.id),
                 ),
-                onPressed: () => Navigator.pushNamed(context, SettingScreen.id),
               ),
             ],
           ),
@@ -244,7 +244,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
         // タスク作成ボタン
         floatingActionButton: SizedBox(
           // 65↓
-          width: deviceSize.width * 0.157,
+          width: deviceSize.height * 0.075,
           //65↓
           height: deviceSize.height * 0.075,
           child: FloatingActionButton(
@@ -295,7 +295,7 @@ Widget _buildEventsMarker(DateTime date, List events, context) {
           // : Theme.of(context).primaryColor
           ),
       // 16↓
-      width: deviceSize.width * 0.04,
+      width: deviceSize.height * 0.018,
       //16↓
       height: deviceSize.height * 0.018,
       child: Center(
@@ -303,7 +303,7 @@ Widget _buildEventsMarker(DateTime date, List events, context) {
           '${events.length}',
           style: TextStyle().copyWith(
             color: Colors.white,
-            fontSize: 12.0,
+            fontSize: deviceSize.height * 0.014,
           ),
         ),
       ),
