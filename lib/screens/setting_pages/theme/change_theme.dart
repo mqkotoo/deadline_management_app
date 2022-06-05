@@ -229,7 +229,7 @@ class _ChangeThemeScreenState extends ConsumerState<ChangeThemeScreen> {
           ),
           SizedBox(
             width: deviceSize.width,
-            height: deviceSize.height*0.07,
+            height: deviceSize.height*0.08,
             child: AdBanner(),
           ),
           SizedBox(height: deviceSize.height * 0.04)

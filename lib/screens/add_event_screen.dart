@@ -59,59 +59,59 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
         leading: IconButton(
           //calendarページのisAddにfalseを返している
           onPressed: () => Navigator.pop(context,false),
-          icon: Padding(
-            padding: EdgeInsets.only(right: deviceSize.width * 0.03),
-            child: Icon(
-                Icons.clear,
-                //28↓
-                size: deviceSize.height * 0.032,
-                color: Theme.of(context).selectedRowColor,
-            ),
+          icon: Icon(
+              Icons.clear,
+              //28↓
+              size: deviceSize.height * 0.04,
+              color: Theme.of(context).selectedRowColor,
           ),
         ),
         actions: [
           Visibility(
             //編集時はアップバーの右上に削除ボタンを設ける
             visible: arguments.isUpdate,
-            child: IconButton(
-              onPressed: () {
-                showDialog(
-                  barrierDismissible: false,
-                  context: context,
-                  builder: (context) => AlertDialog(
-                    title: Text("タスク削除"),
-                    content: Text('"${arguments.events['title']}"を削除しますか？'),
-                    actions: [
-                      // キャンセルボタン
-                      TextButton(
-                        onPressed: () => Navigator.pop(context),
-                        child: Text('キャンセル'),
-                      ),
-                      // OKボタン
-                      TextButton(
-                        onPressed: () async {
-                          await ref
-                              .read(calendarProvider)
-                              .delete(arguments.events);
-                          // Navigator.pop(context);
-                          //カレンダー画面まで一気にポップする
-                          Navigator.popUntil(
-                              context, ModalRoute.withName(CalendarScreen.id));
+            child: Padding(
+              padding: EdgeInsets.only(right: deviceSize.width * 0.01),
+              child: IconButton(
+                onPressed: () {
+                  showDialog(
+                    barrierDismissible: false,
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: Text("タスク削除"),
+                      content: Text('"${arguments.events['title']}"を削除しますか？'),
+                      actions: [
+                        // キャンセルボタン
+                        TextButton(
+                          onPressed: () => Navigator.pop(context),
+                          child: Text('キャンセル'),
+                        ),
+                        // OKボタン
+                        TextButton(
+                          onPressed: () async {
+                            await ref
+                                .read(calendarProvider)
+                                .delete(arguments.events);
+                            // Navigator.pop(context);
+                            //カレンダー画面まで一気にポップする
+                            Navigator.popUntil(
+                                context, ModalRoute.withName(CalendarScreen.id));
 
-                          // 更新する
-                          setState(() {});
-                        },
-                        child: Text('OK'),
-                      ),
-                    ],
-                  ),
-                );
-              },
-              icon: Icon(
-                  Icons.delete,
-                  //28↓
-                  size: deviceSize.height * 0.032,
-                  color: Theme.of(context).selectedRowColor,
+                            // 更新する
+                            setState(() {});
+                          },
+                          child: Text('OK'),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+                icon: Icon(
+                    Icons.delete,
+                    //28↓
+                    size: deviceSize.height * 0.04,
+                    color: Theme.of(context).selectedRowColor,
+                ),
               ),
             ),
           ),
@@ -310,7 +310,7 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
             ),
               SizedBox(
                 width: deviceSize.width,
-                height: deviceSize.height*0.07,
+                height: deviceSize.height*0.08,
                 child: AdBanner(),
               ),
               SizedBox(height: deviceSize.height * 0.04),

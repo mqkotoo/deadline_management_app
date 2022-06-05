@@ -243,10 +243,10 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
 
         // タスク作成ボタン
         floatingActionButton: SizedBox(
-          // 60↓
-          width: deviceSize.width * 0.145,
-          //60↓
-          height: deviceSize.height * 0.069,
+          // 65↓
+          width: deviceSize.width * 0.157,
+          //65↓
+          height: deviceSize.height * 0.075,
           child: FloatingActionButton(
             backgroundColor: Theme.of(context).accentColor,
             // イベント追加ページに遷移
@@ -274,7 +274,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
             child: Icon(
               Icons.add,
               color: Colors.white,
-              size: deviceSize.height * 0.044,
+              size: deviceSize.height * 0.048,
             ),
           ),
         ),
