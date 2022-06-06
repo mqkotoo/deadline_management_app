@@ -14,7 +14,11 @@ ThemeData darkTheme = ThemeData.dark().copyWith(
 //  add pageのラベルテキストの色
   bottomAppBarColor: Colors.white,
 //  add pageのボタン、テキストの枠、ボタン、日付表示(primarycolorと一緒(lighttheme意外))
-  disabledColor:Color(0xff212121)
+  disabledColor:Color(0xff212121),
+
+    buttonBarTheme: ButtonBarThemeData(
+      alignment: MainAxisAlignment.center,
+    )
 );
 
 //LIGHT

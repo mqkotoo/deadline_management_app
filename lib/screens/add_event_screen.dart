@@ -78,6 +78,27 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                     // barrierDismissible: false,
                     context: context,
                     builder: (context) => AlertDialog(
+                      buttonPadding: EdgeInsets.fromLTRB(
+                          0,
+                        0,
+                        deviceSize.width * 0.085,
+                        deviceSize.height * 0.023,
+                      ),
+                      contentPadding: EdgeInsets.fromLTRB(
+                          // 24.0,
+                        deviceSize.width * 0.085,
+                        deviceSize.height * 0.023,
+                        deviceSize.width * 0.085,
+                        // deviceSize.height * 0.023,
+                        0,
+                      ),
+                      titlePadding: EdgeInsets.fromLTRB(
+                        deviceSize.width * 0.085,
+                        deviceSize.height * 0.023,
+                        deviceSize.width * 0.085,
+                        deviceSize.height * 0.023,
+                      ),
+
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(8.0))),
                       title: Text(
                           "タスク削除",
@@ -87,13 +108,14 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                         height : deviceSize.height * 0.05,
                         child: Text(
                             '"${arguments.events['title']}"を削除しますか？',
-                            style: TextStyle(fontSize: deviceSize.height * 0.016)),
+                            style: TextStyle(fontSize: deviceSize.height * 0.02)),
                       ),
                       actions: [
                         // キャンセルボタン
+
                         TextButton(
                           onPressed: () => Navigator.pop(context),
-                          child: Text('キャンセル',style: TextStyle(fontSize: deviceSize.height * 0.016)),
+                          child: Text('キャンセル',style: TextStyle(fontSize: deviceSize.height * 0.021)),
                         ),
                         // OKボタン
                         TextButton(
@@ -109,7 +131,7 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                             // 更新する
                             setState(() {});
                           },
-                          child: Text('削除',style: TextStyle(fontSize: deviceSize.height * 0.016,color: Colors.red)),
+                          child: Text('削除',style: TextStyle(fontSize: deviceSize.height * 0.021,color: Colors.red)),
                         ),
                       ],
                     ),

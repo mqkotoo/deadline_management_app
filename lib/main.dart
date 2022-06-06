@@ -17,7 +17,6 @@ import 'firebase_options.dart';
 import 'package:flutter/services.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   MobileAds.instance.initialize();
@@ -33,27 +32,24 @@ class MyApp extends StatefulHookConsumerWidget {
   _MyAppState createState() => _MyAppState();
 }
 
-
 class _MyAppState extends ConsumerState<MyApp> {
-
   @override
   void initState() {
     getColorTheme();
     super.initState();
   }
 
-  Future getColorTheme() async{
+  Future getColorTheme() async {
     var prefs = await SharedPreferences.getInstance();
-    int index  = prefs.getInt('theme') ?? 0;
+    int index = prefs.getInt('theme') ?? 0;
     print(index);
-    var themeProvider =  ref.watch(ThemeProvider);
-    themeProvider.currentTheme = getThemeIndex(index,context);
+    var themeProvider = ref.watch(ThemeProvider);
+    themeProvider.currentTheme = getThemeIndex(index, context);
     setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
-
     var themeProvider = ref.watch(ThemeProvider);
 
     return MaterialApp(
@@ -64,9 +60,10 @@ class _MyAppState extends ConsumerState<MyApp> {
         SettingScreen.id: (BuildContext context) => SettingScreen(),
         StartUpPage.id: (BuildContext context) => StartUpPage(),
         AddEventScreen.id: (BuildContext context) => AddEventScreen(),
-        SettingNotificationScreen.id : (BuildContext context) => SettingNotificationScreen(),
-        ChangeThemeScreen.id : (BuildContext context) => ChangeThemeScreen(),
-        HowToUseScreen.id : (BuildContext context) => HowToUseScreen()
+        SettingNotificationScreen.id: (BuildContext context) =>
+            SettingNotificationScreen(),
+        ChangeThemeScreen.id: (BuildContext context) => ChangeThemeScreen(),
+        HowToUseScreen.id: (BuildContext context) => HowToUseScreen()
       },
 
       home: StartUpPage(),
@@ -95,8 +92,6 @@ class _MyAppState extends ConsumerState<MyApp> {
             return null;
         }
       },
-
     );
-
   }
 }
