@@ -49,6 +49,8 @@ class StartUpPage extends HookConsumerWidget {
       return null;
     }, const []);
 
+    var deviceSize = MediaQuery.of(context).size;
+
     //処理中のUIを書いている
     return Scaffold(
       body: Center(
@@ -58,12 +60,12 @@ class StartUpPage extends HookConsumerWidget {
           children: [
 
             //　LOADING文字出力
-            Text('Loading',style: TextStyle(fontSize: 24,fontWeight: FontWeight.bold)),
+            Text('Loading',style: TextStyle(fontSize: deviceSize.height * 0.028,fontWeight: FontWeight.bold)),
 
             //...をタイプライターで表示する
             AnimatedTextKit(
               animatedTexts: [
-                TypewriterAnimatedText('...',textStyle: TextStyle(fontSize: 24,fontWeight: FontWeight.bold),speed: Duration(milliseconds: 500)),
+                TypewriterAnimatedText('...',textStyle: TextStyle(fontSize: deviceSize.height * 0.028,fontWeight: FontWeight.bold),speed: Duration(milliseconds: 500)),
               ],
             ),
 

@@ -47,7 +47,7 @@ class _MyAppState extends ConsumerState<MyApp> {
     int index  = prefs.getInt('theme') ?? 0;
     print(index);
     var themeProvider =  ref.watch(ThemeProvider);
-    themeProvider.currentTheme = getThemeIndex(index);
+    themeProvider.currentTheme = getThemeIndex(index,context);
     setState(() {});
   }
 

@@ -78,14 +78,17 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                     // barrierDismissible: false,
                     context: context,
                     builder: (context) => AlertDialog(
-                      insetPadding: EdgeInsets.all(8),
-                      title: Text("タスク削除",style: TextStyle(fontSize: deviceSize.height * 0.023)),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(8.0))),
+                      title: Text(
+                          "タスク削除",
+                          style: TextStyle(fontSize: deviceSize.height * 0.023)),
                       content: Container(
                         width: deviceSize.width * 0.6,
-                          height : deviceSize.height * 0.05,
-                          child: Text(
-                              '"${arguments.events['title']}"を削除しますか？',
-                              style: TextStyle(fontSize: deviceSize.height * 0.016))),
+                        height : deviceSize.height * 0.05,
+                        child: Text(
+                            '"${arguments.events['title']}"を削除しますか？',
+                            style: TextStyle(fontSize: deviceSize.height * 0.016)),
+                      ),
                       actions: [
                         // キャンセルボタン
                         TextButton(

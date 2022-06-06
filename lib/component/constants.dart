@@ -64,7 +64,11 @@ HeaderStyle calendarHeadStyle(context) {
 
 
 //themeを保存するためにインデックスで色を管理するためにやつ
-ThemeData getThemeIndex(int index) {
+ThemeData getThemeIndex(int index,context) {
+
+  //テーマ別に色を変えられるようにするためのやつ
+  final platformBrightness = MediaQuery.platformBrightnessOf(context);
+
   switch(index) {
     case 1 : return darkTheme;
     case 2 : return pinkTheme;
@@ -75,5 +79,6 @@ ThemeData getThemeIndex(int index) {
     case 7 : return greenTheme;
     case 8 : return yellowTheme;
   }
-  return lightTheme;
+  //初期のテーマカラーをデバイスの設定に依存させる
+  return platformBrightness == Brightness.light ? lightTheme : darkTheme;
 }
