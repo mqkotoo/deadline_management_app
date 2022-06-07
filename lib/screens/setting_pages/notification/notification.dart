@@ -154,7 +154,7 @@ class _SettingNotificationScreenState extends ConsumerState<SettingNotificationS
           Expanded(
             child: ListView(
                 children: [
-                  _menuItem(context,title: "通知", child: _switch()),
+                  _menuItem(context,title: "通知", child: _switch(context)),
 
                   //通知がオフだったら「通知を受け取る時間」を非表示にする
                   isOn
@@ -194,14 +194,16 @@ class _SettingNotificationScreenState extends ConsumerState<SettingNotificationS
               child: Text(
                 title,
                 style: TextStyle(
-                  fontSize: deviceSize.width * 0.043,
+                  fontSize: deviceSize.height * 0.02,
                   fontWeight: FontWeight.bold,
                 ),
               ),
             ),
             Padding(
               // padding: const EdgeInsets.fromLTRB(0,0,20,0),
-              padding: EdgeInsets.only(right: deviceSize.width * 0.05),
+              padding: EdgeInsets.only(
+                  right: deviceSize.width * 0.05,
+              ),
               child: child,
             ),
           ],
@@ -211,20 +213,28 @@ class _SettingNotificationScreenState extends ConsumerState<SettingNotificationS
 
 
   //オンオフのスイッチのウィジェットーーーーーーーーーーーーーーーーー
-  Widget _switch() {
+  Widget _switch(context) {
     var notifyProvider = ref.read(NotifyProvider);
-    return Switch(
-      value: isOn,
-      onChanged: (bool? value) {
-        if (value != null) {
-          setState(() {
-            isOn = value;
-            _saveBool('isOn', isOn);
-            print("$isOn");
-          });
-        }
-        notifyProvider.selectOnOff(isOn);
-      },
+    var deviceSize = MediaQuery.of(context).size;
+    return SizedBox(
+      width: deviceSize.height * 0.07,
+      height: deviceSize.height * 0.055,
+      child: FittedBox(
+        fit: BoxFit.fill,
+        child: Switch(
+          value: isOn,
+          onChanged: (bool? value) {
+            if (value != null) {
+              setState(() {
+                isOn = value;
+                _saveBool('isOn', isOn);
+                print("$isOn");
+              });
+            }
+            notifyProvider.selectOnOff(isOn);
+          },
+        ),
+      ),
     );
   }
 //  ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー

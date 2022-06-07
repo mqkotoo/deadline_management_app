@@ -102,7 +102,7 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(8.0))),
                       title: Text(
                           "タスク削除",
-                          style: TextStyle(fontSize: deviceSize.height * 0.023)),
+                          style: TextStyle(fontSize: deviceSize.height * 0.026)),
                       content: Container(
                         width: deviceSize.width * 0.6,
                         height : deviceSize.height * 0.05,
