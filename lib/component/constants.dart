@@ -32,10 +32,12 @@ CalendarStyle calendarStyle(context) {
   );
 }
 
-DaysOfWeekStyle dayStyle() {
+DaysOfWeekStyle dayStyle(context) {
+  var deviceSize = MediaQuery.of(context).size;
   return DaysOfWeekStyle(
-    weekdayStyle: TextStyle(fontWeight: FontWeight.bold,fontSize: 12.8),
-    weekendStyle: TextStyle(fontWeight: FontWeight.bold, color: Colors.red,fontSize: 12.8),
+    // fontsize 12.8
+    weekdayStyle: TextStyle(fontWeight: FontWeight.bold,fontSize: deviceSize.height * 0.015),
+    weekendStyle: TextStyle(fontWeight: FontWeight.bold, color: Colors.red,fontSize: deviceSize.height * 0.015),
   );
 }
 

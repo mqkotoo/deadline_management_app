@@ -44,7 +44,7 @@ class CustomTile extends StatelessWidget {
                       subtitle == ''
                           ? Padding(
                               padding:
-                                  EdgeInsets.symmetric(vertical: deviceSize.width * 0.022),
+                                  EdgeInsets.symmetric(vertical: deviceSize.height * 0.01),
                               child: Text(
                                 title,
                                 //17↓

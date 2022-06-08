@@ -139,13 +139,16 @@ class _SettingNotificationScreenState extends ConsumerState<SettingNotificationS
     }
 
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).primaryColor,
-        title: Text('通知',style: TextStyle(color: Theme.of(context).selectedRowColor)),
-        leading: IconButton(
-          onPressed: () => Navigator.pop(context),
-          icon: Icon(Icons.arrow_back_ios,
-            color: Theme.of(context).selectedRowColor,
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(deviceSize.height * 0.064),
+        child: AppBar(
+          backgroundColor: Theme.of(context).primaryColor,
+          title: Text('通知',style: TextStyle(color: Theme.of(context).selectedRowColor)),
+          leading: IconButton(
+            onPressed: () => Navigator.pop(context),
+            icon: Icon(Icons.arrow_back_ios,
+              color: Theme.of(context).selectedRowColor,
+            ),
           ),
         ),
       ),

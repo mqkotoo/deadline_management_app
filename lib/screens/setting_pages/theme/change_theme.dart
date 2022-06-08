@@ -30,15 +30,18 @@ class _ChangeThemeScreenState extends ConsumerState<ChangeThemeScreen> {
 
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text('テーマ着せ替え',
-            style: TextStyle(color: Theme.of(context).selectedRowColor)),
-        backgroundColor: Theme.of(context).primaryColor,
-        leading: IconButton(
-          onPressed: () => Navigator.pop(context),
-          icon: Icon(
-            Icons.arrow_back_ios,
-            color: Theme.of(context).selectedRowColor,
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(deviceSize.height * 0.064),
+        child: AppBar(
+          title: Text('テーマ着せ替え',
+              style: TextStyle(color: Theme.of(context).selectedRowColor)),
+          backgroundColor: Theme.of(context).primaryColor,
+          leading: IconButton(
+            onPressed: () => Navigator.pop(context),
+            icon: Icon(
+              Icons.arrow_back_ios,
+              color: Theme.of(context).selectedRowColor,
+            ),
           ),
         ),
       ),

@@ -14,17 +14,21 @@ class SettingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var deviceSize = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: AppBar(
-          backgroundColor: Theme.of(context).primaryColor,
-          title: Text('設定',style: TextStyle(color: Theme.of(context).selectedRowColor)),
-        leading: IconButton(
-          onPressed: () => Navigator.pop(context),
-          icon: Icon(Icons.arrow_back_ios,
-            color: Theme.of(context).selectedRowColor,
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(deviceSize.height * 0.064),
+        child: AppBar(
+            backgroundColor: Theme.of(context).primaryColor,
+            title: Text('設定',style: TextStyle(color: Theme.of(context).selectedRowColor)),
+          leading: IconButton(
+            onPressed: () => Navigator.pop(context),
+            icon: Icon(Icons.arrow_back_ios,
+              color: Theme.of(context).selectedRowColor,
+            ),
           ),
-        ),
-        ),
+          ),
+      ),
       body:  ListView(
           children: [
             _menuItem(context,title: "このアプリの使い方", onPress: () => Navigator.pushNamed(context, HowToUseScreen.id)),

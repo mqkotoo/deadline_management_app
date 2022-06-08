@@ -49,104 +49,115 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).primaryColor,
-        title: Text(
-          //編集か追加でボタンのテキストを変える
-          arguments!.isUpdate ? 'タスクを編集する' : 'タスクを追加する',
-          style: TextStyle(color: Theme.of(context).selectedRowColor),
-        ),
-        leading: IconButton(
-          //calendarページのisAddにfalseを返している
-          onPressed: () => Navigator.pop(context,false),
-          icon: Icon(
-              Icons.clear,
-              //28↓
-              size: deviceSize.height * 0.04,
-              color: Theme.of(context).selectedRowColor,
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(deviceSize.height * 0.064),
+        child: AppBar(
+          backgroundColor: Theme.of(context).primaryColor,
+          title: Text(
+            //編集か追加でボタンのテキストを変える
+            arguments!.isUpdate ? 'タスクを編集する' : 'タスクを追加する',
+            style: TextStyle(color: Theme.of(context).selectedRowColor),
           ),
-        ),
-        actions: [
-          Visibility(
-            //編集時はアップバーの右上に削除ボタンを設ける
-            visible: arguments.isUpdate,
-            child: Padding(
-              padding: EdgeInsets.only(right: deviceSize.width * 0.01),
-              child: IconButton(
-                onPressed: () {
-                  showDialog(
-                    // barrierDismissible: false,
-                    context: context,
-                    builder: (context) => AlertDialog(
-                      buttonPadding: EdgeInsets.fromLTRB(
+          leading: IconButton(
+            //calendarページのisAddにfalseを返している
+            onPressed: () => Navigator.pop(context,false),
+            icon: Icon(
+                Icons.clear,
+                //28↓
+                size: deviceSize.height * 0.04,
+                color: Theme.of(context).selectedRowColor,
+            ),
+          ),
+          actions: [
+            Visibility(
+              //編集時はアップバーの右上に削除ボタンを設ける
+              visible: arguments.isUpdate,
+              child: Padding(
+                padding: EdgeInsets.only(right: deviceSize.width * 0.01),
+                child: IconButton(
+                  onPressed: () {
+                    showDialog(
+                      // barrierDismissible: false,
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        buttonPadding: EdgeInsets.fromLTRB(
+                            0,
                           0,
-                        0,
-                        deviceSize.width * 0.085,
-                        deviceSize.height * 0.023,
-                      ),
-                      contentPadding: EdgeInsets.fromLTRB(
-                          // 24.0,
-                        deviceSize.width * 0.085,
-                        deviceSize.height * 0.023,
-                        deviceSize.width * 0.085,
-                        // deviceSize.height * 0.023,
-                        0,
-                      ),
-                      titlePadding: EdgeInsets.fromLTRB(
-                        deviceSize.width * 0.085,
-                        deviceSize.height * 0.023,
-                        deviceSize.width * 0.085,
-                        deviceSize.height * 0.023,
-                      ),
-
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(8.0))),
-                      title: Text(
-                          "タスク削除",
-                          style: TextStyle(fontSize: deviceSize.height * 0.026)),
-                      content: Container(
-                        width: deviceSize.width * 0.6,
-                        height : deviceSize.height * 0.05,
-                        child: Text(
-                            '"${arguments.events['title']}"を削除しますか？',
-                            style: TextStyle(fontSize: deviceSize.height * 0.02)),
-                      ),
-                      actions: [
-                        // キャンセルボタン
-
-                        TextButton(
-                          onPressed: () => Navigator.pop(context),
-                          child: Text('キャンセル',style: TextStyle(fontSize: deviceSize.height * 0.021)),
+                          deviceSize.width * 0.085,
+                          deviceSize.height * 0.023,
                         ),
-                        // OKボタン
-                        TextButton(
-                          onPressed: () async {
-                            await ref
-                                .read(calendarProvider)
-                                .delete(arguments.events);
-                            // Navigator.pop(context);
-                            //カレンダー画面まで一気にポップする
-                            Navigator.popUntil(
-                                context, ModalRoute.withName(CalendarScreen.id));
-
-                            // 更新する
-                            setState(() {});
-                          },
-                          child: Text('削除',style: TextStyle(fontSize: deviceSize.height * 0.021,color: Colors.red)),
+                        contentPadding: EdgeInsets.fromLTRB(
+                            // 24.0,
+                          deviceSize.width * 0.085,
+                          deviceSize.height * 0.023,
+                          deviceSize.width * 0.085,
+                          // deviceSize.height * 0.023,
+                          0,
                         ),
-                      ],
-                    ),
-                  );
-                },
-                icon: Icon(
-                    Icons.delete_outline,
-                    //28↓
-                    size: deviceSize.height * 0.04,
-                    color: Theme.of(context).selectedRowColor,
+                        titlePadding: EdgeInsets.fromLTRB(
+                          deviceSize.width * 0.085,
+                          deviceSize.height * 0.023,
+                          deviceSize.width * 0.085,
+                          deviceSize.height * 0.023,
+                        ),
+
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(8.0))),
+                        title: Text(
+                            "タスク削除",
+                            style: TextStyle(fontSize: deviceSize.height * 0.024),
+                        ),
+                        content: Container(
+                          width: deviceSize.width * 0.6,
+                          height : deviceSize.height * 0.05,
+                          child: Text(
+                              '"${arguments.events['title']}"を削除しますか？',
+                              style: TextStyle(fontSize: deviceSize.height * 0.018),
+                          ),
+                        ),
+                        actions: [
+                          // キャンセルボタン
+
+                          TextButton(
+                            onPressed: () => Navigator.pop(context),
+                            child: Text(
+                              'キャンセル',
+                              style: TextStyle(fontSize: deviceSize.height * 0.02),
+                            ),
+                          ),
+                          // OKボタン
+                          TextButton(
+                            onPressed: () async {
+                              await ref
+                                  .read(calendarProvider)
+                                  .delete(arguments.events);
+                              // Navigator.pop(context);
+                              //カレンダー画面まで一気にポップする
+                              Navigator.popUntil(
+                                  context, ModalRoute.withName(CalendarScreen.id));
+
+                              // 更新する
+                              setState(() {});
+                            },
+                            child: Text(
+                                '削除',
+                                style: TextStyle(fontSize: deviceSize.height * 0.02,color: Colors.red),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                  icon: Icon(
+                      Icons.delete_outline,
+                      //28↓
+                      size: deviceSize.height * 0.04,
+                      color: Theme.of(context).selectedRowColor,
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
       body: GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
