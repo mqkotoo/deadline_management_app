@@ -111,6 +111,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                 //   ),
                 // テーブルカレンダーを実装
                 child: TableCalendar(
+                  daysOfWeekHeight : deviceSize.height * 0.02,
                   //カレンダーの大きさ変えれるようにするやつ
                   shouldFillViewport: true,
                   locale: 'ja_JP',
