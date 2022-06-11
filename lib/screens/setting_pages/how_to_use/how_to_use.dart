@@ -13,13 +13,20 @@ class HowToUseScreen extends StatelessWidget {
         preferredSize: Size.fromHeight(deviceSize.height * 0.064),
         child: AppBar(
           backgroundColor: Theme.of(context).primaryColor,
-          title: Text("アプリの使い方",
-              style: TextStyle(color: Theme.of(context).selectedRowColor)),
-          leading: IconButton(
-            onPressed: () => Navigator.pop(context),
-            icon: Icon(
-              Icons.arrow_back_ios,
-              color: Theme.of(context).selectedRowColor,
+          title: Padding(
+            padding: deviceSize.height > 900 ? EdgeInsets.only(top: 25.0) : EdgeInsets.only(),
+            child: Text("アプリの使い方",
+                style: TextStyle(color: Theme.of(context).selectedRowColor,fontSize: deviceSize.height * 0.023)),
+          ),
+          leading: Padding(
+            padding: deviceSize.height > 900 ? EdgeInsets.all(15) : EdgeInsets.only(),
+            child: IconButton(
+              onPressed: () => Navigator.pop(context),
+              icon: Icon(
+                Icons.arrow_back_ios,
+                color: Theme.of(context).selectedRowColor,
+                size: deviceSize.height * 0.027,
+              ),
             ),
           ),
         ),

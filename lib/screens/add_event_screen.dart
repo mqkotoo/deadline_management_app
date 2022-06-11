@@ -53,10 +53,13 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
         preferredSize: Size.fromHeight(deviceSize.height * 0.064),
         child: AppBar(
           backgroundColor: Theme.of(context).primaryColor,
-          title: Text(
-            //編集か追加でボタンのテキストを変える
-            arguments!.isUpdate ? 'タスクを編集する' : 'タスクを追加する',
-            style: TextStyle(color: Theme.of(context).selectedRowColor),
+          title: Padding(
+            padding: deviceSize.height > 900 ? EdgeInsets.only(top:25.0) : EdgeInsets.only(),
+            child: Text(
+              //編集か追加でボタンのテキストを変える
+              arguments!.isUpdate ? 'タスクを編集する' : 'タスクを追加する',
+              style: TextStyle(color: Theme.of(context).selectedRowColor,fontSize: deviceSize.height * 0.023),
+            ),
           ),
           leading: IconButton(
             //calendarページのisAddにfalseを返している

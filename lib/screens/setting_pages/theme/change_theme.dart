@@ -33,14 +33,21 @@ class _ChangeThemeScreenState extends ConsumerState<ChangeThemeScreen> {
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(deviceSize.height * 0.064),
         child: AppBar(
-          title: Text('テーマ着せ替え',
-              style: TextStyle(color: Theme.of(context).selectedRowColor)),
+          title: Padding(
+            padding: deviceSize.height > 900 ? EdgeInsets.only(top: 25.0) : EdgeInsets.only(),
+            child: Text('テーマ着せ替え',
+                style: TextStyle(color: Theme.of(context).selectedRowColor,fontSize: deviceSize.height * 0.023)),
+          ),
           backgroundColor: Theme.of(context).primaryColor,
-          leading: IconButton(
-            onPressed: () => Navigator.pop(context),
-            icon: Icon(
-              Icons.arrow_back_ios,
-              color: Theme.of(context).selectedRowColor,
+          leading: Padding(
+            padding: deviceSize.height > 900 ? EdgeInsets.all(15) : EdgeInsets.only(),
+            child: IconButton(
+              onPressed: () => Navigator.pop(context),
+              icon: Icon(
+                Icons.arrow_back_ios,
+                color: Theme.of(context).selectedRowColor,
+                size: deviceSize.height * 0.027,
+              ),
             ),
           ),
         ),

@@ -82,13 +82,16 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
           child: AppBar(
             // elevation: 0.0,
             backgroundColor: Theme.of(context).primaryColor,
-            title: Text(
-              "カレンダー",
-              style: TextStyle(color: Theme.of(context).selectedRowColor),
+            title: Padding(
+              padding: deviceSize.height > 900 ? EdgeInsets.only(top: 8.0) : EdgeInsets.only(),
+              child: Text(
+                "カレンダー",
+                style: TextStyle(color: Theme.of(context).selectedRowColor,fontSize: deviceSize.height * 0.023),
+              ),
             ),
             actions: [
               Padding(
-                padding: EdgeInsets.only(right: deviceSize.width * 0.01),
+                padding: EdgeInsets.only(right: deviceSize.width * 0.01,top: deviceSize.height > 900 ? 5 : 0),
                 child: IconButton(
                   icon: Icon(Icons.settings,
                       size: deviceSize.height * 0.032,
@@ -232,7 +235,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                               child: CustomTile(
                                 title: event['title'].toString(),
                                 subtitle: event['detail'].toString(),
-                                icon: Icon(Icons.navigate_next),
+                                icon: Icon(Icons.navigate_next,size: deviceSize.height * 0.027,),
                               ),
                             ),
                           ),
