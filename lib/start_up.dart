@@ -26,8 +26,6 @@ class StartUpPage extends HookConsumerWidget {
 
       if (FirebaseAuth.instance.currentUser != null) {
           Future(() async{
-            //テスト用
-            await Future.delayed(Duration(seconds: 1));
 
           //CALENDARPROVIDERの中身を取得する
           await ref.read(calendarProvider).get();

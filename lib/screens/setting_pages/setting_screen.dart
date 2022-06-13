@@ -24,16 +24,16 @@ class SettingScreen extends StatelessWidget {
               padding: deviceSize.height > 900 ? EdgeInsets.only(top: 25.0) : EdgeInsets.only(),
               child: Text('設定',style: TextStyle(color: Theme.of(context).selectedRowColor,fontSize: deviceSize.height * 0.023)),
             ),
-          leading: Container(
-            margin: deviceSize.height > 900 ? EdgeInsets.all(20) : EdgeInsets.only(),
-            child: IconButton(
-              padding: EdgeInsets.zero,
-                onPressed: () => Navigator.pop(context),
-                icon: Icon(Icons.arrow_back_ios,
-                  color: Theme.of(context).selectedRowColor,
-                  size: deviceSize.height * 0.027,
-                ),
-              ),
+          leading: InkWell(
+            onTap: () => Navigator.pop(context),
+            child: Padding(
+              padding: deviceSize.height > 900 ? EdgeInsets.all(22) : EdgeInsets.only(),
+              child: Icon(
+                Icons.arrow_back_ios,
+                    color: Theme.of(context).selectedRowColor,
+                    size: deviceSize.height * 0.027,
+                  ),
+            ),
           ),
 
           ),

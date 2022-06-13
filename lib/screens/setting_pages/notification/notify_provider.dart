@@ -9,13 +9,13 @@ final NotifyProvider = Provider((ref) => notifyProvider());
 class notifyProvider {
 
   //ios notification setting
-  Future<void> iosNotify(String eventNum, String content) {
+  Future<void> iosNotify() {
     final flnp = FlutterLocalNotificationsPlugin();
     return flnp.initialize(
       InitializationSettings(
         iOS: IOSInitializationSettings(),
       ),
-    ).then((_) => flnp.show(0, '今日の締め切りが' + eventNum +'件あります', content + ' です。', NotificationDetails()));
+    ).then((_) => flnp.show(0, 'タイトル', 'サブタイトル', NotificationDetails()));
   }
 
   //android notification setting
@@ -23,7 +23,7 @@ class notifyProvider {
     final flnp = FlutterLocalNotificationsPlugin();
     return flnp.initialize(
       InitializationSettings(
-        android: AndroidInitializationSettings('@mipmap/ic_launcher'),
+        android: AndroidInitializationSettings('@mipmap/launcher_icon'),
       ),
     ).then((_) => flnp.show(0, '今日の締め切りが〇件あります', '〇〇、〇〇　です', NotificationDetails(
       android: AndroidNotificationDetails(

@@ -39,16 +39,19 @@ class _ChangeThemeScreenState extends ConsumerState<ChangeThemeScreen> {
                 style: TextStyle(color: Theme.of(context).selectedRowColor,fontSize: deviceSize.height * 0.023)),
           ),
           backgroundColor: Theme.of(context).primaryColor,
-          leading: Padding(
-            padding: deviceSize.height > 900 ? EdgeInsets.all(15) : EdgeInsets.only(),
-            child: IconButton(
-              onPressed: () => Navigator.pop(context),
-              icon: Icon(
-                Icons.arrow_back_ios,
-                color: Theme.of(context).selectedRowColor,
-                size: deviceSize.height * 0.027,
+          leading: InkWell(
+            onTap: () => Navigator.pop(context),
+            child: Padding(
+                padding: deviceSize.height > 900 ? EdgeInsets.all(15) : EdgeInsets.only(),
+                child: IconButton(
+                  onPressed: () => Navigator.pop(context),
+                  icon: Icon(
+                    Icons.arrow_back_ios,
+                    color: Theme.of(context).selectedRowColor,
+                    size: deviceSize.height * 0.027,
+                  ),
+                ),
               ),
-            ),
           ),
         ),
       ),
