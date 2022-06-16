@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_deadline_management/screens/setting_pages/theme/theme.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import '../../../ads/AdBanner.dart';
+import '../../../ads/adBanner.dart';
 import '../../calendar_screen.dart';
 import 'package:flutter_deadline_management/screens/setting_pages/theme/theme_provider.dart'as theme;
 import 'package:shared_preferences/shared_preferences.dart';

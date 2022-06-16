@@ -3,7 +3,7 @@ import 'package:flutter_deadline_management/screens/setting_pages/notification/n
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../ads/AdBanner.dart';
+import '../../../ads/adBanner.dart';
 
 class SettingNotificationScreen extends StatefulHookConsumerWidget {
   static const String id = 'notification';

@@ -10,7 +10,7 @@ class notifyProvider {
   final Reader _read;
   //ios notification setting
   //android notification setting
-  Future<void> isNotify(content, isThreeDaysAgo) async{
+  Future<void> isNotify(content, isToday,isADayAgo,isThreeDaysAgo,isAWeek) async{
     if (content.isEmpty) {
       return;
     }
@@ -28,10 +28,21 @@ class notifyProvider {
       content_title.add(content[i]['title']);
     }
     DateTime isDay = content[0]['at'].toDate();
-    if (isThreeDaysAgo) {
-      title = "3日後までのタスクが${content.length}個あります";
-    } else {
-      title = "今日は${content.length}個のタスクがあります";
+
+
+
+    if (isToday) {
+      title = "今日：${content.length}個のタスク（予定）があります";
+    }
+    else if (isADayAgo){
+    title = "明日：${content.length}個のタスク（予定）があります";
+    }
+    else if (isThreeDaysAgo) {
+      title = "3日後：${content.length}個のタスク（予定）があります";
+    }
+    //一週間前の時の処理
+    else {
+      title = "一週間後：${content.length}個のタスク（予定）があります";
     }
 
     if (isThreeDaysAgo) {
@@ -41,6 +52,8 @@ class notifyProvider {
       date =
           tz.TZDateTime(tz.local, isDay.year, isDay.month, isDay.day, 23, 50);
     }
+
+
 
     flnp.zonedSchedule(
       0,
