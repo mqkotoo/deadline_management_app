@@ -19,6 +19,8 @@ class _SettingNotificationScreenState
   bool isOn = false;
   bool isThreeDaysAgo = true;
   bool isAWeek = false;
+  bool isADayAgo = false;
+  bool isToday = false;
 
   String timeText = '';
 
@@ -41,7 +43,10 @@ class _SettingNotificationScreenState
     setState(() {
       isOn = prefs.getBool('isOn') ?? false;
       isThreeDaysAgo = prefs.getBool('isThreeDaysAgo') ?? false;
-      //week = prefs.getBool('week') ?? false;
+      isAWeek = prefs.getBool('week') ?? false;
+      isADayAgo = prefs.getBool('isADayAgo') ?? false;
+      isToday = prefs.getBool('isToday') ?? false;
+
       print(isOn);
     });
   }
@@ -70,7 +75,7 @@ class _SettingNotificationScreenState
         builder: (BuildContext context, Widget? child) {
           return MediaQuery(
             data: MediaQuery.of(context)
-            //ここ↓
+                //ここ↓
                 .copyWith(alwaysUse24HourFormat: false),
             child: child!,
           );
@@ -123,7 +128,7 @@ class _SettingNotificationScreenState
             child: Text(
               _getTimeText(),
               style: TextStyle(
-                // color: Colors.white,
+                  // color: Colors.white,
                   fontWeight: FontWeight.bold,
                   fontSize: deviceSize.width * 0.043),
             ),
@@ -170,18 +175,27 @@ class _SettingNotificationScreenState
               //通知がオフだったら「通知を受け取る時間」を非表示にする
               isOn
                   ? _menuItem(context,
-                  title: "通知を受け取る時間",
-                  child: _displayTimeBox(onTap: () => _pickTime(context)))
+                      title: "通知を受け取る時間",
+                      child: _displayTimeBox(onTap: () => _pickTime(context)))
                   : SizedBox.shrink(),
               isOn
                   ? _menuItem(context,
-                  title: "3日前に通知", child: _threeSwitch(context))
+                      title: "当日に通知", child: _isTodaySwitch(context))
                   : SizedBox.shrink(),
               isOn
                   ? _menuItem(context,
-                      title: "1週間後に通知", child: _aWeekSwitch(context))
+                      title: '前日に通知', child: _isDayAgoSwitch(context))
                   : SizedBox.shrink(),
-            ]),
+              isOn
+                  ? _menuItem(context,
+                      title: "3日前に通知", child: _isThreeSwitch(context))
+                  : SizedBox.shrink(),
+              isOn
+                  ? _menuItem(context,
+                      title: "1週間後に通知", child: _isAWeekSwitch(context))
+                  : SizedBox.shrink(),
+            ],
+            ),
           ),
           SizedBox(
             width: deviceSize.width,
@@ -253,7 +267,7 @@ class _SettingNotificationScreenState
     );
   }
 
-  Widget _threeSwitch(context) {
+  Widget _isThreeSwitch(context) {
     var notifyProvider = ref.read(NotifyProvider);
     var deviceSize = MediaQuery.of(context).size;
     return SizedBox(
@@ -278,29 +292,79 @@ class _SettingNotificationScreenState
     );
   }
 
-Widget _aWeekSwitch(context) {
-  var notifyProvider = ref.read(NotifyProvider);
-  var deviceSize = MediaQuery.of(context).size;
-  return SizedBox(
-    width: deviceSize.height * 0.07,
-    height: deviceSize.height * 0.055,
-    child: FittedBox(
-      fit: BoxFit.fill,
-      child: Switch(
-        value: isAWeek,
-        onChanged: (bool? value) {
-          if (value != null) {
-            setState(() {
-              isAWeek = value;
-              _saveBool('week', isAWeek);
-              print("$isAWeek");
-            });
-          }
-          notifyProvider.selectOnOff(isAWeek);
-        },
+  Widget _isAWeekSwitch(context) {
+    var notifyProvider = ref.read(NotifyProvider);
+    var deviceSize = MediaQuery.of(context).size;
+    return SizedBox(
+      width: deviceSize.height * 0.07,
+      height: deviceSize.height * 0.055,
+      child: FittedBox(
+        fit: BoxFit.fill,
+        child: Switch(
+          value: isAWeek,
+          onChanged: (bool? value) {
+            if (value != null) {
+              setState(() {
+                isAWeek = value;
+                _saveBool('week', isAWeek);
+                print("$isAWeek");
+              });
+            }
+            notifyProvider.selectOnOff(isAWeek);
+          },
+        ),
       ),
-    ),
-  );
-}
+    );
+  }
+
+  Widget _isDayAgoSwitch(context) {
+    var notifyProvider = ref.read(NotifyProvider);
+    var deviceSize = MediaQuery.of(context).size;
+    return SizedBox(
+      width: deviceSize.height * 0.07,
+      height: deviceSize.height * 0.055,
+      child: FittedBox(
+        fit: BoxFit.fill,
+        child: Switch(
+          value: isADayAgo,
+          onChanged: (bool? value) {
+            if (value != null) {
+              setState(() {
+                isADayAgo = value;
+                _saveBool('isADayAgo', isADayAgo);
+                print("$isADayAgo");
+              });
+            }
+            notifyProvider.selectOnOff(isADayAgo);
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget _isTodaySwitch(context) {
+    var notifyProvider = ref.read(NotifyProvider);
+    var deviceSize = MediaQuery.of(context).size;
+    return SizedBox(
+      width: deviceSize.height * 0.07,
+      height: deviceSize.height * 0.055,
+      child: FittedBox(
+        fit: BoxFit.fill,
+        child: Switch(
+          value: isToday,
+          onChanged: (bool? value) {
+            if (value != null) {
+              setState(() {
+                isToday = value;
+                _saveBool('isToday', isToday);
+                print("$isToday");
+              });
+            }
+            notifyProvider.selectOnOff(isToday);
+          },
+        ),
+      ),
+    );
+  }
 //  ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
 }
