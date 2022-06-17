@@ -86,6 +86,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
           contents.add(events[i]);
         }
       }
+
       if (isOn) {
         ref.read(NotifyProvider).isNotify(contents, isThreeDaysAgo);
       }

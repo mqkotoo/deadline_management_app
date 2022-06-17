@@ -1,6 +1,5 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-// import 'package:timezone/browser.dart';
 import 'package:timezone/timezone.dart' as tz;
 
 final NotifyProvider = Provider((ref) => notifyProvider(ref.read));
@@ -45,12 +44,21 @@ class notifyProvider {
       title = "一週間後：${content.length}個のタスク（予定）があります";
     }
 
-    if (isThreeDaysAgo) {
-      date = tz.TZDateTime(tz.local, isDay.year, isDay.month, isDay.day, 23,50)
+    if (isToday) {
+      date = tz.TZDateTime(tz.local, isDay.year, isDay.month, isDay.day, 取得した時間);
+    }
+    else if (isADayAgo){
+      date = tz.TZDateTime(tz.local, isDay.year, isDay.month, isDay.day, 取得した時間)
+          .add(const Duration(days: -1));
+    }
+    else if (isThreeDaysAgo) {
+      date = tz.TZDateTime(tz.local, isDay.year, isDay.month, isDay.day, 取得した時間)
           .add(const Duration(days: -3));
-    } else {
-      date =
-          tz.TZDateTime(tz.local, isDay.year, isDay.month, isDay.day, 23, 50);
+    }
+    //一週間前の時の処理
+    else {
+      date = tz.TZDateTime(tz.local, isDay.year, isDay.month, isDay.day, 取得した時間)
+          .add(const Duration(days: -7));
     }
 
 
@@ -69,18 +77,6 @@ class notifyProvider {
       androidAllowWhileIdle: true,
     );
   }
-  //
-  //     .then((_) => flnp.show(
-  // 0,
-  // '今日の締め切りが' + eventNum + '件あります',
-  // content + ' です。',
-  // const NotificationDetails(
-  // iOS: IOSNotificationDetails(),
-  // android: AndroidNotificationDetails('id', 'name',
-  // channelDescription: "description",
-  // importance: Importance.max,
-  // priority: Priority.high),
-  // )));
 
   Future<void> selectOnOff(bool isOn)  async {
     if (isOn == false) {

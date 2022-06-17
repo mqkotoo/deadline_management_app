@@ -192,7 +192,7 @@ class _SettingNotificationScreenState
                   : SizedBox.shrink(),
               isOn
                   ? _menuItem(context,
-                      title: "1週間後に通知", child: _isAWeekSwitch(context))
+                      title: "1週間前に通知", child: _isAWeekSwitch(context))
                   : SizedBox.shrink(),
             ],
             ),

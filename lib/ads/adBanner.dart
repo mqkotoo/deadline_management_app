@@ -30,11 +30,29 @@ Widget build(BuildContext context) {
     if (Platform.isAndroid) {
       // Android のとき
       testBannerUnitId = "ca-app-pub-3940256099942544/6300978111"; // Androidのデモ用バナー広告ID
+      //本番用ANDROIDバナーID
+    //  ca-app-pub-6321551480201249/5592261891
+
     } else if (Platform.isIOS) {
       // iOSのとき
       testBannerUnitId = "ca-app-pub-3940256099942544/2934735716"; // iOSのデモ用バナー広告ID
+      //本番用IOSバナーID
+    //  ca-app-pub-6321551480201249/1514497656
     }
     return testBannerUnitId;
   }
+
+  //// ''''' 本番用  ''''  プラットフォーム（iOS / Android）に合わせて本番用広告IDを返す
+  // String getAdBannerUnitId() {
+  //   String bannerUnitId = "";
+  //   if (Platform.isAndroid) {
+  //     // Android のとき
+  //     bannerUnitId = "ca-app-pub-3940256099942544/6300978111"; // Androidのデモ用バナー広告ID
+  //   } else if (Platform.isIOS) {
+  //     // iOSのとき
+  //     bannerUnitId = "ca-app-pub-6321551480201249/1514497656"; // iOSのデモ用バナー広告ID
+  //   }
+  //   return bannerUnitId;
+  // }
 
 }
