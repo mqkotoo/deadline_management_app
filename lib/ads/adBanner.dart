@@ -9,7 +9,11 @@ class AdBanner extends StatelessWidget {
 Widget build(BuildContext context) {
   // バナー広告をインスタンス化
   BannerAd myBanner = BannerAd(
+      // FOR TEST
       adUnitId: getTestAdBannerUnitId(),
+      //// FOR 本番
+    //adUnitId: getAdBannerUnitId(),
+
       size: AdSize.banner,
       request: const AdRequest(),
       listener: const BannerAdListener(),
@@ -47,10 +51,10 @@ Widget build(BuildContext context) {
   //   String bannerUnitId = "";
   //   if (Platform.isAndroid) {
   //     // Android のとき
-  //     bannerUnitId = "ca-app-pub-3940256099942544/6300978111"; // Androidのデモ用バナー広告ID
+  //     bannerUnitId = "ca-app-pub-6321551480201249/5592261891"; // Androidの本番用バナー広告ID
   //   } else if (Platform.isIOS) {
   //     // iOSのとき
-  //     bannerUnitId = "ca-app-pub-6321551480201249/1514497656"; // iOSのデモ用バナー広告ID
+  //     bannerUnitId = "ca-app-pub-6321551480201249/1514497656"; // iOSの本番用バナー広告ID
   //   }
   //   return bannerUnitId;
   // }

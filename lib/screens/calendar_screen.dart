@@ -29,7 +29,10 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
   DateTime _selectedDay = DateTime.now();
   final now = DateTime.now();
   bool isOn = false;
-  bool isThreeDaysAgo = false;
+  bool isThreeDaysAgo = true;
+  bool isAWeek = false;
+  bool isADayAgo = false;
+  bool isToday = false;
   //bool week = false;
 
   TextEditingController _eventController = TextEditingController();
@@ -44,8 +47,11 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
     setState(() {
       isOn = prefs.getBool('isOn') ?? false;
       isThreeDaysAgo = prefs.getBool('isThreeDaysAgo') ?? false;
-      //week = prefs.getBool('week') ?? false;
-      print(isOn);
+      isAWeek = prefs.getBool('week') ?? false;
+      isADayAgo = prefs.getBool('isADayAgo') ?? false;
+      isToday = prefs.getBool('isToday') ?? false;
+      print('確認（三日）：'+isThreeDaysAgo.toString());
+      print('確認（当日）：'+isToday.toString());
     });
   }
 
@@ -88,7 +94,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
       }
 
       if (isOn) {
-        ref.read(NotifyProvider).isNotify(contents, isThreeDaysAgo);
+        ref.read(NotifyProvider).isNotify(contents, isThreeDaysAgo,isAWeek,isADayAgo,isToday);
       }
       return contents;
     }

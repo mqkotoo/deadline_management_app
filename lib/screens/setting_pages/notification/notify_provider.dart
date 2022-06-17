@@ -45,19 +45,19 @@ class notifyProvider {
     }
 
     if (isToday) {
-      date = tz.TZDateTime(tz.local, isDay.year, isDay.month, isDay.day, 取得した時間);
+      date = tz.TZDateTime(tz.local, isDay.year, isDay.month, isDay.day, 15,33);
     }
     else if (isADayAgo){
-      date = tz.TZDateTime(tz.local, isDay.year, isDay.month, isDay.day, 取得した時間)
+      date = tz.TZDateTime(tz.local, isDay.year, isDay.month, isDay.day, 15,24)
           .add(const Duration(days: -1));
     }
     else if (isThreeDaysAgo) {
-      date = tz.TZDateTime(tz.local, isDay.year, isDay.month, isDay.day, 取得した時間)
+      date = tz.TZDateTime(tz.local, isDay.year, isDay.month, isDay.day, 15,24)
           .add(const Duration(days: -3));
     }
     //一週間前の時の処理
     else {
-      date = tz.TZDateTime(tz.local, isDay.year, isDay.month, isDay.day, 取得した時間)
+      date = tz.TZDateTime(tz.local, isDay.year, isDay.month, isDay.day, 15,24)
           .add(const Duration(days: -7));
     }
 

@@ -46,7 +46,6 @@ class _SettingNotificationScreenState
       isAWeek = prefs.getBool('week') ?? false;
       isADayAgo = prefs.getBool('isADayAgo') ?? false;
       isToday = prefs.getBool('isToday') ?? false;
-
       print(isOn);
     });
   }
