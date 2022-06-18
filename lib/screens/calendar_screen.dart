@@ -148,7 +148,9 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                 //カレンダーの大きさ変えれるようにするやつ
                 shouldFillViewport: true,
                 locale: 'ja_JP',
-                firstDay: DateTime.utc(now.year - 1, 1, 1),
+                //↓の書き方だと一月とか二月はおかしくなる気がする
+                // firstDay: DateTime.utc(now.year, now.month-2, 1),
+                firstDay: DateTime.utc(now.year - 1, 1,1),
                 lastDay: DateTime.utc(now.year + 1, 12, 31),
                 focusedDay: _focusedDay,
                 calendarFormat: _calendarFormat,
