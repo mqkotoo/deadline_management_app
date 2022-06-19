@@ -9,7 +9,7 @@ class notifyProvider {
   final Reader _read;
   //ios notification setting
   //android notification setting
-  Future<void> isNotify(content, isToday,isADayAgo,isThreeDaysAgo,isAWeek) async{
+  Future<void> isNotify(content, isToday,isADayAgo,isThreeDaysAgo,isAWeek) async {
     if (content.isEmpty) {
       return;
     }
@@ -22,43 +22,31 @@ class notifyProvider {
     );
     List content_title = [];
     var title = "";
-    tz.TZDateTime date;
+    tz.TZDateTime? date;
     for (var i = 0; i < content.length; i++) {
       content_title.add(content[i]['title']);
     }
     DateTime isDay = content[0]['at'].toDate();
 
 
-
     if (isToday) {
+      date = tz.TZDateTime(tz.local, isDay.year, isDay.month, isDay.day, 22,58);
       title = "今日：${content.length}個のタスク（予定）があります";
     }
-    else if (isADayAgo){
-    title = "明日：${content.length}個のタスク（予定）があります";
-    }
-    else if (isThreeDaysAgo) {
-      title = "3日後：${content.length}個のタスク（予定）があります";
-    }
-    //一週間前の時の処理
-    else {
-      title = "一週間後：${content.length}個のタスク（予定）があります";
-    }
-
-    if (isToday) {
-      date = tz.TZDateTime(tz.local, isDay.year, isDay.month, isDay.day, 15,33);
-    }
-    else if (isADayAgo){
-      date = tz.TZDateTime(tz.local, isDay.year, isDay.month, isDay.day, 15,24)
+    if (isADayAgo){
+      date = tz.TZDateTime(tz.local, isDay.year, isDay.month, isDay.day, 22,58)
           .add(const Duration(days: -1));
+      title = "明日：${content.length}個のタスク（予定）があります";
     }
-    else if (isThreeDaysAgo) {
-      date = tz.TZDateTime(tz.local, isDay.year, isDay.month, isDay.day, 15,24)
+    if (isThreeDaysAgo) {
+      date = tz.TZDateTime(tz.local, isDay.year, isDay.month, isDay.day, 22,58)
           .add(const Duration(days: -3));
     }
     //一週間前の時の処理
-    else {
-      date = tz.TZDateTime(tz.local, isDay.year, isDay.month, isDay.day, 15,24)
+    if (isAWeek) {
+      date = tz.TZDateTime(tz.local, isDay.year, isDay.month, isDay.day, 22,58)
           .add(const Duration(days: -7));
+      title = "一週間後：${content.length}個のタスク（予定）があります";
     }
 
 
@@ -67,7 +55,7 @@ class notifyProvider {
       0,
       title,
       content_title.join("、"),
-      date,
+      date!,
       const NotificationDetails(
         android: AndroidNotificationDetails("channelId", "channelName"),
         iOS: IOSNotificationDetails(),

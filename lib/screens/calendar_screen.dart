@@ -27,13 +27,16 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
   CalendarFormat _calendarFormat = CalendarFormat.month;
   DateTime _focusedDay = DateTime.now();
   DateTime _selectedDay = DateTime.now();
+  //initStateでL31のnowから、二を引いてあげて（正常に前の年になるはず）、それをL32のnow2に代入してあげて
+  //first,lastDayにつかう
   final now = DateTime.now();
+  //var now2 = DateTime
+
   bool isOn = false;
   bool isThreeDaysAgo = true;
   bool isAWeek = false;
   bool isADayAgo = false;
   bool isToday = false;
-  //bool week = false;
 
   TextEditingController _eventController = TextEditingController();
 
@@ -50,8 +53,6 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
       isAWeek = prefs.getBool('week') ?? false;
       isADayAgo = prefs.getBool('isADayAgo') ?? false;
       isToday = prefs.getBool('isToday') ?? false;
-      print('確認（三日）：'+isThreeDaysAgo.toString());
-      print('確認（当日）：'+isToday.toString());
     });
   }
 
@@ -96,6 +97,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
       if (isOn) {
         ref.read(NotifyProvider).isNotify(contents, isThreeDaysAgo,isAWeek,isADayAgo,isToday);
       }
+
       return contents;
     }
 
@@ -148,6 +150,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                 //カレンダーの大きさ変えれるようにするやつ
                 shouldFillViewport: true,
                 locale: 'ja_JP',
+                //NOW
                 //↓の書き方だと一月とか二月はおかしくなる気がする
                 // firstDay: DateTime.utc(now.year, now.month-2, 1),
                 firstDay: DateTime.utc(now.year - 1, 1,1),
