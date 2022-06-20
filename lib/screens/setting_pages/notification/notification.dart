@@ -46,7 +46,8 @@ class _SettingNotificationScreenState
       isAWeek = prefs.getBool('week') ?? false;
       isADayAgo = prefs.getBool('isADayAgo') ?? false;
       isToday = prefs.getBool('isToday') ?? false;
-      print(isOn);
+      String timeData = prefs.getString('time') ?? '10:00';
+      _selectedTime = TimeOfDay.parse(timeData);
     });
   }
 
@@ -84,6 +85,7 @@ class _SettingNotificationScreenState
       if (timeValue != null) {
         setState(() {
           _selectedTime = timeValue;
+          _saveTime('time', _selectedTime.toString());
         });
       }
     }
@@ -106,9 +108,7 @@ class _SettingNotificationScreenState
 
         timeText = '$hours : $minutes';
 
-        // _saveText('timeText', timeText);
 
-        print(timeText);
         return timeText;
       }
     }

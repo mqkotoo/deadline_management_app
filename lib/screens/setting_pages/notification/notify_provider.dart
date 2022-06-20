@@ -30,21 +30,21 @@ class notifyProvider {
 
 
     if (isToday) {
-      date = tz.TZDateTime(tz.local, isDay.year, isDay.month, isDay.day, 22,58);
+      date = tz.TZDateTime(tz.local, isDay.year, isDay.month, isDay.day, 14,25);
       title = "今日：${content.length}個のタスク（予定）があります";
     }
     if (isADayAgo){
-      date = tz.TZDateTime(tz.local, isDay.year, isDay.month, isDay.day, 22,58)
+      date = tz.TZDateTime(tz.local, isDay.year, isDay.month, isDay.day, 14,25)
           .add(const Duration(days: -1));
       title = "明日：${content.length}個のタスク（予定）があります";
     }
     if (isThreeDaysAgo) {
-      date = tz.TZDateTime(tz.local, isDay.year, isDay.month, isDay.day, 22,58)
+      date = tz.TZDateTime(tz.local, isDay.year, isDay.month, isDay.day, 14,25)
           .add(const Duration(days: -3));
     }
     //一週間前の時の処理
     if (isAWeek) {
-      date = tz.TZDateTime(tz.local, isDay.year, isDay.month, isDay.day, 22,58)
+      date = tz.TZDateTime(tz.local, isDay.year, isDay.month, isDay.day, 14,25)
           .add(const Duration(days: -7));
       title = "一週間後：${content.length}個のタスク（予定）があります";
     }
