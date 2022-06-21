@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_deadline_management/screens/setting_pages/notification/notify_provider.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../ads/adBanner.dart';
@@ -46,8 +47,9 @@ class _SettingNotificationScreenState
       isAWeek = prefs.getBool('week') ?? false;
       isADayAgo = prefs.getBool('isADayAgo') ?? false;
       isToday = prefs.getBool('isToday') ?? false;
-      String timeData = prefs.getString('time') ?? '10:00';
-      _selectedTime = TimeOfDay.parse(timeData);
+      var timeData = prefs.getString('time');
+      DateTime dateData = DateTime.parse(timeData!);
+      _selectedTime = TimeOfDay(hour: dateData.hour, minute: dateData.minute);
     });
   }
 
@@ -85,6 +87,7 @@ class _SettingNotificationScreenState
       if (timeValue != null) {
         setState(() {
           _selectedTime = timeValue;
+          // _saveTime('time', _selectedTime.hour.toString() + ":" + _selectedTime.minute.toString());
           _saveTime('time', _selectedTime.toString());
         });
       }
