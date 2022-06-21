@@ -2,7 +2,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_deadline_management/screens/add_event_screen.dart';
 import 'package:flutter_deadline_management/screens/calendar_screen.dart';
-import 'package:flutter_deadline_management/screens/setting_pages/change_theme.dart';
+import 'package:flutter_deadline_management/screens/setting_pages/theme/change_theme.dart';
+import 'package:flutter_deadline_management/screens/setting_pages/how_to_use/how_to_use.dart';
 import 'package:flutter_deadline_management/screens/setting_pages/notification/notification.dart';
 import 'package:flutter_deadline_management/screens/setting_pages/setting_screen.dart';
 import 'package:flutter_deadline_management/screens/setting_pages/theme/theme_provider.dart';
@@ -14,10 +15,15 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'component/constants.dart';
 import 'firebase_options.dart';
 import 'package:flutter/services.dart';
-
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:timezone/data/latest_all.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  tz.initializeTimeZones();
+  tz.setLocalLocation(tz.getLocation('Asia/Tokyo'));
+  MobileAds.instance.initialize();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   //画面を縦に固定　横向きにならないようにする
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
@@ -30,27 +36,24 @@ class MyApp extends StatefulHookConsumerWidget {
   _MyAppState createState() => _MyAppState();
 }
 
-
 class _MyAppState extends ConsumerState<MyApp> {
-
   @override
   void initState() {
     getColorTheme();
     super.initState();
   }
 
-  Future getColorTheme() async{
+  Future getColorTheme() async {
     var prefs = await SharedPreferences.getInstance();
-    int index  = prefs.getInt('theme') ?? 0;
+    int index = prefs.getInt('theme') ?? 0;
     print(index);
-    var themeProvider =  ref.watch(ThemeProvider);
-    themeProvider.currentTheme = getThemeIndex(index);
+    var themeProvider = ref.watch(ThemeProvider);
+    themeProvider.currentTheme = getThemeIndex(index, context);
     setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
-
     var themeProvider = ref.watch(ThemeProvider);
 
     return MaterialApp(
@@ -61,8 +64,10 @@ class _MyAppState extends ConsumerState<MyApp> {
         SettingScreen.id: (BuildContext context) => SettingScreen(),
         StartUpPage.id: (BuildContext context) => StartUpPage(),
         AddEventScreen.id: (BuildContext context) => AddEventScreen(),
-        SettingNotificationScreen.id : (BuildContext context) => SettingNotificationScreen(),
-        ChangeThemeScreen.id : (BuildContext context) => ChangeThemeScreen(),
+        SettingNotificationScreen.id: (BuildContext context) =>
+            SettingNotificationScreen(),
+        ChangeThemeScreen.id: (BuildContext context) => ChangeThemeScreen(),
+        HowToUseScreen.id: (BuildContext context) => HowToUseScreen()
       },
 
       home: StartUpPage(),
@@ -73,8 +78,8 @@ class _MyAppState extends ConsumerState<MyApp> {
           case '/add_ver':
             return PageTransition(
               child: AddEventScreen(),
-              duration: Duration(milliseconds: 200),
-              reverseDuration: Duration(milliseconds: 200),
+              duration: Duration(milliseconds: 210),
+              reverseDuration: Duration(milliseconds: 210),
               curve: Curves.linear,
               type: PageTransitionType.bottomToTop,
               settings: settings,
@@ -82,8 +87,8 @@ class _MyAppState extends ConsumerState<MyApp> {
           case '/add_hori':
             return PageTransition(
               child: AddEventScreen(),
-              duration: Duration(milliseconds: 200),
-              reverseDuration: Duration(milliseconds: 200),
+              duration: Duration(milliseconds: 175),
+              reverseDuration: Duration(milliseconds: 170),
               type: PageTransitionType.rightToLeft,
               settings: settings,
             );
@@ -91,8 +96,6 @@ class _MyAppState extends ConsumerState<MyApp> {
             return null;
         }
       },
-
     );
-
   }
 }

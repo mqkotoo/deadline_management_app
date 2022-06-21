@@ -13,19 +13,21 @@ class selectedDay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var deviceSize = MediaQuery.of(context).size;
     return Container(
       alignment: Alignment.centerLeft,
       color: Theme.of(context).primaryColor,
-      width: MediaQuery.of(context).size.width,
-      height: 54.78,
+      width: deviceSize.width,
+      // 55↓
+      height: deviceSize.height * 0.061,
       child: Padding(
-        padding: EdgeInsets.only(left: 30),
+        padding: EdgeInsets.only(left: deviceSize.width * 0.072),
         child: Row(
           children: [
             Expanded(
               child: Text(DateFormat.MMMEd('ja').format(_selectedDay),
                 style: TextStyle(
-                    fontSize: 17,
+                    fontSize: deviceSize.height * 0.02,
                     fontWeight: FontWeight.bold,
                   color: Theme.of(context).selectedRowColor
                 ),

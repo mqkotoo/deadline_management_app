@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_deadline_management/model/calendar_model.dart';
@@ -25,6 +26,7 @@ class StartUpPage extends HookConsumerWidget {
 
       if (FirebaseAuth.instance.currentUser != null) {
           Future(() async{
+
           //CALENDARPROVIDERの中身を取得する
           await ref.read(calendarProvider).get();
           //カレンダースクリーンに飛ぶ
@@ -45,11 +47,28 @@ class StartUpPage extends HookConsumerWidget {
       return null;
     }, const []);
 
+    var deviceSize = MediaQuery.of(context).size;
+
     //処理中のUIを書いている
-    return const Scaffold(
+    return Scaffold(
       body: Center(
         // indicator変更
-        child: Text('Loading...',style: TextStyle(fontSize: 20)),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+
+            //　LOADING文字出力
+            Text('Loading',style: TextStyle(fontSize: deviceSize.height * 0.028,fontWeight: FontWeight.bold)),
+
+            //...をタイプライターで表示する
+            AnimatedTextKit(
+              animatedTexts: [
+                TypewriterAnimatedText('...',textStyle: TextStyle(fontSize: deviceSize.height * 0.028,fontWeight: FontWeight.bold),speed: Duration(milliseconds: 500)),
+              ],
+            ),
+
+          ],
+        ),
         ),
       );
   }

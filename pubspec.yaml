@@ -12,6 +12,7 @@ dependencies:
   flutter:
     sdk: flutter
 
+
   cupertino_icons: ^1.0.2
   firebase_core: ^1.14.0
   firebase_auth: ^3.3.12
@@ -27,6 +28,9 @@ dependencies:
   shared_preferences: ^2.0.13
   animated_text_kit: ^4.2.1
   page_transition: ^2.0.5
+  google_mobile_ads: ^1.2.0
+  flutter_launcher_icons: ^0.9.3
+  timezone: ^0.8.0
 
 
 dev_dependencies:
@@ -35,6 +39,18 @@ dev_dependencies:
 
   flutter_lints: ^1.0.0
 
+
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path_ios: 'images/ios_icon.png'
+  image_path_android: 'images/android_icon.png'
+  adaptive_icon_background: '#fffff0'
+  adaptive_icon_foreground: 'images/android_icon.png'
+
 flutter:
   uses-material-design: true
+
+  assets:
+    - images/
 

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_deadline_management/screens/add_event_screen.dart';
 
 enum Menu { edit, delete }
 
@@ -17,6 +16,9 @@ class CustomTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    var deviceSize = MediaQuery.of(context).size;
+
     return SafeArea(
       top: false,
       bottom: false,
@@ -25,7 +27,12 @@ class CustomTile extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Padding(
-            padding: const EdgeInsets.fromLTRB(20, 6, 13, 6),
+            padding: EdgeInsets.fromLTRB(
+                deviceSize.width * 0.045,
+                deviceSize.height * 0.007,
+                deviceSize.width * 0.031,
+                deviceSize.height * 0.007,
+            ),
             child: Row(
               children: [
                 Expanded(
@@ -37,17 +44,19 @@ class CustomTile extends StatelessWidget {
                       subtitle == ''
                           ? Padding(
                               padding:
-                                  const EdgeInsets.symmetric(vertical: 9.0),
+                                  EdgeInsets.symmetric(vertical: deviceSize.height * 0.01),
                               child: Text(
                                 title,
-                                style: const TextStyle(fontSize: 17),
+                                //17↓
+                                style: TextStyle(fontSize: deviceSize.height * 0.02),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                               ))
                           //subtitleがあったら普通通り
                           : Text(
                               title,
-                              style: const TextStyle(fontSize: 17),
+                              //17↓
+                              style: TextStyle(fontSize: deviceSize.height * 0.02),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             ),
@@ -59,8 +68,9 @@ class CustomTile extends StatelessWidget {
                               subtitle,
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
-                              style: const TextStyle(
-                                fontSize: 12,
+                              style: TextStyle(
+                                //12
+                                fontSize: deviceSize.height * 0.014,
                                 color: Colors.grey,
                               ),
                             ),

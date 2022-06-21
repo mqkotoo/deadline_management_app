@@ -7,9 +7,9 @@
     <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
 
    <application
-        android:label="flutter_deadline_management"
+        android:label="タスクカレンダー"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/launcher_icon"
         android:usesCleartextTraffic="true">
         <activity
             android:name=".MainActivity"
@@ -36,6 +36,10 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+
+       <meta-data
+           android:name="com.google.android.gms.ads.APPLICATION_ID"
+           android:value="ca-app-pub-6321551480201249~7235945237"/>
     </application>
 
     <queries>
