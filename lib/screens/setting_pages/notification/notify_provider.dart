@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:timezone/timezone.dart' as tz;
@@ -9,7 +10,13 @@ class notifyProvider {
   final Reader _read;
   //ios notification setting
   //android notification setting
-  Future<void> isNotify(content, isToday,isADayAgo,isThreeDaysAgo,isAWeek) async {
+  Future<void> isNotify(content, isToday,isADayAgo,isThreeDaysAgo,isAWeek, String stringTimeData) async {
+
+    //通知の時刻選択できるページで指定した時刻をDateTime型っぽく文字列にしたもの。
+    //これを使ってこのページでの、通知のスケジュールの何時何分のところを指定する
+    TimeOfDay _selectedTime = TimeOfDay.fromDateTime(
+        DateTime.parse(stringTimeData));
+
     if (content.isEmpty) {
       return;
     }
@@ -30,21 +37,21 @@ class notifyProvider {
 
 
     if (isToday) {
-      date = tz.TZDateTime(tz.local, isDay.year, isDay.month, isDay.day, 14,25);
+      date = tz.TZDateTime(tz.local, isDay.year, isDay.month, isDay.day, _selectedTime.hour,_selectedTime.minute);
       title = "今日：${content.length}個のタスク（予定）があります";
     }
     if (isADayAgo){
-      date = tz.TZDateTime(tz.local, isDay.year, isDay.month, isDay.day, 14,25)
+      date = tz.TZDateTime(tz.local, isDay.year, isDay.month, isDay.day, _selectedTime.hour,_selectedTime.minute)
           .add(const Duration(days: -1));
       title = "明日：${content.length}個のタスク（予定）があります";
     }
     if (isThreeDaysAgo) {
-      date = tz.TZDateTime(tz.local, isDay.year, isDay.month, isDay.day, 14,25)
+      date = tz.TZDateTime(tz.local, isDay.year, isDay.month, isDay.day, _selectedTime.hour,_selectedTime.minute)
           .add(const Duration(days: -3));
     }
     //一週間前の時の処理
     if (isAWeek) {
-      date = tz.TZDateTime(tz.local, isDay.year, isDay.month, isDay.day, 14,25)
+      date = tz.TZDateTime(tz.local, isDay.year, isDay.month, isDay.day, _selectedTime.hour,_selectedTime.minute)
           .add(const Duration(days: -7));
       title = "一週間後：${content.length}個のタスク（予定）があります";
     }
