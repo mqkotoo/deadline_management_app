@@ -25,6 +25,9 @@ class _SettingNotificationScreenState
 
   String timeText = '';
 
+  //返還の際に使うDATETIME型やつ
+  DateTime now = DateTime.now();
+
   //タイムピッカーデフォルトの変数
   TimeOfDay _selectedTime = TimeOfDay(hour: 10, minute: 00);
 
@@ -47,9 +50,10 @@ class _SettingNotificationScreenState
       isAWeek = prefs.getBool('week') ?? false;
       isADayAgo = prefs.getBool('isADayAgo') ?? false;
       isToday = prefs.getBool('isToday') ?? false;
-      var timeData = prefs.getString('time');
-      DateTime dateData = DateTime.parse(timeData!);
-      _selectedTime = TimeOfDay(hour: dateData.hour, minute: dateData.minute);
+      String stringTimeData = prefs.getString('time') ?? "2022-06-22 10:00:00.000";
+      _selectedTime = TimeOfDay.fromDateTime(
+          DateTime.parse(stringTimeData));
+      print("stringTimeData→→" + stringTimeData);
     });
   }
 
@@ -88,7 +92,13 @@ class _SettingNotificationScreenState
         setState(() {
           _selectedTime = timeValue;
           // _saveTime('time', _selectedTime.hour.toString() + ":" + _selectedTime.minute.toString());
-          _saveTime('time', _selectedTime.toString());
+          _saveTime('time',  DateTime(
+            now.year,
+            now.month,
+            now.day,
+            _selectedTime.hour, // TimeOfDay
+            _selectedTime.minute, //TimeOfDay
+          ).toString());
         });
       }
     }

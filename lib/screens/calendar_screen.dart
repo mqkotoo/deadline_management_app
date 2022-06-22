@@ -27,8 +27,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
   CalendarFormat _calendarFormat = CalendarFormat.month;
   DateTime _focusedDay = DateTime.now();
   DateTime _selectedDay = DateTime.now();
-  //initStateでL31のnowから、二を引いてあげて（正常に前の年になるはず）、それをL32のnow2に代入してあげて
-  //first,lastDayにつかう
+  //initStateでL31のnowから、二を引いてあげて（正常に前の年になるはず）、それをL32のnow2に代入してあげる。　first,lastDayにつかう
   final now = DateTime.now();
   //var now2 = DateTime
 
@@ -37,6 +36,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
   bool isAWeek = false;
   bool isADayAgo = false;
   bool isToday = false;
+  String stringTimeData = "2022-06-22 10:00:00.000";
 
   TextEditingController _eventController = TextEditingController();
 
@@ -53,6 +53,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
       isAWeek = prefs.getBool('week') ?? false;
       isADayAgo = prefs.getBool('isADayAgo') ?? false;
       isToday = prefs.getBool('isToday') ?? false;
+      stringTimeData = prefs.getString('time') ?? "2022-06-22 10:00:00.000";
     });
   }
 
@@ -95,7 +96,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
       }
 
       if (isOn) {
-        ref.read(NotifyProvider).isNotify(contents, isThreeDaysAgo,isAWeek,isADayAgo,isToday);
+        ref.read(NotifyProvider).isNotify(contents, isThreeDaysAgo,isAWeek,isADayAgo,isToday,stringTimeData);
       }
 
       return contents;
