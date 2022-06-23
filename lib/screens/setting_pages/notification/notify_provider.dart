@@ -20,6 +20,7 @@ class notifyProvider {
     if (content.isEmpty) {
       return;
     }
+
     final flnp = FlutterLocalNotificationsPlugin();
     flnp.initialize(
       const InitializationSettings(
@@ -27,6 +28,7 @@ class notifyProvider {
         android: AndroidInitializationSettings('@mipmap/launcher_icon'),
       ),
     );
+
     List content_title = [];
     var title = "";
     tz.TZDateTime? date;
@@ -37,21 +39,21 @@ class notifyProvider {
 
 
     if (isToday) {
-      date = tz.TZDateTime(tz.local, isDay.year, isDay.month, isDay.day, _selectedTime.hour,_selectedTime.minute);
+      date = tz.TZDateTime(tz.local, isDay.year, isDay.month, isDay.day, _selectedTime.hour.toInt(),_selectedTime.minute.toInt());
       title = "今日：${content.length}個のタスク（予定）があります";
     }
     if (isADayAgo){
-      date = tz.TZDateTime(tz.local, isDay.year, isDay.month, isDay.day, _selectedTime.hour,_selectedTime.minute)
+      date = tz.TZDateTime(tz.local, isDay.year, isDay.month, isDay.day, _selectedTime.hour.toInt(),_selectedTime.minute.toInt())
           .add(const Duration(days: -1));
       title = "明日：${content.length}個のタスク（予定）があります";
     }
     if (isThreeDaysAgo) {
-      date = tz.TZDateTime(tz.local, isDay.year, isDay.month, isDay.day, _selectedTime.hour,_selectedTime.minute)
+      date = tz.TZDateTime(tz.local, isDay.year, isDay.month, isDay.day, _selectedTime.hour.toInt(),_selectedTime.minute.toInt())
           .add(const Duration(days: -3));
     }
     //一週間前の時の処理
     if (isAWeek) {
-      date = tz.TZDateTime(tz.local, isDay.year, isDay.month, isDay.day, _selectedTime.hour,_selectedTime.minute)
+      date = tz.TZDateTime(tz.local, isDay.year, isDay.month, isDay.day, _selectedTime.hour.toInt(),_selectedTime.minute.toInt())
           .add(const Duration(days: -7));
       title = "一週間後：${content.length}個のタスク（予定）があります";
     }

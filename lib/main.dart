@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_deadline_management/screens/add_event_screen.dart';
 import 'package:flutter_deadline_management/screens/calendar_screen.dart';
+import 'package:flutter_deadline_management/screens/setting_pages/notification/notify_provider.dart';
 import 'package:flutter_deadline_management/screens/setting_pages/theme/change_theme.dart';
 import 'package:flutter_deadline_management/screens/setting_pages/how_to_use/how_to_use.dart';
 import 'package:flutter_deadline_management/screens/setting_pages/notification/notification.dart';
@@ -31,12 +32,14 @@ void main() async {
       .then((_) => runApp(ProviderScope(child: MyApp())));
 }
 
+
 class MyApp extends StatefulHookConsumerWidget {
   @override
   _MyAppState createState() => _MyAppState();
 }
 
 class _MyAppState extends ConsumerState<MyApp> {
+
   @override
   void initState() {
     getColorTheme();
@@ -52,9 +55,12 @@ class _MyAppState extends ConsumerState<MyApp> {
     setState(() {});
   }
 
+
   @override
   Widget build(BuildContext context) {
     var themeProvider = ref.watch(ThemeProvider);
+
+
 
     return MaterialApp(
       theme: themeProvider.currentTheme,
@@ -99,3 +105,4 @@ class _MyAppState extends ConsumerState<MyApp> {
     );
   }
 }
+

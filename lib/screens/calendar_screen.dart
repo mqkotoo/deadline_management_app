@@ -3,6 +3,7 @@ import 'package:flutter_deadline_management/component/simekiri_tile.dart';
 import 'package:flutter_deadline_management/model/calendar_model.dart';
 import 'package:flutter_deadline_management/screens/setting_pages/notification/notify_provider.dart';
 import 'package:flutter_deadline_management/screens/setting_pages/setting_screen.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
@@ -95,9 +96,14 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
         }
       }
 
-      if (isOn) {
-        ref.read(NotifyProvider).isNotify(contents, isThreeDaysAgo,isAWeek,isADayAgo,isToday,stringTimeData);
-      }
+        // if (isOn) {
+        //   ref.read(NotifyProvider).isNotify(contents, isThreeDaysAgo,isAWeek,isADayAgo,isToday,stringTimeData);
+        //   TimeOfDay _selectedTime = TimeOfDay.fromDateTime(
+        //       DateTime.parse(stringTimeData));
+        //   print('${_selectedTime.hour.toString()},${_selectedTime.minute.toString()}');
+        // }
+
+
 
       return contents;
     }

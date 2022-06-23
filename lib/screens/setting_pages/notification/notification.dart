@@ -46,7 +46,7 @@ class _SettingNotificationScreenState
     var prefs = await SharedPreferences.getInstance();
     setState(() {
       isOn = prefs.getBool('isOn') ?? false;
-      isThreeDaysAgo = prefs.getBool('isThreeDaysAgo') ?? false;
+      isThreeDaysAgo = prefs.getBool('isThreeDaysAgo') ?? true;
       isAWeek = prefs.getBool('week') ?? false;
       isADayAgo = prefs.getBool('isADayAgo') ?? false;
       isToday = prefs.getBool('isToday') ?? false;
