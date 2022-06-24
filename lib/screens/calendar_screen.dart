@@ -32,7 +32,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
   final now = DateTime.now();
   //var now2 = DateTime
 
-  bool isOn = false;
+  bool isOn = true;
   bool isThreeDaysAgo = true;
   bool isAWeek = false;
   bool isADayAgo = false;
@@ -62,12 +62,43 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
   void initState() {
     super.initState();
     _restoreValues();
+    WidgetsBinding.instance!.addPostFrameCallback(
+            (_) => _showStartDialog()
+    );
   }
 
   @override
   void dispose() {
     _eventController.dispose();
     super.dispose();
+  }
+
+  Future<void> _showStartDialog() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('AlertDialog Title'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text('This is a demo alert dialog.'),
+                Text('Would you like to approve of this message?'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Approve'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -96,14 +127,16 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
         }
       }
 
+        //// ここで読んじゃうと、30回くらいこの処理を繰り返してしまうから、どこで呼ぶか考えている
+        ////                      ↓　　↓
+
         // if (isOn) {
         //   ref.read(NotifyProvider).isNotify(contents, isThreeDaysAgo,isAWeek,isADayAgo,isToday,stringTimeData);
         //   TimeOfDay _selectedTime = TimeOfDay.fromDateTime(
         //       DateTime.parse(stringTimeData));
         //   print('${_selectedTime.hour.toString()},${_selectedTime.minute.toString()}');
+        //   print(contents);
         // }
-
-
 
       return contents;
     }

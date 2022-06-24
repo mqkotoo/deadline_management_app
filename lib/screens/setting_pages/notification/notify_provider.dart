@@ -50,6 +50,7 @@ class notifyProvider {
     if (isThreeDaysAgo) {
       date = tz.TZDateTime(tz.local, isDay.year, isDay.month, isDay.day, _selectedTime.hour.toInt(),_selectedTime.minute.toInt())
           .add(const Duration(days: -3));
+      title = "三日後：${content.length}このタスク（予定）があります";
     }
     //一週間前の時の処理
     if (isAWeek) {

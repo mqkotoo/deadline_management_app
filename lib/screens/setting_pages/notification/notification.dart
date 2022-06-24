@@ -17,7 +17,7 @@ class SettingNotificationScreen extends StatefulHookConsumerWidget {
 class _SettingNotificationScreenState
     extends ConsumerState<SettingNotificationScreen> {
   //スイッチのオンオフのBOOL値
-  bool isOn = false;
+  bool isOn = true;
   bool isThreeDaysAgo = true;
   bool isAWeek = false;
   bool isADayAgo = false;
@@ -45,7 +45,7 @@ class _SettingNotificationScreenState
   _restoreValues() async {
     var prefs = await SharedPreferences.getInstance();
     setState(() {
-      isOn = prefs.getBool('isOn') ?? false;
+      isOn = prefs.getBool('isOn') ?? true;
       isThreeDaysAgo = prefs.getBool('isThreeDaysAgo') ?? true;
       isAWeek = prefs.getBool('week') ?? false;
       isADayAgo = prefs.getBool('isADayAgo') ?? false;
@@ -72,7 +72,7 @@ class _SettingNotificationScreenState
 
       final TimeOfDay? timeValue = await showTimePicker(
         context: context,
-        initialTime: TimeOfDay(hour: 10, minute: 00),
+        initialTime: TimeOfDay(hour: _selectedTime.hour, minute: _selectedTime.minute),
         cancelText: 'キャンセル',
         hourLabelText: '',
         minuteLabelText: '',
