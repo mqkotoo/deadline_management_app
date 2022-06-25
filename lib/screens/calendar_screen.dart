@@ -79,18 +79,18 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('AlertDialog Title'),
+          title: Text('画像差し込み'),
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                Text('This is a demo alert dialog.'),
-                Text('Would you like to approve of this message?'),
+                Text('通知を受け取ってください'),
+                Text('通知を許可すると、予定の通知が受け取れます'),
               ],
             ),
           ),
           actions: <Widget>[
             TextButton(
-              child: Text('Approve'),
+              child: Text('OK'),
               onPressed: () {
                 Navigator.of(context).pop();
               },
