@@ -79,15 +79,13 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('画像差し込み'),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                Text('通知を受け取ってください'),
-                Text('通知を許可すると、予定の通知が受け取れます'),
-              ],
-            ),
+          titlePadding: EdgeInsets.zero,
+          title : Image.network(
+            'https://pics.prcm.jp/8fc843cdea20f/81238464/jpeg/81238464_220x165.jpeg',
+            height: 200,
+            fit: BoxFit.cover,
           ),
+          content: Text("通知をオンにすると予定の通知が受け取れます"),
           actions: <Widget>[
             TextButton(
               child: Text('OK'),
@@ -130,13 +128,13 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
         //// ここで読んじゃうと、30回くらいこの処理を繰り返してしまうから、どこで呼ぶか考えている
         ////                      ↓　　↓
 
-        // if (isOn) {
-        //   ref.read(NotifyProvider).isNotify(contents, isThreeDaysAgo,isAWeek,isADayAgo,isToday,stringTimeData);
-        //   TimeOfDay _selectedTime = TimeOfDay.fromDateTime(
-        //       DateTime.parse(stringTimeData));
-        //   print('${_selectedTime.hour.toString()},${_selectedTime.minute.toString()}');
-        //   print(contents);
-        // }
+        if (isOn) {
+          ref.read(NotifyProvider).isNotify(contents, isThreeDaysAgo,isAWeek,isADayAgo,isToday,stringTimeData);
+          TimeOfDay _selectedTime = TimeOfDay.fromDateTime(
+              DateTime.parse(stringTimeData));
+          print('${_selectedTime.hour.toString()},${_selectedTime.minute.toString()}');
+          print(contents);
+        }
 
       return contents;
     }
