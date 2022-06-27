@@ -25,7 +25,7 @@ class _SettingNotificationScreenState
 
   String timeText = '';
 
-  //返還の際に使うDATETIME型やつ
+  //変換の際に使うDATETIME型やつ
   DateTime now = DateTime.now();
 
   //タイムピッカーデフォルトの変数
@@ -56,6 +56,7 @@ class _SettingNotificationScreenState
       print("stringTimeData→→" + stringTimeData);
     });
   }
+
 
   @override
   void initState() {

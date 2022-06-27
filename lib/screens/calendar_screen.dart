@@ -62,9 +62,9 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
   void initState() {
     super.initState();
     _restoreValues();
-    WidgetsBinding.instance!.addPostFrameCallback(
-            (_) => _showStartDialog()
-    );
+    // WidgetsBinding.instance!.addPostFrameCallback(
+    //         (_) => _showStartDialog()
+    // );
   }
 
   @override
@@ -73,31 +73,31 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
     super.dispose();
   }
 
-  Future<void> _showStartDialog() async {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: false, // user must tap button!
-      builder: (BuildContext context) {
-        return AlertDialog(
-          titlePadding: EdgeInsets.zero,
-          title : Image.network(
-            'https://pics.prcm.jp/8fc843cdea20f/81238464/jpeg/81238464_220x165.jpeg',
-            height: 200,
-            fit: BoxFit.cover,
-          ),
-          content: Text("通知をオンにすると予定の通知が受け取れます"),
-          actions: <Widget>[
-            TextButton(
-              child: Text('OK'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
+  // Future<void> _showStartDialog() async {
+  //   return showDialog(
+  //     context: context,
+  //     barrierDismissible: false, // user must tap button!
+  //     builder: (BuildContext context) {
+  //       return AlertDialog(
+  //         titlePadding: EdgeInsets.zero,
+  //         title : Image.network(
+  //           'https://pics.prcm.jp/8fc843cdea20f/81238464/jpeg/81238464_220x165.jpeg',
+  //           height: 200,
+  //           fit: BoxFit.cover,
+  //         ),
+  //         content: Text("テキストテキストテキスト"),
+  //         actions: <Widget>[
+  //           TextButton(
+  //             child: Text('OK'),
+  //             onPressed: () {
+  //               Navigator.of(context).pop();
+  //             },
+  //           ),
+  //         ],
+  //       );
+  //     },
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
