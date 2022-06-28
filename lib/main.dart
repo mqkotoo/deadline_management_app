@@ -44,35 +44,6 @@ class _MyAppState extends ConsumerState<MyApp> {
   void initState() {
     getColorTheme();
     super.initState();
-    WidgetsBinding.instance!.addPostFrameCallback(
-            (_) => _showStartDialog()
-    );
-  }
-
-  Future<void> _showStartDialog() async {
-    return showDialog(
-      context: context,
-      barrierDismissible: false, // user must tap button!
-      builder: (BuildContext context) {
-        return AlertDialog(
-          titlePadding: EdgeInsets.zero,
-          title : Image.network(
-            'https://pics.prcm.jp/8fc843cdea20f/81238464/jpeg/81238464_220x165.jpeg',
-            height: 200,
-            fit: BoxFit.cover,
-          ),
-          content: Text("テキストテキストテキスト"),
-          actions: <Widget>[
-            TextButton(
-              child: Text('OK'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
   }
 
   Future getColorTheme() async {

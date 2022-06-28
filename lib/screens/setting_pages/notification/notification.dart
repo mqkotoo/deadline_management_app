@@ -17,7 +17,7 @@ class SettingNotificationScreen extends StatefulHookConsumerWidget {
 class _SettingNotificationScreenState
     extends ConsumerState<SettingNotificationScreen> {
   //スイッチのオンオフのBOOL値
-  bool isOn = true;
+  bool isOn = false;
   bool isThreeDaysAgo = true;
   bool isAWeek = false;
   bool isADayAgo = false;
@@ -45,7 +45,7 @@ class _SettingNotificationScreenState
   _restoreValues() async {
     var prefs = await SharedPreferences.getInstance();
     setState(() {
-      isOn = prefs.getBool('isOn') ?? true;
+      isOn = prefs.getBool('isOn') ?? false;
       isThreeDaysAgo = prefs.getBool('isThreeDaysAgo') ?? true;
       isAWeek = prefs.getBool('week') ?? false;
       isADayAgo = prefs.getBool('isADayAgo') ?? false;
@@ -53,7 +53,6 @@ class _SettingNotificationScreenState
       String stringTimeData = prefs.getString('time') ?? "2022-06-22 10:00:00.000";
       _selectedTime = TimeOfDay.fromDateTime(
           DateTime.parse(stringTimeData));
-      print("stringTimeData→→" + stringTimeData);
     });
   }
 

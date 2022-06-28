@@ -3,7 +3,6 @@ import 'package:flutter_deadline_management/component/simekiri_tile.dart';
 import 'package:flutter_deadline_management/model/calendar_model.dart';
 import 'package:flutter_deadline_management/screens/setting_pages/notification/notify_provider.dart';
 import 'package:flutter_deadline_management/screens/setting_pages/setting_screen.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
@@ -22,6 +21,8 @@ class CalendarScreen extends StatefulHookConsumerWidget {
 }
 
 class _CalendarScreenState extends ConsumerState<CalendarScreen> {
+
+
   //日にち分けしたときに一時的に予定が入るリスト
   List selectDatEvents = [];
 
@@ -32,40 +33,80 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
   final now = DateTime.now();
   //var now2 = DateTime
 
-  bool isOn = true;
+  bool isOn = false;
   bool isThreeDaysAgo = true;
   bool isAWeek = false;
   bool isADayAgo = false;
   bool isToday = false;
-  String stringTimeData = "2022-06-22 10:00:00.000";
+  String stringTimeData = "2022-06-23 10:00:00.000";
 
   TextEditingController _eventController = TextEditingController();
 
   //スクロールを管理するコントローラとリスナーを定義
   final ItemScrollController itemScrollController = ItemScrollController();
   final ItemPositionsListener itemPositionsListener =
-  ItemPositionsListener.create();
+      ItemPositionsListener.create();
 
   _restoreValues() async {
     var prefs = await SharedPreferences.getInstance();
     setState(() {
       isOn = prefs.getBool('isOn') ?? false;
-      isThreeDaysAgo = prefs.getBool('isThreeDaysAgo') ?? false;
+      isThreeDaysAgo = prefs.getBool('isThreeDaysAgo') ?? true;
       isAWeek = prefs.getBool('week') ?? false;
       isADayAgo = prefs.getBool('isADayAgo') ?? false;
       isToday = prefs.getBool('isToday') ?? false;
-      stringTimeData = prefs.getString('time') ?? "2022-06-22 10:00:00.000";
+      stringTimeData = prefs.getString('time')!;
+      print("カレンダーでゲットした時間 : "+stringTimeData);
     });
   }
+
+  Future<void> _showStartDialog() async {
+    var deviceSize = MediaQuery.of(context).size;
+    return showDialog(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(8.0))),
+          titlePadding: EdgeInsets.zero,
+          title: Image.network(
+            'https://pics.prcm.jp/8fc843cdea20f/81238464/jpeg/81238464_220x165.jpeg',
+            height: 170,
+            fit: BoxFit.cover,
+          ),
+          content: Text(
+              "通知を許可し、アプリ内で通知を設定すると予定やタスクの通知が受け取れます。",
+            // style: TextStyle(fontSize: deviceSize.height * 0.018),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text(
+                  'OK',
+                // style: TextStyle(fontSize: deviceSize.height * 0.02),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+                //↓ここで通知のリクエストを走らせる
+                var notifyProvider = ref.read(NotifyProvider);
+                notifyProvider.requestPermissions();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+
 
   @override
   void initState() {
     super.initState();
     _restoreValues();
-    // WidgetsBinding.instance!.addPostFrameCallback(
-    //         (_) => _showStartDialog()
-    // );
+    WidgetsBinding.instance!.addPostFrameCallback((_) => _showStartDialog());
   }
+
+
 
   @override
   void dispose() {
@@ -73,31 +114,6 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
     super.dispose();
   }
 
-  // Future<void> _showStartDialog() async {
-  //   return showDialog(
-  //     context: context,
-  //     barrierDismissible: false, // user must tap button!
-  //     builder: (BuildContext context) {
-  //       return AlertDialog(
-  //         titlePadding: EdgeInsets.zero,
-  //         title : Image.network(
-  //           'https://pics.prcm.jp/8fc843cdea20f/81238464/jpeg/81238464_220x165.jpeg',
-  //           height: 200,
-  //           fit: BoxFit.cover,
-  //         ),
-  //         content: Text("テキストテキストテキスト"),
-  //         actions: <Widget>[
-  //           TextButton(
-  //             child: Text('OK'),
-  //             onPressed: () {
-  //               Navigator.of(context).pop();
-  //             },
-  //           ),
-  //         ],
-  //       );
-  //     },
-  //   );
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -125,14 +141,18 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
         }
       }
 
-        //// ここで読んじゃうと、30回くらいこの処理を繰り返してしまうから、どこで呼ぶか考えている
-        ////                      ↓　　↓
+      //// ここで読んじゃうと、30回くらいこの処理を繰り返してしまうから、どこで呼ぶか考えている
+      ////                      ↓　　↓
+
 
         if (isOn) {
-          ref.read(NotifyProvider).isNotify(contents, isThreeDaysAgo,isAWeek,isADayAgo,isToday,stringTimeData);
-          TimeOfDay _selectedTime = TimeOfDay.fromDateTime(
-              DateTime.parse(stringTimeData));
-          print('${_selectedTime.hour.toString()},${_selectedTime.minute.toString()}');
+          ref.read(NotifyProvider).isNotify(contents, isThreeDaysAgo, isAWeek,
+              isADayAgo, isToday, stringTimeData);
+          print("通知管理のところに送る文字データ："+stringTimeData);
+          TimeOfDay _selectedTime =
+              TimeOfDay.fromDateTime(DateTime.parse(stringTimeData));
+          print(
+              '${_selectedTime.hour.toString()},${_selectedTime.minute.toString()}');
           print(contents);
         }
 
@@ -191,7 +211,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                 //NOW
                 //↓の書き方だと一月とか二月はおかしくなる気がする
                 // firstDay: DateTime.utc(now.year, now.month-2, 1),
-                firstDay: DateTime.utc(now.year - 1, 1,1),
+                firstDay: DateTime.utc(now.year - 1, 1, 1),
                 lastDay: DateTime.utc(now.year + 1, 12, 31),
                 focusedDay: _focusedDay,
                 calendarFormat: _calendarFormat,
@@ -260,66 +280,66 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
             flex: 4,
             child: _getEventsfromDay(_selectedDay).isEmpty
                 ? Padding(
-              padding: EdgeInsets.only(bottom: deviceSize.height * 0.029),
-              child: Center(
-                child: Text(
-                  DateFormat.MMMEd('ja').format(_selectedDay) +
-                      'のタスクはありません',
-                  style: TextStyle(fontSize: deviceSize.height * 0.017),
-                ),
-              ),
-            )
-                : ScrollablePositionedList.builder(
-                itemCount: _getEventsfromDay(_selectedDay).length,
-                //スクロール関係のコントローラとリスナー追加
-                itemScrollController: itemScrollController,
-                itemPositionsListener: itemPositionsListener,
-                //itembuilderでひとつずつカードを生成していく(INDEX)が1,2,3..というふうになる
-                itemBuilder: (context, index) {
-                  // 下の定義の[index]にも1,2,3..というふうに数字が流れる、
-                  // 最終的には最後のカードの要素の値が入る
-                  final event = _getEventsfromDay(_selectedDay)[index];
-                  return Container(
-                    //その日のリストの最後のインデックスのカードの中身と、
-                    // その日のリストの最後のカードの要素が一緒だったら、そのカードには下の余白を追加する
-                    margin: event == _getEventsfromDay(_selectedDay).last
-                        ? EdgeInsets.only(bottom: deviceSize.height * 0.025)
-                        : EdgeInsets.only(),
-                    //cardをタップすると締め切りの詳細が見れるようにする
-                    child: GestureDetector(
-                      onTap: () async {
-                        await Navigator.pushNamed(
-                            context,
-                            // IOSにもPAGE_TRANSITIONを使うとスワイプでポップできなくなるからANDROIDだけ適応
-                            Platform.isAndroid
-                                ? '/add_hori'
-                                : AddEventScreen.id,
-                            arguments:
-                            Arguments(_selectedDay, true, event));
-                        //編集のページから帰ってきてからSETSTATEで更新する
-                        setState(() {});
-                      },
-                      child: Card(
-                        //影設定
-                        elevation: 5,
-                        //カードの形の角を取る
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-
-                        //自作のリストタイルを使う
-                        child: CustomTile(
-                          title: event['title'].toString(),
-                          subtitle: event['detail'].toString(),
-                          icon: Icon(
-                            Icons.navigate_next,
-                            size: deviceSize.height * 0.027,
-                          ),
-                        ),
+                    padding: EdgeInsets.only(bottom: deviceSize.height * 0.029),
+                    child: Center(
+                      child: Text(
+                        DateFormat.MMMEd('ja').format(_selectedDay) +
+                            'のタスクはありません',
+                        style: TextStyle(fontSize: deviceSize.height * 0.017),
                       ),
                     ),
-                  );
-                }),
+                  )
+                : ScrollablePositionedList.builder(
+                    itemCount: _getEventsfromDay(_selectedDay).length,
+                    //スクロール関係のコントローラとリスナー追加
+                    itemScrollController: itemScrollController,
+                    itemPositionsListener: itemPositionsListener,
+                    //itembuilderでひとつずつカードを生成していく(INDEX)が1,2,3..というふうになる
+                    itemBuilder: (context, index) {
+                      // 下の定義の[index]にも1,2,3..というふうに数字が流れる、
+                      // 最終的には最後のカードの要素の値が入る
+                      final event = _getEventsfromDay(_selectedDay)[index];
+                      return Container(
+                        //その日のリストの最後のインデックスのカードの中身と、
+                        // その日のリストの最後のカードの要素が一緒だったら、そのカードには下の余白を追加する
+                        margin: event == _getEventsfromDay(_selectedDay).last
+                            ? EdgeInsets.only(bottom: deviceSize.height * 0.025)
+                            : EdgeInsets.only(),
+                        //cardをタップすると締め切りの詳細が見れるようにする
+                        child: GestureDetector(
+                          onTap: () async {
+                            await Navigator.pushNamed(
+                                context,
+                                // IOSにもPAGE_TRANSITIONを使うとスワイプでポップできなくなるからANDROIDだけ適応
+                                Platform.isAndroid
+                                    ? '/add_hori'
+                                    : AddEventScreen.id,
+                                arguments:
+                                    Arguments(_selectedDay, true, event));
+                            //編集のページから帰ってきてからSETSTATEで更新する
+                            setState(() {});
+                          },
+                          child: Card(
+                            //影設定
+                            elevation: 5,
+                            //カードの形の角を取る
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+
+                            //自作のリストタイルを使う
+                            child: CustomTile(
+                              title: event['title'].toString(),
+                              subtitle: event['detail'].toString(),
+                              icon: Icon(
+                                Icons.navigate_next,
+                                size: deviceSize.height * 0.027,
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    }),
           ),
         ],
       ),
@@ -363,33 +383,33 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
       ),
     );
   }
-}
 
 // イベントの数を数字で表示するためのウィジェット
-Widget _buildEventsMarker(DateTime date, List events, context) {
-  var deviceSize = MediaQuery.of(context).size;
-  return Positioned(
-    right: 5,
-    bottom: 5,
-    child: AnimatedContainer(
-      duration: const Duration(milliseconds: 300),
-      decoration: BoxDecoration(
-          shape: BoxShape.circle, color: Theme.of(context).indicatorColor
-        // : Theme.of(context).primaryColor
-      ),
-      // 16↓
-      width: deviceSize.height * 0.018,
-      //16↓
-      height: deviceSize.height * 0.018,
-      child: Center(
-        child: Text(
-          '${events.length}',
-          style: TextStyle().copyWith(
-            color: Colors.white,
-            fontSize: deviceSize.height * 0.014,
+  Widget _buildEventsMarker(DateTime date, List events, context) {
+    var deviceSize = MediaQuery.of(context).size;
+    return Positioned(
+      right: 5,
+      bottom: 5,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 300),
+        decoration: BoxDecoration(
+            shape: BoxShape.circle, color: Theme.of(context).indicatorColor
+            // : Theme.of(context).primaryColor
+            ),
+        // 16↓
+        width: deviceSize.height * 0.018,
+        //16↓
+        height: deviceSize.height * 0.018,
+        child: Center(
+          child: Text(
+            '${events.length}',
+            style: TextStyle().copyWith(
+              color: Colors.white,
+              fontSize: deviceSize.height * 0.014,
+            ),
           ),
         ),
       ),
-    ),
-  );
+    );
+  }
 }
