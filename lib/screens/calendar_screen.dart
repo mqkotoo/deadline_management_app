@@ -39,6 +39,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
   bool isADayAgo = false;
   bool isToday = false;
   String stringTimeData = "2022-06-23 10:00:00.000";
+  TimeOfDay _selectedTime = TimeOfDay(hour: 10, minute: 00);
 
   TextEditingController _eventController = TextEditingController();
 
@@ -56,7 +57,10 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
       isADayAgo = prefs.getBool('isADayAgo') ?? false;
       isToday = prefs.getBool('isToday') ?? false;
       stringTimeData = prefs.getString('time')!;
-      print("カレンダーでゲットした時間 : "+stringTimeData);
+      _selectedTime =
+          TimeOfDay.fromDateTime(DateTime.parse(stringTimeData));
+      print(
+          '${_selectedTime.hour.toString()},${_selectedTime.minute.toString()}');
     });
   }
 
@@ -69,27 +73,38 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
         return AlertDialog(
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(8.0))),
           titlePadding: EdgeInsets.zero,
+          actionsPadding: EdgeInsets.fromLTRB(24.0,0,24.0,15.0),
           title: Image.network(
             'https://pics.prcm.jp/8fc843cdea20f/81238464/jpeg/81238464_220x165.jpeg',
-            height: 170,
+            height:320,
             fit: BoxFit.cover,
           ),
           content: Text(
-              "通知を許可し、アプリ内で通知を設定すると予定やタスクの通知が受け取れます。",
+            "通知を許可し、アプリ内で通知を設定すると予定やタスクの通知が受け取れます。",
             // style: TextStyle(fontSize: deviceSize.height * 0.018),
           ),
           actions: <Widget>[
-            TextButton(
-              child: Text(
-                  'OK',
-                // style: TextStyle(fontSize: deviceSize.height * 0.02),
+            Align(
+              alignment: Alignment.center,
+              child: SizedBox(
+                width: double.infinity,
+                height: 50,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.grey, //ボタンの背景色
+                  ),
+                  child: Text(
+                    '次へ',
+                    style: TextStyle(fontSize: deviceSize.height * 0.02),
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    //↓ここで通知のリクエストを走らせる
+                    var notifyProvider = ref.read(NotifyProvider);
+                    notifyProvider.requestPermissions();
+                  },
+                ),
               ),
-              onPressed: () {
-                Navigator.of(context).pop();
-                //↓ここで通知のリクエストを走らせる
-                var notifyProvider = ref.read(NotifyProvider);
-                notifyProvider.requestPermissions();
-              },
             ),
           ],
         );
@@ -146,11 +161,8 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
 
 
         if (isOn) {
-          ref.read(NotifyProvider).isNotify(contents, isThreeDaysAgo, isAWeek,
+          ref.watch(NotifyProvider).isNotify(contents, isThreeDaysAgo, isAWeek,
               isADayAgo, isToday, stringTimeData);
-          print("通知管理のところに送る文字データ："+stringTimeData);
-          TimeOfDay _selectedTime =
-              TimeOfDay.fromDateTime(DateTime.parse(stringTimeData));
           print(
               '${_selectedTime.hour.toString()},${_selectedTime.minute.toString()}');
           print(contents);
