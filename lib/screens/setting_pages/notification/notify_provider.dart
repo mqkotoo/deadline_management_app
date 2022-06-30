@@ -38,7 +38,7 @@ class notifyProvider {
     );
 
     List content_title = [];
-    var title = "";
+
     tz.TZDateTime? date;
     for (var i = 0; i < content.length; i++) {
       content_title.add(content[i]['title']);
@@ -63,7 +63,7 @@ class notifyProvider {
 
       flnp.zonedSchedule(
         0,
-        title,
+        "今日：${content.length}個のタスク（予定）があります",
         content_title.join("、"),
         date,
         const NotificationDetails(
@@ -74,18 +74,17 @@ class notifyProvider {
         UILocalNotificationDateInterpretation.absoluteTime,
         androidAllowWhileIdle: true,
       );
-
-      title = "今日：${content.length}個のタスク（予定）があります";
     }
 
     //前日に通知
     if (isADayAgo){
       date = tz.TZDateTime(tz.local, isDay.year, isDay.month, isDay.day, _selectedTime.hour.toInt(),_selectedTime.minute.toInt())
-          .add(const Duration(days: -1));
+      //同時に通知がある場合来なくなるので、タイミングをずらしてみる
+          .add(const Duration(days: -1,seconds: -1));
 
       flnp.zonedSchedule(
         0,
-        title,
+        "明日：${content.length}個のタスク（予定）があります",
         content_title.join("、"),
         date,
         const NotificationDetails(
@@ -96,40 +95,38 @@ class notifyProvider {
         UILocalNotificationDateInterpretation.absoluteTime,
         androidAllowWhileIdle: true,
       );
-
-      title = "明日：${content.length}個のタスク（予定）があります";
     }
 
     //三日前に通知
     if (isThreeDaysAgo) {
       date = tz.TZDateTime(tz.local, isDay.year, isDay.month, isDay.day, _selectedTime.hour.toInt(),_selectedTime.minute.toInt())
-          .add(const Duration(days: -3));
+          .add(const Duration(days: -3,seconds: -2));
 
       flnp.zonedSchedule(
         0,
-        title,
+        "三日後：${content.length}このタスク（予定）があります",
         content_title.join("、"),
         date,
         const NotificationDetails(
-          android: AndroidNotificationDetails("channelId", "channelName"),
+          android: AndroidNotificationDetails(
+              "channelId", "channelName",
+          ),
           iOS: IOSNotificationDetails(),
         ),
         uiLocalNotificationDateInterpretation:
         UILocalNotificationDateInterpretation.absoluteTime,
         androidAllowWhileIdle: true,
       );
-
-      title = "三日後：${content.length}このタスク（予定）があります";
     }
 
     //一週間前に通知
     if (isAWeek) {
       date = tz.TZDateTime(tz.local, isDay.year, isDay.month, isDay.day, _selectedTime.hour.toInt(),_selectedTime.minute.toInt())
-          .add(const Duration(days: -7));
+          .add(const Duration(days: -7,seconds: -3));
 
       flnp.zonedSchedule(
         0,
-        title,
+        "一週間後：${content.length}個のタスク（予定）があります",
         content_title.join("、"),
         date,
         const NotificationDetails(
@@ -140,8 +137,6 @@ class notifyProvider {
         UILocalNotificationDateInterpretation.absoluteTime,
         androidAllowWhileIdle: true,
       );
-
-      title = "一週間後：${content.length}個のタスク（予定）があります";
     }
 
   }
