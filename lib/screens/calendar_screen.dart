@@ -5,6 +5,7 @@ import 'package:flutter_deadline_management/screens/setting_pages/notification/n
 import 'package:flutter_deadline_management/screens/setting_pages/setting_screen.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -34,10 +35,10 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
   //var now2 = DateTime
 
   bool isOn = false;
-  bool isThreeDaysAgo = true;
-  bool isAWeek = false;
-  bool isADayAgo = false;
-  bool isToday = false;
+  // bool isThreeDaysAgo = true;
+  // bool isAWeek = false;
+  // bool isADayAgo = false;
+  // bool isToday = false;
   String stringTimeData = "2022-06-23 10:00:00.000";
   TimeOfDay _selectedTime = TimeOfDay(hour: 10, minute: 00);
 
@@ -52,10 +53,10 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
     var prefs = await SharedPreferences.getInstance();
     setState(() {
       isOn = prefs.getBool('isOn') ?? false;
-      isThreeDaysAgo = prefs.getBool('isThreeDaysAgo') ?? true;
-      isAWeek = prefs.getBool('week') ?? false;
-      isADayAgo = prefs.getBool('isADayAgo') ?? false;
-      isToday = prefs.getBool('isToday') ?? false;
+      // isThreeDaysAgo = prefs.getBool('isThreeDaysAgo') ?? true;
+      // isAWeek = prefs.getBool('week') ?? false;
+      // isADayAgo = prefs.getBool('isADayAgo') ?? false;
+      // isToday = prefs.getBool('isToday') ?? false;
       stringTimeData = prefs.getString('time')!;
       _selectedTime =
           TimeOfDay.fromDateTime(DateTime.parse(stringTimeData));
@@ -97,11 +98,26 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                     '次へ',
                     style: TextStyle(fontSize: deviceSize.height * 0.02),
                   ),
-                  onPressed: () {
+                  onPressed: () async{
                     Navigator.of(context).pop();
-                    //↓ここで通知のリクエストを走らせる
-                    var notifyProvider = ref.read(NotifyProvider);
-                    notifyProvider.requestPermissions();
+                    //ステータスの定義
+                    var status = await Permission.notification.status;
+
+                    //通知の催促を初めて出すとき（ユーザーが一回目に使うとき）
+                    if (status == PermissionStatus.denied) {
+                      // リクエストを飛ばす
+                      status = await Permission.notification.request();
+                    }
+
+                    //通知のリクエストを断られているとき(二回目以降)
+                    if (status.isDenied ||
+                        status.isPermanentlyDenied ||
+                        status.isRestricted) {
+                      //設定画面に飛ばす（一旦テストでこうする）
+                      await openAppSettings();
+                      return;
+                    }
+
                   },
                 ),
               ),
@@ -118,7 +134,14 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
   void initState() {
     super.initState();
     _restoreValues();
-    WidgetsBinding.instance!.addPostFrameCallback((_) => _showStartDialog());
+    WidgetsBinding.instance!.addPostFrameCallback((_) async {
+      var status = await Permission.notification.status;
+      if (status != PermissionStatus.granted) {
+        _showStartDialog();
+      }
+      // final flnp = FlutterLocalNotificationsPlugin();
+      // await flnp.cancelAll();
+    });
   }
 
 
@@ -161,8 +184,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
 
 
         if (isOn) {
-          ref.watch(NotifyProvider).isNotify(contents, isThreeDaysAgo, isAWeek,
-              isADayAgo, isToday, stringTimeData);
+          ref.watch(NotifyProvider).isNotify(contents,stringTimeData);
           print(
               '${_selectedTime.hour.toString()},${_selectedTime.minute.toString()}');
           print(contents);

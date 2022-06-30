@@ -31,6 +31,7 @@ dependencies:
   google_mobile_ads: ^1.2.0
   flutter_launcher_icons: ^0.9.3
   timezone: ^0.8.0
+  permission_handler: ^10.0.0
 
 
 dev_dependencies:
