@@ -80,12 +80,13 @@ class notifyProvider {
     if (isADayAgo){
       date = tz.TZDateTime(tz.local, isDay.year, isDay.month, isDay.day, _selectedTime.hour.toInt(),_selectedTime.minute.toInt())
       //同時に通知がある場合来なくなるので、タイミングをずらしてみる
-          .add(const Duration(days: -1,seconds: -1));
+          .add(const Duration(days: -1));
 
       flnp.zonedSchedule(
-        0,
+        1,
         "明日：${content.length}個のタスク（予定）があります",
-        content_title.join("、"),
+        // content_title.join("、"),
+        "${content_title.join("、")} です。",
         date,
         const NotificationDetails(
           android: AndroidNotificationDetails("channelId", "channelName"),
@@ -100,12 +101,12 @@ class notifyProvider {
     //三日前に通知
     if (isThreeDaysAgo) {
       date = tz.TZDateTime(tz.local, isDay.year, isDay.month, isDay.day, _selectedTime.hour.toInt(),_selectedTime.minute.toInt())
-          .add(const Duration(days: -3,seconds: -2));
+          .add(const Duration(days: -3));
 
       flnp.zonedSchedule(
-        0,
+        2,
         "三日後：${content.length}このタスク（予定）があります",
-        content_title.join("、"),
+        "${content_title.join("、")} です。",
         date,
         const NotificationDetails(
           android: AndroidNotificationDetails(
@@ -122,12 +123,12 @@ class notifyProvider {
     //一週間前に通知
     if (isAWeek) {
       date = tz.TZDateTime(tz.local, isDay.year, isDay.month, isDay.day, _selectedTime.hour.toInt(),_selectedTime.minute.toInt())
-          .add(const Duration(days: -7,seconds: -3));
+          .add(const Duration(days: -7));
 
       flnp.zonedSchedule(
-        0,
+        3,
         "一週間後：${content.length}個のタスク（予定）があります",
-        content_title.join("、"),
+        "${content_title.join("、")} です。",
         date,
         const NotificationDetails(
           android: AndroidNotificationDetails("channelId", "channelName"),
