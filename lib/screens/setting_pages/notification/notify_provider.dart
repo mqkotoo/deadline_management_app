@@ -80,7 +80,7 @@ class notifyProvider {
     if (isADayAgo){
       date = tz.TZDateTime(tz.local, isDay.year, isDay.month, isDay.day, _selectedTime.hour.toInt(),_selectedTime.minute.toInt())
       //同時に通知がある場合来なくなるので、タイミングをずらしてみる
-          .add(const Duration(days: -1));
+          .add(const Duration(days: -1,seconds: -1));
 
       flnp.zonedSchedule(
         1,
