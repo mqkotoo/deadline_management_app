@@ -120,15 +120,19 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                         actions: [
                           // キャンセルボタン
 
-                          TextButton(
+                          ElevatedButton(
                             onPressed: () => Navigator.pop(context),
                             child: Text(
                               'キャンセル',
-                              style: TextStyle(fontSize: deviceSize.height * 0.02),
+                              style: TextStyle(fontSize: deviceSize.height * 0.02,color: Colors.blue),
+                            ),
+                            style: ElevatedButton.styleFrom(
+                              primary: Theme.of(context).cardColor,
+                              elevation: 0
                             ),
                           ),
                           // OKボタン
-                          TextButton(
+                          ElevatedButton(
                             onPressed: () async {
                               await ref
                                   .read(calendarProvider)
@@ -144,6 +148,10 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                             child: Text(
                                 '削除',
                                 style: TextStyle(fontSize: deviceSize.height * 0.02,color: Colors.red),
+                            ),
+                            style: ElevatedButton.styleFrom(
+                                primary: Theme.of(context).cardColor,
+                                elevation: 0
                             ),
                           ),
                         ],

@@ -42,7 +42,43 @@ ThemeData pinkTheme = ThemeData(
   indicatorColor: Colors.pink[200],
   selectedRowColor: Colors.white,
   bottomAppBarColor:Colors.pink[100],
-  disabledColor: Colors.pink[100]
+  disabledColor: Colors.pink[100],
+
+  timePickerTheme:TimePickerThemeData(
+
+    dayPeriodColor: MaterialStateColor.resolveWith(
+            (states) => states.contains(MaterialState.selected)
+            ? Colors.pink.shade100
+            : Colors.white),
+
+
+    dayPeriodTextColor:  MaterialStateColor.resolveWith(
+            (states) => states.contains(MaterialState.selected)
+            ? Colors.white
+            : Colors.grey.shade700),
+
+    hourMinuteColor: MaterialStateColor.resolveWith(
+            (states) => states.contains(MaterialState.selected)
+            ? Colors.pink.shade100
+            : Colors.grey.shade300),
+
+
+    hourMinuteTextColor: MaterialStateColor.resolveWith(
+            (states) => states.contains(MaterialState.selected)
+            ? Colors.white
+            : Colors.black),
+
+    dialHandColor: Colors.pink.shade100,
+  ),
+
+  textButtonTheme: TextButtonThemeData(
+    style: ButtonStyle(
+      foregroundColor: MaterialStateColor.resolveWith((states) => Colors.white),
+      backgroundColor: MaterialStateColor.resolveWith((states) => Colors.pink.shade100),
+    ),
+
+  ),
+
 );
 
 //BLUE
@@ -75,7 +111,10 @@ ThemeData redTheme = ThemeData(
   indicatorColor: Colors.black54,
   selectedRowColor: Colors.white,
   bottomAppBarColor:Colors.red,
-  disabledColor: Colors.red
+  disabledColor: Colors.red,
+  timePickerTheme: TimePickerThemeData(
+
+  )
 );
 
 //green

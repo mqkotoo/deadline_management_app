@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_deadline_management/screens/setting_pages/notification/notify_provider.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -76,7 +77,9 @@ class _SettingNotificationScreenState
         cancelText: 'キャンセル',
         hourLabelText: '',
         minuteLabelText: '',
-        helpText: '',
+        helpText: "",
+        initialEntryMode: TimePickerEntryMode.dial,
+        // useRootNavigator: false,
         //各々の携帯の設定に関わらず時刻選択の際は12時間フォーマットにする
         builder: (BuildContext context, Widget? child) {
           return MediaQuery(
@@ -150,6 +153,7 @@ class _SettingNotificationScreenState
     }
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(deviceSize.height * 0.064),
         child: AppBar(
