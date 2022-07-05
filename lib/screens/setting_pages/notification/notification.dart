@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../ads/adBanner.dart';
+import '../../../component/costom_time_picker.dart';
 
 class SettingNotificationScreen extends StatefulHookConsumerWidget {
   static const String id = 'notification';
@@ -71,14 +72,11 @@ class _SettingNotificationScreenState
       //TODO24時間形式をFALSEにして端末の設定に関わらず、12時間形式で表示する↓
       //どうにかしてALWAYS24HOURFORMATをFALSEにする
 
-      final TimeOfDay? timeValue = await showTimePicker(
+      final TimeOfDay? timeValue = await customShowTimePicker(
         context: context,
         initialTime: TimeOfDay(hour: _selectedTime.hour, minute: _selectedTime.minute),
         cancelText: 'キャンセル',
-        hourLabelText: '',
-        minuteLabelText: '',
-        helpText: "",
-        initialEntryMode: TimePickerEntryMode.dial,
+        confirmText: "OK",
         //各々の携帯の設定に関わらず時刻選択の際は12時間フォーマットにする
         builder: (BuildContext context, Widget? child) {
           return MediaQuery(

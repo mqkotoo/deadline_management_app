@@ -115,6 +115,7 @@ ThemeData pinkTheme = ThemeData(
             : Colors.black),
 
     dialHandColor: Colors.pink.shade100,
+
     entryModeIconColor: Colors.white,
 
     inputDecorationTheme: InputDecorationTheme(
