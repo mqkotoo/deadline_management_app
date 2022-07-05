@@ -79,12 +79,11 @@ class _SettingNotificationScreenState
         minuteLabelText: '',
         helpText: "",
         initialEntryMode: TimePickerEntryMode.dial,
-        // useRootNavigator: false,
         //各々の携帯の設定に関わらず時刻選択の際は12時間フォーマットにする
         builder: (BuildContext context, Widget? child) {
           return MediaQuery(
             data: MediaQuery.of(context)
-                //ここ↓
+                //24時間フォーマット解除
                 .copyWith(alwaysUse24HourFormat: false),
             child: child!,
           );

@@ -241,7 +241,8 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                           focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
                                   width: 2.0, color: Theme.of(context).disabledColor),
-                              borderRadius: BorderRadius.circular(8)),
+                              borderRadius: BorderRadius.circular(8),
+                          ),
                           labelStyle: TextStyle(
                               fontWeight: FontWeight.w700,
                               //テーマによってラベルテキストの色を変える

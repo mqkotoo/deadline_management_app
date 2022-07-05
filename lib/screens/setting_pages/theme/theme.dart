@@ -18,7 +18,55 @@ ThemeData darkTheme = ThemeData.dark().copyWith(
 
     buttonBarTheme: ButtonBarThemeData(
       alignment: MainAxisAlignment.center,
-    )
+    ),
+
+  timePickerTheme: TimePickerThemeData(
+//           backgroundColor: Colors.red[300],
+//           dayPeriodBorderSide: const BorderSide(color: Colors.orange, width: 4),
+
+    dayPeriodColor: MaterialStateColor.resolveWith((states) =>
+    states.contains(MaterialState.selected)
+        ? Colors.tealAccent.shade700
+        : Colors.white38),
+
+    dayPeriodTextColor: MaterialStateColor.resolveWith((states) =>
+    states.contains(MaterialState.selected)
+        ? Colors.white
+        : Colors.black87),
+
+    hourMinuteColor: MaterialStateColor.resolveWith((states) =>
+    states.contains(MaterialState.selected)
+        ? Colors.tealAccent.shade700
+        : Colors.white38),
+
+    hourMinuteTextColor: MaterialStateColor.resolveWith((states) =>
+    states.contains(MaterialState.selected)
+        ? Colors.white
+        : Colors.black),
+
+    dialHandColor: Colors.tealAccent.shade700,
+
+    //切り替えボタン背景と同化させる
+    entryModeIconColor:Colors.grey.shade800,
+
+    //TIMEPICKERのINPUTMODE
+    inputDecorationTheme: InputDecorationTheme(
+      focusedBorder: UnderlineInputBorder(
+        borderSide: BorderSide(
+            width: 2.0, color: Colors.tealAccent.shade700),
+      ),
+    ),
+  ),
+
+  textButtonTheme: TextButtonThemeData(
+    style: ButtonStyle(
+      foregroundColor:
+      MaterialStateColor.resolveWith((states) => Colors.white),
+      backgroundColor: MaterialStateColor.resolveWith(
+              (states) => Colors.tealAccent.shade700),
+    ),
+  ),
+
 );
 
 //LIGHT
@@ -51,7 +99,6 @@ ThemeData pinkTheme = ThemeData(
             ? Colors.pink.shade100
             : Colors.white),
 
-
     dayPeriodTextColor:  MaterialStateColor.resolveWith(
             (states) => states.contains(MaterialState.selected)
             ? Colors.white
@@ -62,13 +109,21 @@ ThemeData pinkTheme = ThemeData(
             ? Colors.pink.shade100
             : Colors.grey.shade300),
 
-
     hourMinuteTextColor: MaterialStateColor.resolveWith(
             (states) => states.contains(MaterialState.selected)
             ? Colors.white
             : Colors.black),
 
     dialHandColor: Colors.pink.shade100,
+    entryModeIconColor: Colors.white,
+
+    inputDecorationTheme: InputDecorationTheme(
+      focusedBorder: UnderlineInputBorder(
+        borderSide: BorderSide(
+            width: 2.0, color: Colors.pink.shade100),
+      ),
+    ),
+
   ),
 
   textButtonTheme: TextButtonThemeData(
