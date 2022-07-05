@@ -231,7 +231,7 @@ class _ChangeThemeScreenState extends ConsumerState<ChangeThemeScreen> {
                       ),
                     ),
                     style: ElevatedButton.styleFrom(
-                      primary: Theme.of(context).disabledColor,
+                      primary: Theme.of(context).dividerColor,
                       onPrimary: Colors.white,
                       elevation: 10
                     ),

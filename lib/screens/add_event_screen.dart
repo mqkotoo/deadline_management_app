@@ -185,7 +185,7 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(8),
                             //テーマによってラベルテキストの色を変える
-                            color: Theme.of(context).disabledColor),
+                            color: Theme.of(context).dividerColor),
                         // alignment: Alignment.centerLeft,
                         width: deviceSize.width,
                         //55↓
@@ -234,13 +234,13 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                           //通常の時のフォームのスタイル
                           enabledBorder: OutlineInputBorder(
                               borderSide:
-                                  BorderSide(color: Theme.of(context).disabledColor),
+                                  BorderSide(color: Theme.of(context).dividerColor),
                               borderRadius: BorderRadius.circular(8),
                           ),
                           //focusした時のフォームのスタイル
                           focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                  width: 2.0, color: Theme.of(context).disabledColor),
+                                  width: 2.0, color: Theme.of(context).dividerColor),
                               borderRadius: BorderRadius.circular(8),
                           ),
                           labelStyle: TextStyle(
@@ -276,12 +276,12 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                           //通常時のフォームのスタイル
                           enabledBorder: OutlineInputBorder(
                               borderSide:
-                                  BorderSide(color: Theme.of(context).disabledColor),
+                                  BorderSide(color: Theme.of(context).dividerColor),
                               borderRadius: BorderRadius.circular(8)),
                           //focusした時のフォームのスタイル
                           focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                  width: 2.0, color: Theme.of(context).disabledColor),
+                                  width: 2.0, color: Theme.of(context).dividerColor),
                               borderRadius: BorderRadius.circular(8)),
                           labelStyle: TextStyle(
                               fontWeight: FontWeight.w700,
@@ -316,7 +316,7 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                         child: TextButton(
                           style: TextButton.styleFrom(
                               //テーマによってbuttonの色を変える
-                              backgroundColor: Theme.of(context).disabledColor,
+                              backgroundColor: Theme.of(context).dividerColor,
                               elevation: 10,
                           ),
                           onPressed: () {
