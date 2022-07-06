@@ -17,6 +17,8 @@ ThemeData darkTheme = ThemeData.dark().copyWith(
   dividerColor:Color(0xff212121),
 // timePickerの左下のボタンを背景と同化させる
   disabledColor: Colors.grey.shade800,
+  //通知をオンにしていない場合に通知のページでスマホの通知をオンにするのを促すテキストの色
+  secondaryHeaderColor : Colors.white,
 
     buttonBarTheme: ButtonBarThemeData(
       alignment: MainAxisAlignment.center,
@@ -72,6 +74,7 @@ ThemeData lightTheme = ThemeData(
   bottomAppBarColor: Colors.black,
   dividerColor: Colors.grey,
   disabledColor: Colors.white,
+  secondaryHeaderColor : Colors.black87,
 
   timePickerTheme:TimePickerThemeData(
 
@@ -120,6 +123,7 @@ ThemeData pinkTheme = ThemeData(
   bottomAppBarColor:Colors.pink[100],
   dividerColor: Colors.pink[100],
   disabledColor: Colors.white,
+  secondaryHeaderColor : Colors.black87,
 
   timePickerTheme:TimePickerThemeData(
 
@@ -168,6 +172,7 @@ ThemeData blueTheme = ThemeData(
   bottomAppBarColor:Colors.blue,
   dividerColor: Colors.blue,
   disabledColor: Colors.white,
+  secondaryHeaderColor : Colors.black87,
 
   timePickerTheme:TimePickerThemeData(
 
@@ -216,6 +221,7 @@ ThemeData orangeTheme = ThemeData(
   bottomAppBarColor:Colors.orange,
   dividerColor: Colors.orange,
   disabledColor: Colors.white,
+  secondaryHeaderColor : Colors.black87,
 
   timePickerTheme:TimePickerThemeData(
 
@@ -264,6 +270,7 @@ ThemeData redTheme = ThemeData(
   bottomAppBarColor:Colors.red,
   dividerColor: Colors.red,
   disabledColor: Colors.white,
+  secondaryHeaderColor : Colors.black87,
 
   timePickerTheme:TimePickerThemeData(
 
@@ -312,6 +319,7 @@ ThemeData greenTheme = ThemeData(
   bottomAppBarColor:Colors.green,
   dividerColor: Colors.green,
   disabledColor: Colors.white,
+  secondaryHeaderColor : Colors.black87,
 
   timePickerTheme:TimePickerThemeData(
 
@@ -360,6 +368,7 @@ ThemeData yellowTheme = ThemeData(
   bottomAppBarColor: Color(0xffF3D800),
   dividerColor: Color(0xffF3D800),
   disabledColor: Colors.white,
+  secondaryHeaderColor : Colors.black87,
 
   timePickerTheme:TimePickerThemeData(
 

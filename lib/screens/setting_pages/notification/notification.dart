@@ -1,10 +1,9 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_deadline_management/screens/setting_pages/notification/notify_provider.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:permission_handler/permission_handler.dart';
 import '../../../ads/adBanner.dart';
 import '../../../component/costom_time_picker.dart';
 
@@ -149,6 +148,9 @@ class _SettingNotificationScreenState
       );
     }
 
+    //ステータスの定義
+    final status = Permission.notification.status;
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: PreferredSize(
@@ -207,7 +209,39 @@ class _SettingNotificationScreenState
                   ? _menuItem(context,
                       title: "1週間前に通知", child: _isAWeekSwitch(context))
                   : SizedBox.shrink(),
-            ],
+
+            //  アプリ内の通知オフかつ、スマホの通知設定がオフなら催促テキストを出す。
+              isOn  ? SizedBox.shrink() : SizedBox(height: deviceSize.height*0.2),
+
+              isOn
+                  ? SizedBox.shrink()
+                  : Center(
+                  child: RichText(
+                    text: TextSpan(
+                        style: TextStyle(
+                            color: Theme.of(context).secondaryHeaderColor,
+                            fontSize: deviceSize.height * 0.018
+                        ),
+                        children: [
+                          TextSpan(text: 'アプリの通知をご利用の際は'),
+                          TextSpan(
+                            text: 'こちら',
+                            style: TextStyle(
+                              color: Colors.lightBlueAccent,
+                              decoration: TextDecoration.underline,
+                            ),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () async{
+                                await openAppSettings();
+                              },
+                          ),
+                          TextSpan(text: 'から、\n'),
+                          TextSpan(text: 'スマホの通知設定をオンにしてください！'),
+                        ],
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
           SizedBox(

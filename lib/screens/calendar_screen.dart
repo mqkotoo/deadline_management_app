@@ -136,6 +136,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
     _restoreValues();
     WidgetsBinding.instance!.addPostFrameCallback((_) async {
       var status = await Permission.notification.status;
+      //初回の人にダイアログ出す
       if (status != PermissionStatus.granted) {
         _showStartDialog();
       }
@@ -183,12 +184,12 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
       ////                      ↓　　↓
 
 
-        // if (isOn) {
-        //   ref.watch(NotifyProvider).isNotify(contents,stringTimeData);
-        //   print(
-        //       '${_selectedTime.hour.toString()},${_selectedTime.minute.toString()}');
-        //   print(contents);
-        // }
+        if (isOn) {
+          ref.watch(NotifyProvider).isNotify(contents,stringTimeData);
+          print(
+              '${_selectedTime.hour.toString()},${_selectedTime.minute.toString()}');
+          print(contents);
+        }
 
       return contents;
     }
