@@ -17,12 +17,19 @@ class SettingNotificationScreen extends StatefulHookConsumerWidget {
 
 class _SettingNotificationScreenState
     extends ConsumerState<SettingNotificationScreen> {
+
+
   //スイッチのオンオフのBOOL値
   bool isOn = false;
-  bool isThreeDaysAgo = true;
-  bool isAWeek = false;
+  bool isThreeDaysAgo = false;
+  bool isAWeekAgo = false;
   bool isADayAgo = false;
   bool isToday = false;
+
+  List<bool>? list;
+
+  //TRUEのマックスの数　通知の最高数
+  int maxTrueValue = 1;
 
   String timeText = '';
 
@@ -31,6 +38,53 @@ class _SettingNotificationScreenState
 
   //タイムピッカーデフォルトの変数
   TimeOfDay _selectedTime = TimeOfDay(hour: 10, minute: 00);
+
+
+  //スイッチのTRUEの制限の時に出すダイアログ
+  limitTrueDialog() {
+    var deviceSize = MediaQuery.of(context).size;
+    return showDialog(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(8.0))),
+          titlePadding: EdgeInsets.zero,
+          actionsPadding: EdgeInsets.fromLTRB(24.0,0,24.0,15.0),
+          // title: Image.network(
+          //   'https://pics.prcm.jp/8fc843cdea20f/81238464/jpeg/81238464_220x165.jpeg',
+          //   height:320,
+          //   fit: BoxFit.cover,
+          // ),
+          content: Text(
+            "通知は、最大１つまで設定が\n可能です！",
+            style: TextStyle(fontSize: deviceSize.height * 0.021),
+          ),
+          actions: <Widget>[
+            Align(
+              alignment: Alignment.center,
+              child: SizedBox(
+                width: double.infinity,
+                height: 43,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.grey, //ボタンの背景色
+                  ),
+                  child: Text(
+                    'OK',
+                    style: TextStyle(fontSize: deviceSize.height * 0.02),
+                  ),
+                  onPressed: () async{
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   //通知オンオフの値を保存している
   _saveBool(String key, bool value) async {
@@ -47,19 +101,23 @@ class _SettingNotificationScreenState
     var prefs = await SharedPreferences.getInstance();
     setState(() {
       isOn = prefs.getBool('isOn') ?? false;
-      isThreeDaysAgo = prefs.getBool('isThreeDaysAgo') ?? true;
-      isAWeek = prefs.getBool('week') ?? false;
+      isThreeDaysAgo = prefs.getBool('isThreeDaysAgo') ?? false;
+      isAWeekAgo = prefs.getBool('week') ?? false;
       isADayAgo = prefs.getBool('isADayAgo') ?? false;
       isToday = prefs.getBool('isToday') ?? false;
       String stringTimeData = prefs.getString('time') ?? "2022-06-22 10:00:00.000";
       _selectedTime = TimeOfDay.fromDateTime(
           DateTime.parse(stringTimeData));
+
+      //状態をまとめて管理
+      this.list = [isToday,isADayAgo,isThreeDaysAgo,isAWeekAgo];
+
     });
   }
 
 
   @override
-  void initState() {
+  void initState(){
     super.initState();
     _restoreValues();
   }
@@ -90,7 +148,6 @@ class _SettingNotificationScreenState
       if (timeValue != null) {
         setState(() {
           _selectedTime = timeValue;
-          // _saveTime('time', _selectedTime.hour.toString() + ":" + _selectedTime.minute.toString());
           _saveTime('time',  DateTime(
             now.year,
             now.month,
@@ -141,15 +198,13 @@ class _SettingNotificationScreenState
               style: TextStyle(
                   // color: Colors.white,
                   fontWeight: FontWeight.bold,
-                  fontSize: deviceSize.width * 0.043),
+                  fontSize: deviceSize.width * 0.043,
+              ),
             ),
           ),
         ),
       );
     }
-
-    //ステータスの定義
-    final status = Permission.notification.status;
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -185,7 +240,7 @@ class _SettingNotificationScreenState
         children: [
           Expanded(
             child: ListView(children: [
-              _menuItem(context, title: "通知", child: _switch(context)),
+              _menuItem(context, title: "通知", child: _isOnSwitch(context)),
 
               //通知がオフだったら「通知を受け取る時間」を非表示にする
               isOn
@@ -199,48 +254,56 @@ class _SettingNotificationScreenState
                   : SizedBox.shrink(),
               isOn
                   ? _menuItem(context,
-                      title: '前日に通知', child: _isDayAgoSwitch(context))
+                      title: '前日に通知', child: _isADayAgoSwitch(context))
                   : SizedBox.shrink(),
+              Container(
+                width: deviceSize.width * 8,
+                child: isOn
+                    ? _menuItem(context,
+                        title: "3日前に通知", child: _isThreeDaysAgoSwitch(context))
+                    : SizedBox.shrink(),
+              ),
               isOn
                   ? _menuItem(context,
-                      title: "3日前に通知", child: _isThreeSwitch(context))
-                  : SizedBox.shrink(),
-              isOn
-                  ? _menuItem(context,
-                      title: "1週間前に通知", child: _isAWeekSwitch(context))
+                      title: "1週間前に通知", child: _isAWeekAgoSwitch(context))
                   : SizedBox.shrink(),
 
             //  アプリ内の通知オフかつ、スマホの通知設定がオフなら催促テキストを出す。
-              isOn  ? SizedBox.shrink() : SizedBox(height: deviceSize.height*0.2),
+            //   isOn  ? SizedBox.shrink() : _openSettingText(context),
 
               isOn
                   ? SizedBox.shrink()
-                  : Center(
-                  child: RichText(
+                  : Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(height: deviceSize.height*0.22),
+                  RichText(
+                    maxLines: 2,
                     text: TextSpan(
-                        style: TextStyle(
-                            color: Theme.of(context).secondaryHeaderColor,
-                            fontSize: deviceSize.height * 0.018
-                        ),
-                        children: [
-                          TextSpan(text: 'アプリの通知をご利用の際は'),
-                          TextSpan(
-                            text: 'こちら',
-                            style: TextStyle(
-                              color: Colors.lightBlueAccent,
-                              decoration: TextDecoration.underline,
-                            ),
-                            recognizer: TapGestureRecognizer()
-                              ..onTap = () async{
-                                await openAppSettings();
-                              },
+                      style: TextStyle(
+                          color: Theme.of(context).secondaryHeaderColor,
+                          fontSize: deviceSize.height * 0.02
+                      ),
+                      children: [
+                        TextSpan(text: 'アプリの通知をご利用の際は'),
+                        TextSpan(
+                          text: 'こちら',
+                          style: TextStyle(
+                            color: Colors.lightBlueAccent,
+                            decoration: TextDecoration.underline,
                           ),
-                          TextSpan(text: 'から、\n'),
-                          TextSpan(text: 'スマホの通知設定をオンにしてください！'),
-                        ],
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () async{
+                              await openAppSettings();
+                            },
+                        ),
+                        TextSpan(text: 'から、\n'),
+                        TextSpan(text: 'スマホの通知設定をオンにしてください！'),
+                      ],
                     ),
                   ),
-                ),
+                ],
+              ),
               ],
             ),
           ),
@@ -253,6 +316,57 @@ class _SettingNotificationScreenState
         ],
       ),
     );
+  }
+
+
+  Future<Widget> _openSettingText(BuildContext context) async{
+
+    var deviceSize = MediaQuery.of(context).size;
+    var status = await Permission.notification.status;
+
+    //通知のリクエストを断られているとき
+    if (status != status.isGranted) {
+
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          SizedBox(height: deviceSize.height*0.2),
+          RichText(
+            text: TextSpan(
+              style: TextStyle(
+                  color: Theme.of(context).secondaryHeaderColor,
+                  fontSize: deviceSize.height * 0.018
+              ),
+              children: [
+                TextSpan(text: 'アプリの通知をご利用の際は'),
+                TextSpan(
+                  text: 'こちら',
+                  style: TextStyle(
+                    color: Colors.lightBlueAccent,
+                    decoration: TextDecoration.underline,
+                  ),
+                  recognizer: TapGestureRecognizer()
+                    ..onTap = () async{
+                      await openAppSettings();
+                    },
+                ),
+                TextSpan(text: 'から、\n'),
+                TextSpan(text: 'スマホの通知設定をオンにしてください！'),
+                TextSpan(text: status.toString()),
+              ],
+            ),
+          ),
+        ],
+      );
+    }
+    else if (status == status.isGranted){
+      // return SizedBox.shrink();
+      return Text('status == status.isGranted');
+    }
+    else{
+      // return SizedBox.shrink();
+      return Text(status.toString());
+    }
   }
 
   Widget _menuItem(BuildContext context,
@@ -289,7 +403,7 @@ class _SettingNotificationScreenState
   }
 
   //オンオフのスイッチのウィジェットーーーーーーーーーーーーーーーーー
-  Widget _switch(context) {
+  Widget _isOnSwitch(context) {
     var notifyProvider = ref.read(NotifyProvider);
     var deviceSize = MediaQuery.of(context).size;
     return SizedBox(
@@ -314,7 +428,8 @@ class _SettingNotificationScreenState
     );
   }
 
-  Widget _isThreeSwitch(context) {
+  //3日前
+  Widget _isThreeDaysAgoSwitch(context) {
     var notifyProvider = ref.read(NotifyProvider);
     var deviceSize = MediaQuery.of(context).size;
     return SizedBox(
@@ -326,11 +441,32 @@ class _SettingNotificationScreenState
           value: isThreeDaysAgo,
           onChanged: (bool? value) {
             if (value != null) {
-              setState(() {
-                isThreeDaysAgo = value;
-                _saveBool('isThreeDaysAgo', isThreeDaysAgo);
-                print("$isThreeDaysAgo");
-              });
+
+              if(value == true){
+                //もしTRUEが入ってきたら、TRUEの数数えて精査する
+                var trueNum = list!.where((x) => x == true).length;
+                if (trueNum >= maxTrueValue) {
+                  limitTrueDialog();
+                }
+                //ここに入ると値更新できてる
+                else{
+                  list![2] = value; //true
+                  setState(() {
+                    isThreeDaysAgo = value;
+                    _saveBool('isThreeDaysAgo', isThreeDaysAgo);
+                    print("$isThreeDaysAgo");
+                  });
+                }
+              }
+              //switchオフになる時
+              else{
+                list![2] = value; //false
+                setState(() {
+                  isThreeDaysAgo = value;
+                  _saveBool('isThreeDaysAgo', isThreeDaysAgo);
+                  print("$isThreeDaysAgo");
+                });
+              }
             }
             notifyProvider.selectOnOff(isThreeDaysAgo);
           },
@@ -339,7 +475,8 @@ class _SettingNotificationScreenState
     );
   }
 
-  Widget _isAWeekSwitch(context) {
+  //一週間前
+  Widget _isAWeekAgoSwitch(context) {
     var notifyProvider = ref.read(NotifyProvider);
     var deviceSize = MediaQuery.of(context).size;
     return SizedBox(
@@ -348,23 +485,44 @@ class _SettingNotificationScreenState
       child: FittedBox(
         fit: BoxFit.fill,
         child: Switch(
-          value: isAWeek,
+          value: isAWeekAgo,
           onChanged: (bool? value) {
             if (value != null) {
-              setState(() {
-                isAWeek = value;
-                _saveBool('week', isAWeek);
-                print("$isAWeek");
-              });
+              if (value == true) {
+                //もしTRUEが入ってきたら、TRUEの数数えて精査する
+                var trueNum = list!.where((x) => x == true).length;
+                if (trueNum >= maxTrueValue) {
+                  limitTrueDialog();
+                }
+                //ここに入ると値更新できてる
+                else {
+                  list![3] = value; //true
+                  setState(() {
+                    isAWeekAgo = value;
+                    _saveBool('week', isAWeekAgo);
+                    print("$isAWeekAgo");
+                  });
+                }
+              }
+              //switchオフになる時
+              else {
+                list![3] = value; //false
+                setState(() {
+                  isAWeekAgo = value;
+                  _saveBool('week', isAWeekAgo);
+                  print("$isAWeekAgo");
+                });
+              }
             }
-            notifyProvider.selectOnOff(isAWeek);
+            notifyProvider.selectOnOff(isAWeekAgo);
           },
         ),
       ),
     );
   }
 
-  Widget _isDayAgoSwitch(context) {
+//前日
+  Widget _isADayAgoSwitch(context) {
     var notifyProvider = ref.read(NotifyProvider);
     var deviceSize = MediaQuery.of(context).size;
     return SizedBox(
@@ -376,11 +534,31 @@ class _SettingNotificationScreenState
           value: isADayAgo,
           onChanged: (bool? value) {
             if (value != null) {
-              setState(() {
-                isADayAgo = value;
-                _saveBool('isADayAgo', isADayAgo);
-                print("$isADayAgo");
-              });
+              if (value == true) {
+                //もしTRUEが入ってきたら、TRUEの数数えて精査する
+                var trueNum = list!.where((x) => x == true).length;
+                if (trueNum >= maxTrueValue) {
+                  limitTrueDialog();
+                }
+                //ここに入ると値更新できてる
+                else {
+                  list![1] = value; //true
+                  setState(() {
+                    isADayAgo = value;
+                    _saveBool('isADayAgo', isADayAgo);
+                    print("$isADayAgo");
+                  });
+                }
+              }
+              //switchオフになる時
+              else {
+                list![1] = value; //false
+                setState(() {
+                  isADayAgo = value;
+                  _saveBool('isADayAgo', isADayAgo);
+                  print("$isADayAgo");
+                });
+              }
             }
             notifyProvider.selectOnOff(isADayAgo);
           },
@@ -389,6 +567,7 @@ class _SettingNotificationScreenState
     );
   }
 
+  //当日
   Widget _isTodaySwitch(context) {
     var notifyProvider = ref.read(NotifyProvider);
     var deviceSize = MediaQuery.of(context).size;
@@ -400,12 +579,37 @@ class _SettingNotificationScreenState
         child: Switch(
           value: isToday,
           onChanged: (bool? value) {
+
+            for(var item in list!){
+              print(item);
+            }
             if (value != null) {
-              setState(() {
-                isToday = value;
-                _saveBool('isToday', isToday);
-                print("$isToday");
-              });
+              if (value == true) {
+
+                //もしTRUEが入ってきたら、TRUEの数数えて精査する
+                var trueNum = list!.where((x) => x == true).length;
+                if (trueNum >= maxTrueValue) {
+                  limitTrueDialog();
+                }
+                //ここに入ると値更新できてる
+                else {
+                  list![0] = value; //true
+                  setState(() {
+                    isToday = value;
+                    _saveBool('isToday', isToday);
+                    print("aaaaaaaaaaaa$isToday");
+                  });
+                }
+              }
+              //switchオフになる時(解除された時)
+              else {
+                list![0] = value; //false
+                setState(() {
+                  isToday = value;
+                  _saveBool('isToday', isToday);
+                  print("bbbbbb$isToday");
+                });
+              }
             }
             notifyProvider.selectOnOff(isToday);
           },

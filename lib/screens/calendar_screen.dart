@@ -89,7 +89,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
               alignment: Alignment.center,
               child: SizedBox(
                 width: double.infinity,
-                height: 50,
+                height: 43,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     primary: Colors.grey, //ボタンの背景色
@@ -109,14 +109,14 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                       status = await Permission.notification.request();
                     }
 
-                    //通知のリクエストを断られているとき(二回目以降)
-                    if (status.isDenied ||
-                        status.isPermanentlyDenied ||
-                        status.isRestricted) {
-                      //設定画面に飛ばす（一旦テストでこうする）
-                      await openAppSettings();
-                      return;
-                    }
+                    // //通知のリクエストを断られているとき(二回目以降)
+                    // if (status.isDenied ||
+                    //     status.isPermanentlyDenied ||
+                    //     status.isRestricted) {
+                    //   //設定画面に飛ばす（一旦テストでこうする）
+                    //   await openAppSettings();
+                    //   return;
+                    // }
 
                   },
                 ),
@@ -136,12 +136,11 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
     _restoreValues();
     WidgetsBinding.instance!.addPostFrameCallback((_) async {
       var status = await Permission.notification.status;
+      print(status.toString());
       //初回の人にダイアログ出す
-      if (status != PermissionStatus.granted) {
+      if (status == PermissionStatus.denied) {
         _showStartDialog();
       }
-      // final flnp = FlutterLocalNotificationsPlugin();
-      // await flnp.cancelAll();
     });
   }
 
@@ -184,12 +183,12 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
       ////                      ↓　　↓
 
 
-        if (isOn) {
-          ref.watch(NotifyProvider).isNotify(contents,stringTimeData);
-          print(
-              '${_selectedTime.hour.toString()},${_selectedTime.minute.toString()}');
-          print(contents);
-        }
+        // if (isOn) {
+        //   ref.watch(NotifyProvider).isNotify(contents,stringTimeData);
+        //   print(
+        //       '${_selectedTime.hour.toString()},${_selectedTime.minute.toString()}');
+        //   print(contents);
+        // }
 
       return contents;
     }
@@ -374,7 +373,8 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                           ),
                         ),
                       );
-                    }),
+                    },
+            ),
           ),
         ],
       ),

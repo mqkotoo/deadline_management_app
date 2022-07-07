@@ -11,8 +11,8 @@ Widget build(BuildContext context) {
   BannerAd myBanner = BannerAd(
       // FOR TEST
       adUnitId: getTestAdBannerUnitId(),
-      //// FOR 本番
-    //adUnitId: getAdBannerUnitId(),
+    //   // FOR 本番
+    // adUnitId: getAdBannerUnitId(),
 
       size: AdSize.banner,
       request: const AdRequest(),
@@ -46,7 +46,7 @@ Widget build(BuildContext context) {
     return testBannerUnitId;
   }
 
-  //// ''''' 本番用  ''''  プラットフォーム（iOS / Android）に合わせて本番用広告IDを返す
+  // // ''''' 本番用  ''''  プラットフォーム（iOS / Android）に合わせて本番用広告IDを返す
   // String getAdBannerUnitId() {
   //   String bannerUnitId = "";
   //   if (Platform.isAndroid) {
