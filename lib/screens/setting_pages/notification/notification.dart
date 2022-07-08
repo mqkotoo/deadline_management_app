@@ -65,7 +65,7 @@ class _SettingNotificationScreenState
               alignment: Alignment.center,
               child: SizedBox(
                 width: double.infinity,
-                height: 43,
+                height: 43, //0.046
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     primary: Colors.grey, //ボタンの背景色
