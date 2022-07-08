@@ -54,7 +54,7 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
         child: AppBar(
           backgroundColor: Theme.of(context).primaryColor,
           title: Padding(
-            padding: deviceSize.height > 900 ? EdgeInsets.only(top:25.0) : EdgeInsets.only(),
+            padding: deviceSize.height > 1000 ? EdgeInsets.only(top:25.0) : EdgeInsets.only(),
             child: Text(
               //編集か追加でボタンのテキストを変える
               arguments!.isUpdate ? 'タスクを編集する' : 'タスクを追加する',

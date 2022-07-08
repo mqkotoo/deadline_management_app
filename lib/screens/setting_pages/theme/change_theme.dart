@@ -34,7 +34,7 @@ class _ChangeThemeScreenState extends ConsumerState<ChangeThemeScreen> {
         preferredSize: Size.fromHeight(deviceSize.height * 0.064),
         child: AppBar(
           title: Padding(
-            padding: deviceSize.height > 900 ? EdgeInsets.only(top: 25.0) : EdgeInsets.only(),
+            padding: deviceSize.height > 1000 ? EdgeInsets.only(top: 25.0) : EdgeInsets.only(),
             child: Text('テーマ着せ替え',
                 style: TextStyle(color: Theme.of(context).selectedRowColor,fontSize: deviceSize.height * 0.023)),
           ),
@@ -42,7 +42,7 @@ class _ChangeThemeScreenState extends ConsumerState<ChangeThemeScreen> {
           leading: InkWell(
             onTap: () => Navigator.pop(context),
             child: Padding(
-                padding: deviceSize.height > 900 ? EdgeInsets.all(15) : EdgeInsets.only(),
+                padding: deviceSize.height > 1000 ? EdgeInsets.all(15) : EdgeInsets.only(),
                 child: IconButton(
                   onPressed: () => Navigator.pop(context),
                   icon: Icon(

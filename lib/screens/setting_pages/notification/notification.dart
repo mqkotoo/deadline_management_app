@@ -49,23 +49,19 @@ class _SettingNotificationScreenState
       builder: (BuildContext context) {
         return AlertDialog(
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(8.0))),
-          titlePadding: EdgeInsets.zero,
+          // titlePadding: EdgeInsets.zero,
           actionsPadding: EdgeInsets.fromLTRB(24.0,0,24.0,15.0),
-          // title: Image.network(
-          //   'https://pics.prcm.jp/8fc843cdea20f/81238464/jpeg/81238464_220x165.jpeg',
-          //   height:320,
-          //   fit: BoxFit.cover,
-          // ),
           content: Text(
             "通知は、最大１つまで設定が\n可能です！",
             style: TextStyle(fontSize: deviceSize.height * 0.021),
+            textAlign: TextAlign.center,
           ),
           actions: <Widget>[
             Align(
               alignment: Alignment.center,
               child: SizedBox(
                 width: double.infinity,
-                height: 43, //0.046
+                height: deviceSize.height * 0.048,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     primary: Colors.grey, //ボタンの背景色
@@ -213,7 +209,7 @@ class _SettingNotificationScreenState
         child: AppBar(
           backgroundColor: Theme.of(context).primaryColor,
           title: Padding(
-            padding: deviceSize.height > 900
+            padding: deviceSize.height > 1000
                 ? EdgeInsets.only(top: 25.0)
                 : EdgeInsets.only(),
             child: Text('通知',
@@ -222,7 +218,7 @@ class _SettingNotificationScreenState
                     fontSize: deviceSize.height * 0.023)),
           ),
           leading: Padding(
-            padding: deviceSize.height > 900
+            padding: deviceSize.height > 1000
                 ? EdgeInsets.all(15)
                 : EdgeInsets.only(),
             child: IconButton(
