@@ -52,7 +52,6 @@ class notifyProvider {
 
     //入っている予定が過去だったら、もしくは通知の設定をした時刻より過去だったら、通知の処理を走らせない
     if (isDay.isBefore(DateTime.now())) {
-      print("過去の通知！:" + isDay.toString());
       return;
     }
 
@@ -63,8 +62,8 @@ class notifyProvider {
 
       flnp.zonedSchedule(
         0,
-        "今日：${content.length}個のタスク（予定）があります",
-        content_title.join("、"),
+        "今日は${content.length}個のタスク（予定）があります",
+        "${content_title.join("、")} です！",
         date,
         const NotificationDetails(
           android: AndroidNotificationDetails("channelId", "channelName"),
@@ -84,9 +83,9 @@ class notifyProvider {
 
       flnp.zonedSchedule(
         1,
-        "明日：${content.length}個のタスク（予定）があります",
+        "明日は${content.length}個のタスク（予定）があります",
         // content_title.join("、"),
-        "${content_title.join("、")} です。",
+        "${content_title.join("、")} です！",
         date,
         const NotificationDetails(
           android: AndroidNotificationDetails("channelId", "channelName"),
@@ -105,8 +104,8 @@ class notifyProvider {
 
       flnp.zonedSchedule(
         2,
-        "三日後：${content.length}このタスク（予定）があります",
-        "${content_title.join("、")} です。",
+        "３日後に${content.length}このタスク（予定）があります",
+        "${content_title.join("、")} です！",
         date,
         const NotificationDetails(
           android: AndroidNotificationDetails(
@@ -127,8 +126,8 @@ class notifyProvider {
 
       flnp.zonedSchedule(
         3,
-        "一週間後：${content.length}個のタスク（予定）があります",
-        "${content_title.join("、")} です。",
+        "１週間に${content.length}個のタスク（予定）があります",
+        "${content_title.join("、")} です！",
         date,
         const NotificationDetails(
           android: AndroidNotificationDetails("channelId", "channelName"),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_deadline_management/component/simekiri_tile.dart';
 import 'package:flutter_deadline_management/model/calendar_model.dart';
+import 'package:flutter_deadline_management/screens/setting_pages/notification/notify_provider.dart';
 import 'package:flutter_deadline_management/screens/setting_pages/setting_screen.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -64,69 +65,6 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
     });
   }
 
-  // Future<void> _showStartDialog() async {
-  //   var deviceSize = MediaQuery.of(context).size;
-  //   return showDialog(
-  //     context: context,
-  //     barrierDismissible: false, // user must tap button!
-  //     builder: (BuildContext context) {
-  //       return AlertDialog(
-  //         shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(8.0))),
-  //         titlePadding: EdgeInsets.zero,
-  //         actionsPadding: EdgeInsets.fromLTRB(24.0,0,24.0,15.0),
-  //         title: Image.network(
-  //           'https://pics.prcm.jp/8fc843cdea20f/81238464/jpeg/81238464_220x165.jpeg',
-  //           height:320,
-  //           fit: BoxFit.cover,
-  //         ),
-  //         content: Column(
-  //           mainAxisSize: MainAxisSize.min,
-  //           children: [
-  //             Text(
-  //                 "通知を受け取りましょう！",
-  //               style: TextStyle(fontSize: deviceSize.height * 0.02),
-  //             ),
-  //             Text(
-  //               "通知を許可すると、アプリ内で通知を設定すると予定やタスクの通知が受け取れます。",
-  //               style: TextStyle(fontSize: deviceSize.height * 0.018),
-  //               textAlign: TextAlign.center,
-  //             ),
-  //           ],
-  //         ),
-  //         actions: <Widget>[
-  //           Align(
-  //             alignment: Alignment.center,
-  //             child: SizedBox(
-  //               width: double.infinity,
-  //               height: deviceSize.height * 0.048,
-  //               child: ElevatedButton(
-  //                 style: ElevatedButton.styleFrom(
-  //                   primary: Colors.grey, //ボタンの背景色
-  //                 ),
-  //                 child: Text(
-  //                   '次へ',
-  //                   style: TextStyle(fontSize: deviceSize.height * 0.02),
-  //                 ),
-  //                 onPressed: () async{
-  //                   Navigator.of(context).pop();
-  //                   //ステータスの定義
-  //                   var status = await Permission.notification.status;
-  //
-  //                   //通知の催促を初めて出すとき（ユーザーが一回目に使うとき）
-  //                   if (status == PermissionStatus.denied) {
-  //                     // リクエストを飛ばす
-  //                     status = await Permission.notification.request();
-  //                   }
-  //                 },
-  //               ),
-  //             ),
-  //           ),
-  //         ],
-  //       );
-  //     },
-  //   );
-  // }
-
   _showStartDialog() {
     var deviceSize = MediaQuery.of(context).size;
     return showDialog(
@@ -155,7 +93,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
               ),
               SizedBox(height: deviceSize.height * 0.015),
               Text(
-                "通知を許可すると\nアプリ内で予定やタスクの通知が\n受け取れます。",
+               "通知を許可すると\nアプリ内で予定やタスクの通知が\n受け取れます！",
                 style: TextStyle(fontSize: deviceSize.height * 0.018),
                 textAlign: TextAlign.center,
               ),
@@ -177,6 +115,14 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                   ),
                   onPressed: () async{
                     Navigator.of(context).pop();
+                    //ステータスの定義
+                    var status = await Permission.notification.status;
+
+                    //通知の催促を初めて出すとき（ユーザーが一回目に使うとき）
+                    if (status == PermissionStatus.denied) {
+                      // リクエストを飛ばす
+                      status = await Permission.notification.request();
+                    }
                   },
                 ),
               ),
@@ -243,15 +189,16 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
       ////                      ↓　　↓
 
 
-        // if (isOn) {
-        //   ref.watch(NotifyProvider).isNotify(contents,stringTimeData);
-        //   print(
-        //       '${_selectedTime.hour.toString()},${_selectedTime.minute.toString()}');
-        //   print(contents);
-        // }
+        if (isOn) {
+          ref.watch(NotifyProvider).isNotify(contents,stringTimeData);
+          print(
+              '${_selectedTime.hour.toString()},${_selectedTime.minute.toString()}');
+          print(contents);
+        }
 
       return contents;
     }
+
 
     return Scaffold(
       backgroundColor: Theme.of(context).hoverColor,
@@ -293,9 +240,9 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
             flex: 5,
             child: Card(
               elevation: 3.0,
-              // shape: RoundedRectangleBorder(
-              //     borderRadius: BorderRadius.circular(10),
-              //   ),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
               // テーブルカレンダーを実装
               child: TableCalendar(
                 daysOfWeekHeight: deviceSize.height * 0.02,
