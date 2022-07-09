@@ -84,7 +84,6 @@ class notifyProvider {
       flnp.zonedSchedule(
         1,
         "明日は${content.length}個のタスク（予定）があります",
-        // content_title.join("、"),
         "${content_title.join("、")} です！",
         date,
         const NotificationDetails(

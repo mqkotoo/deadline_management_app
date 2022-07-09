@@ -75,9 +75,10 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(8.0))),
           titlePadding: EdgeInsets.zero,
           actionsPadding: EdgeInsets.fromLTRB(24.0,0,24.0,15.0),
-          title: Image.network(
-            'https://pics.prcm.jp/8fc843cdea20f/81238464/jpeg/81238464_220x165.jpeg',
-            height:320,
+          title: Image.asset(
+            'images/ios_notification_dialog.png',
+            height:310,
+            width: 300,
             fit: BoxFit.cover,
           ),
           content: Column(
