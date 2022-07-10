@@ -40,9 +40,9 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
   // bool isADayAgo = false;
   // bool isToday = false;
   String stringTimeData = "2022-06-23 10:00:00.000";
-  TimeOfDay _selectedTime = TimeOfDay(hour: 10, minute: 00);
+  TimeOfDay _selectedTime = const TimeOfDay(hour: 10, minute: 00);
 
-  TextEditingController _eventController = TextEditingController();
+  final TextEditingController _eventController = TextEditingController();
 
   //スクロールを管理するコントローラとリスナーを定義
   final ItemScrollController itemScrollController = ItemScrollController();
@@ -76,9 +76,9 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
           titlePadding: EdgeInsets.zero,
           actionsPadding: EdgeInsets.fromLTRB(24.0,0,24.0,15.0),
           title: Image.asset(
-            'images/ios_notification_dialog.png',
-            height:310,
-            width: 300,
+            'images/ios_startDialog.png',
+            height:320,
+            width: 280,
             fit: BoxFit.cover,
           ),
           content: Column(
