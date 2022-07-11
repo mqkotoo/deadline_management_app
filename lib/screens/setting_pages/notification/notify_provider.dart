@@ -11,8 +11,7 @@ class notifyProvider {
   final Reader _read;
   //ios notification setting
   //android notification setting
-  Future<void> isNotify(content,String stringTimeData) async {
-
+  Future<void> isNotify(content, String stringTimeData) async {
     var prefs = await SharedPreferences.getInstance();
     final isThreeDaysAgo = prefs.getBool('isThreeDaysAgo') ?? true;
     final isAWeek = prefs.getBool('week') ?? false;
@@ -58,7 +57,7 @@ class notifyProvider {
     //当日に通知
     if (isToday) {
       date = tz.TZDateTime(tz.local, isDay.year, isDay.month, isDay.day,
-          _selectedTime.hour.toInt(),_selectedTime.minute.toInt());
+          _selectedTime.hour.toInt(), _selectedTime.minute.toInt());
 
       flnp.zonedSchedule(
         0,
@@ -70,16 +69,17 @@ class notifyProvider {
           iOS: IOSNotificationDetails(),
         ),
         uiLocalNotificationDateInterpretation:
-        UILocalNotificationDateInterpretation.absoluteTime,
+            UILocalNotificationDateInterpretation.absoluteTime,
         androidAllowWhileIdle: true,
       );
     }
 
     //前日に通知
-    if (isADayAgo){
-      date = tz.TZDateTime(tz.local, isDay.year, isDay.month, isDay.day, _selectedTime.hour.toInt(),_selectedTime.minute.toInt())
-      //同時に通知がある場合来なくなるので、タイミングをずらしてみる
-          .add(const Duration(days: -1,seconds: -1));
+    if (isADayAgo) {
+      date = tz.TZDateTime(tz.local, isDay.year, isDay.month, isDay.day,
+              _selectedTime.hour.toInt(), _selectedTime.minute.toInt())
+          //同時に通知がある場合来なくなるので、タイミングをずらしてみる
+          .add(const Duration(days: -1, seconds: -1));
 
       flnp.zonedSchedule(
         1,
@@ -91,14 +91,15 @@ class notifyProvider {
           iOS: IOSNotificationDetails(),
         ),
         uiLocalNotificationDateInterpretation:
-        UILocalNotificationDateInterpretation.absoluteTime,
+            UILocalNotificationDateInterpretation.absoluteTime,
         androidAllowWhileIdle: true,
       );
     }
 
     //三日前に通知
     if (isThreeDaysAgo) {
-      date = tz.TZDateTime(tz.local, isDay.year, isDay.month, isDay.day, _selectedTime.hour.toInt(),_selectedTime.minute.toInt())
+      date = tz.TZDateTime(tz.local, isDay.year, isDay.month, isDay.day,
+              _selectedTime.hour.toInt(), _selectedTime.minute.toInt())
           .add(const Duration(days: -3));
 
       flnp.zonedSchedule(
@@ -108,19 +109,21 @@ class notifyProvider {
         date,
         const NotificationDetails(
           android: AndroidNotificationDetails(
-              "channelId", "channelName",
+            "channelId",
+            "channelName",
           ),
           iOS: IOSNotificationDetails(),
         ),
         uiLocalNotificationDateInterpretation:
-        UILocalNotificationDateInterpretation.absoluteTime,
+            UILocalNotificationDateInterpretation.absoluteTime,
         androidAllowWhileIdle: true,
       );
     }
 
     //一週間前に通知
     if (isAWeek) {
-      date = tz.TZDateTime(tz.local, isDay.year, isDay.month, isDay.day, _selectedTime.hour.toInt(),_selectedTime.minute.toInt())
+      date = tz.TZDateTime(tz.local, isDay.year, isDay.month, isDay.day,
+              _selectedTime.hour.toInt(), _selectedTime.minute.toInt())
           .add(const Duration(days: -7));
 
       flnp.zonedSchedule(
@@ -133,17 +136,23 @@ class notifyProvider {
           iOS: IOSNotificationDetails(),
         ),
         uiLocalNotificationDateInterpretation:
-        UILocalNotificationDateInterpretation.absoluteTime,
+            UILocalNotificationDateInterpretation.absoluteTime,
         androidAllowWhileIdle: true,
       );
     }
-
   }
 
-  Future<void> selectOnOff(bool isOn)  async {
-    if (isOn == false) {
+  Future<void> selectOnOff(bool isOn) async {
+    if (isOn == true) {
+      onNotification();
+    } else if (isOn == false) {
       offNotification();
     }
+  }
+
+  Future<void> onNotification() async {
+    final flnp = FlutterLocalNotificationsPlugin();
+    print("通知オン");
   }
 
   Future<void> offNotification() async {
@@ -151,6 +160,8 @@ class notifyProvider {
     await flnp.cancelAll();
     print("通知オフ");
   }
+
+  Future setNotification() async {}
 
   // //通知のリクエストを走らせる
   // Future<void> requestPermissions() async {

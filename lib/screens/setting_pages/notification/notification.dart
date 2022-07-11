@@ -17,8 +17,6 @@ class SettingNotificationScreen extends StatefulHookConsumerWidget {
 
 class _SettingNotificationScreenState
     extends ConsumerState<SettingNotificationScreen> {
-
-
   //スイッチのオンオフのBOOL値
   bool isOn = false;
   bool isThreeDaysAgo = false;
@@ -39,7 +37,6 @@ class _SettingNotificationScreenState
   //タイムピッカーデフォルトの変数
   TimeOfDay _selectedTime = TimeOfDay(hour: 10, minute: 00);
 
-
   //スイッチのTRUEの制限の時に出すダイアログ
   limitTrueDialog() {
     var deviceSize = MediaQuery.of(context).size;
@@ -48,9 +45,10 @@ class _SettingNotificationScreenState
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(8.0))),
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(8.0))),
           // titlePadding: EdgeInsets.zero,
-          actionsPadding: EdgeInsets.fromLTRB(24.0,0,24.0,15.0),
+          actionsPadding: EdgeInsets.fromLTRB(24.0, 0, 24.0, 15.0),
           content: Text(
             "通知は、最大１つまで設定が\n可能です！",
             style: TextStyle(fontSize: deviceSize.height * 0.021),
@@ -70,7 +68,7 @@ class _SettingNotificationScreenState
                     'OK',
                     style: TextStyle(fontSize: deviceSize.height * 0.02),
                   ),
-                  onPressed: () async{
+                  onPressed: () async {
                     Navigator.of(context).pop();
                   },
                 ),
@@ -101,19 +99,17 @@ class _SettingNotificationScreenState
       isAWeekAgo = prefs.getBool('week') ?? false;
       isADayAgo = prefs.getBool('isADayAgo') ?? false;
       isToday = prefs.getBool('isToday') ?? false;
-      String stringTimeData = prefs.getString('time') ?? "2022-06-22 10:00:00.000";
-      _selectedTime = TimeOfDay.fromDateTime(
-          DateTime.parse(stringTimeData));
+      String stringTimeData =
+          prefs.getString('time') ?? "2022-06-22 10:00:00.000";
+      _selectedTime = TimeOfDay.fromDateTime(DateTime.parse(stringTimeData));
 
       //状態をまとめて管理
-      this.list = [isToday,isADayAgo,isThreeDaysAgo,isAWeekAgo];
-
+      this.list = [isToday, isADayAgo, isThreeDaysAgo, isAWeekAgo];
     });
   }
 
-
   @override
-  void initState(){
+  void initState() {
     super.initState();
     _restoreValues();
   }
@@ -127,7 +123,8 @@ class _SettingNotificationScreenState
 
       final TimeOfDay? timeValue = await customShowTimePicker(
         context: context,
-        initialTime: TimeOfDay(hour: _selectedTime.hour, minute: _selectedTime.minute),
+        initialTime:
+            TimeOfDay(hour: _selectedTime.hour, minute: _selectedTime.minute),
         cancelText: 'キャンセル',
         confirmText: "OK",
         //各々の携帯の設定に関わらず時刻選択の際は12時間フォーマットにする
@@ -144,13 +141,15 @@ class _SettingNotificationScreenState
       if (timeValue != null) {
         setState(() {
           _selectedTime = timeValue;
-          _saveTime('time',  DateTime(
-            now.year,
-            now.month,
-            now.day,
-            _selectedTime.hour, // TimeOfDay
-            _selectedTime.minute, //TimeOfDay
-          ).toString());
+          _saveTime(
+              'time',
+              DateTime(
+                now.year,
+                now.month,
+                now.day,
+                _selectedTime.hour, // TimeOfDay
+                _selectedTime.minute, //TimeOfDay
+              ).toString());
         });
       }
     }
@@ -173,7 +172,6 @@ class _SettingNotificationScreenState
 
         timeText = '$hours : $minutes';
 
-
         return timeText;
       }
     }
@@ -192,9 +190,9 @@ class _SettingNotificationScreenState
             child: Text(
               _getTimeText(),
               style: TextStyle(
-                  // color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: deviceSize.width * 0.043,
+                // color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: deviceSize.width * 0.043,
               ),
             ),
           ),
@@ -235,71 +233,83 @@ class _SettingNotificationScreenState
       body: Column(
         children: [
           Expanded(
-            child: ListView(children: [
-              _menuItem(context, title: "通知", child: _isOnSwitch(context)),
+            child: ListView(
+              children: [
+                _menuItem(context, title: "通知", child: _isOnSwitch(context)),
 
-              //通知がオフだったら「通知を受け取る時間」を非表示にする
-              isOn
-                  ? _menuItem(context,
-                      title: "通知を受け取る時間",
-                      child: _displayTimeBox(onTap: () => _pickTime(context)))
-                  : SizedBox.shrink(),
-              isOn
-                  ? _menuItem(context,
-                      title: "当日に通知", child: _isTodaySwitch(context))
-                  : SizedBox.shrink(),
-              isOn
-                  ? _menuItem(context,
-                      title: '前日に通知', child: _isADayAgoSwitch(context))
-                  : SizedBox.shrink(),
-              Container(
-                width: deviceSize.width * 8,
-                child: isOn
+                //通知がオフだったら「通知を受け取る時間」を非表示にする
+                isOn
                     ? _menuItem(context,
-                        title: "3日前に通知", child: _isThreeDaysAgoSwitch(context))
+                        title: "通知を受け取る時間",
+                        child: _displayTimeBox(onTap: () => _pickTime(context)))
                     : SizedBox.shrink(),
-              ),
-              isOn
-                  ? _menuItem(context,
-                      title: "1週間前に通知", child: _isAWeekAgoSwitch(context))
-                  : SizedBox.shrink(),
+                isOn
+                    ? _menuItem(context,
+                        title: "当日に通知", child: _isTodaySwitch(context))
+                    : SizedBox.shrink(),
+                isOn
+                    ? _menuItem(context,
+                        title: '前日に通知', child: _isADayAgoSwitch(context))
+                    : SizedBox.shrink(),
+                Container(
+                  width: deviceSize.width * 8,
+                  child: isOn
+                      ? _menuItem(context,
+                          title: "3日前に通知",
+                          child: _isThreeDaysAgoSwitch(context))
+                      : SizedBox.shrink(),
+                ),
+                isOn
+                    ? _menuItem(context,
+                        title: "1週間前に通知", child: _isAWeekAgoSwitch(context))
+                    : SizedBox.shrink(),
 
-            //  アプリ内の通知オフかつ、スマホの通知設定がオフなら催促テキストを出す。
-            //   isOn  ? SizedBox.shrink() : _openSettingText(context),
+                //  アプリ内の通知オフかつ、スマホの通知設定がオフなら催促テキストを出す。
+                //   isOn  ? SizedBox.shrink() : _openSettingText(context),
+                FutureBuilder(
+                    future: getNotificationStatus(),
+                    builder: (context, snapshot) {
+                      if (!snapshot.hasData) {
+                        return CircularProgressIndicator();
+                      }
+                      return snapshot.data.toString() == "ture"
+                          ? SizedBox.shrink()
+                          : _openSettingText(context);
+                    }),
 
-              isOn
-                  ? SizedBox.shrink()
-                  : Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  SizedBox(height: deviceSize.height*0.22),
-                  RichText(
-                    maxLines: 2,
-                    text: TextSpan(
-                      style: TextStyle(
-                          color: Theme.of(context).secondaryHeaderColor,
-                          fontSize: deviceSize.height * 0.02
-                      ),
-                      children: [
-                        TextSpan(text: 'アプリの通知をご利用の際は'),
-                        TextSpan(
-                          text: 'こちら',
-                          style: TextStyle(
-                            color: Colors.lightBlueAccent,
-                            decoration: TextDecoration.underline,
-                          ),
-                          recognizer: TapGestureRecognizer()
-                            ..onTap = () async{
-                              await openAppSettings();
-                            },
-                        ),
-                        TextSpan(text: 'から、\n'),
-                        TextSpan(text: 'スマホの通知設定をオンにしてください！'),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
+                // isOn
+                //     ? SizedBox.shrink()
+                //     : Column(
+                //   crossAxisAlignment: CrossAxisAlignment.center,
+                //   children: [
+                //     SizedBox(height: deviceSize.height*0.22),
+                //     RichText(
+                //       maxLines: 2,
+                //       text: TextSpan(
+                //         style: TextStyle(
+                //             color: Theme.of(context).secondaryHeaderColor,
+                //             fontSize: deviceSize.height * 0.02
+                //         ),
+                //         children: [
+                //           TextSpan(text: 'アプリの通知をご利用の際は'),
+                //           TextSpan(
+                //             text: 'こちら',
+                //             style: TextStyle(
+                //               color: Colors.lightBlueAccent,
+                //               decoration: TextDecoration.underline,
+                //             ),
+                //             recognizer: TapGestureRecognizer()
+                //               ..onTap = () async{
+                //                 await openAppSettings();
+                //               },
+                //           ),
+                //           TextSpan(text: 'から、\n'),
+                //           TextSpan(text: 'スマホの通知設定をオンにしてください！'),
+                //         ],
+                //       ),
+                //     ),
+                //   ],
+                // ),
               ],
             ),
           ),
@@ -314,55 +324,49 @@ class _SettingNotificationScreenState
     );
   }
 
-
-  Future<Widget> _openSettingText(BuildContext context) async{
-
-    var deviceSize = MediaQuery.of(context).size;
+  Future getNotificationStatus() async {
     var status = await Permission.notification.status;
+    if (status != status.isGranted) {
+      return "false";
+    } else if (status == status.isGranted) {
+      return "true";
+    }
+  }
+
+  _openSettingText(BuildContext context) {
+    var deviceSize = MediaQuery.of(context).size;
 
     //通知のリクエストを断られているとき
-    if (status != status.isGranted) {
-
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          SizedBox(height: deviceSize.height*0.2),
-          RichText(
-            text: TextSpan(
-              style: TextStyle(
-                  color: Theme.of(context).secondaryHeaderColor,
-                  fontSize: deviceSize.height * 0.018
-              ),
-              children: [
-                TextSpan(text: 'アプリの通知をご利用の際は'),
-                TextSpan(
-                  text: 'こちら',
-                  style: TextStyle(
-                    color: Colors.lightBlueAccent,
-                    decoration: TextDecoration.underline,
-                  ),
-                  recognizer: TapGestureRecognizer()
-                    ..onTap = () async{
-                      await openAppSettings();
-                    },
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        SizedBox(height: deviceSize.height * 0.2),
+        RichText(
+          text: TextSpan(
+            style: TextStyle(
+                color: Theme.of(context).secondaryHeaderColor,
+                fontSize: deviceSize.height * 0.018),
+            children: [
+              TextSpan(text: 'アプリの通知をご利用の際は'),
+              TextSpan(
+                text: 'こちら',
+                style: TextStyle(
+                  color: Colors.lightBlueAccent,
+                  decoration: TextDecoration.underline,
                 ),
-                TextSpan(text: 'から、\n'),
-                TextSpan(text: 'スマホの通知設定をオンにしてください！'),
-                TextSpan(text: status.toString()),
-              ],
-            ),
+                recognizer: TapGestureRecognizer()
+                  ..onTap = () async {
+                    await openAppSettings();
+                  },
+              ),
+              TextSpan(text: 'から、\n'),
+              TextSpan(text: 'スマホの通知設定をオンにしてください！'),
+              //TextSpan(text: status.toString()),
+            ],
           ),
-        ],
-      );
-    }
-    else if (status == status.isGranted){
-      // return SizedBox.shrink();
-      return Text('status == status.isGranted');
-    }
-    else{
-      // return SizedBox.shrink();
-      return Text(status.toString());
-    }
+        ),
+      ],
+    );
   }
 
   Widget _menuItem(BuildContext context,
@@ -437,15 +441,14 @@ class _SettingNotificationScreenState
           value: isThreeDaysAgo,
           onChanged: (bool? value) {
             if (value != null) {
-
-              if(value == true){
+              if (value == true) {
                 //もしTRUEが入ってきたら、TRUEの数数えて精査する
                 var trueNum = list!.where((x) => x == true).length;
                 if (trueNum >= maxTrueValue) {
                   limitTrueDialog();
                 }
                 //ここに入ると値更新できてる
-                else{
+                else {
                   list![2] = value; //true
                   setState(() {
                     isThreeDaysAgo = value;
@@ -455,7 +458,7 @@ class _SettingNotificationScreenState
                 }
               }
               //switchオフになる時
-              else{
+              else {
                 list![2] = value; //false
                 setState(() {
                   isThreeDaysAgo = value;
@@ -575,13 +578,11 @@ class _SettingNotificationScreenState
         child: Switch(
           value: isToday,
           onChanged: (bool? value) {
-
-            for(var item in list!){
+            for (var item in list!) {
               print(item);
             }
             if (value != null) {
               if (value == true) {
-
                 //もしTRUEが入ってきたら、TRUEの数数えて精査する
                 var trueNum = list!.where((x) => x == true).length;
                 if (trueNum >= maxTrueValue) {

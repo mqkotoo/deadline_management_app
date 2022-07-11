@@ -22,8 +22,6 @@ class CalendarScreen extends StatefulHookConsumerWidget {
 }
 
 class _CalendarScreenState extends ConsumerState<CalendarScreen> {
-
-
   //日にち分けしたときに一時的に予定が入るリスト
   List selectDatEvents = [];
 
@@ -58,8 +56,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
       // isADayAgo = prefs.getBool('isADayAgo') ?? false;
       // isToday = prefs.getBool('isToday') ?? false;
       stringTimeData = prefs.getString('time')!;
-      _selectedTime =
-          TimeOfDay.fromDateTime(DateTime.parse(stringTimeData));
+      _selectedTime = TimeOfDay.fromDateTime(DateTime.parse(stringTimeData));
       print(
           '${_selectedTime.hour.toString()},${_selectedTime.minute.toString()}');
     });
@@ -72,12 +69,13 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(8.0))),
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(8.0))),
           titlePadding: EdgeInsets.zero,
-          actionsPadding: EdgeInsets.fromLTRB(24.0,0,24.0,15.0),
+          actionsPadding: EdgeInsets.fromLTRB(24.0, 0, 24.0, 15.0),
           title: Image.asset(
             'images/ios_startDialog.png',
-            height:320,
+            height: 320,
             width: 280,
             fit: BoxFit.cover,
           ),
@@ -88,13 +86,12 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                 "通知を受け取りましょう！",
                 style: TextStyle(
                     fontSize: deviceSize.height * 0.02,
-                  fontWeight: FontWeight.bold
-                ),
+                    fontWeight: FontWeight.bold),
                 textAlign: TextAlign.center,
               ),
               SizedBox(height: deviceSize.height * 0.015),
               Text(
-               "通知を許可すると\nアプリ内で予定やタスクの通知が\n受け取れます！",
+                "通知を許可すると\nアプリ内で予定やタスクの通知が\n受け取れます！",
                 style: TextStyle(fontSize: deviceSize.height * 0.018),
                 textAlign: TextAlign.center,
               ),
@@ -114,7 +111,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                     'OK',
                     style: TextStyle(fontSize: deviceSize.height * 0.02),
                   ),
-                  onPressed: () async{
+                  onPressed: () async {
                     Navigator.of(context).pop();
                     //ステータスの定義
                     var status = await Permission.notification.status;
@@ -134,13 +131,11 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
     );
   }
 
-
-
   @override
   void initState() {
     super.initState();
     _restoreValues();
-    WidgetsBinding.instance!.addPostFrameCallback((_) async {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       var status = await Permission.notification.status;
       print(status.toString());
       //初回の人にダイアログ出す
@@ -151,14 +146,11 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
     });
   }
 
-
-
   @override
   void dispose() {
     _eventController.dispose();
     super.dispose();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -166,6 +158,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
 
     //calendarモデルのeventsListを常に監視
     final events = ref.watch(calendarProvider).eventsList;
+    final eventsMap = ref.watch(calendarProvider).calendarList;
 
     //events
     //0:{"at":Timestamp2022年04月18日}
@@ -173,33 +166,21 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
     //2:{"at":Timestamp2022年04月30日}
     List _getEventsfromDay(DateTime date) {
       // 分けられたいい感じのイベントたちが入る変数
-      List contents = [];
-      //一個ずつeventListの中身をスキャンしていく
-      for (var i = 0; i < events.length; i++) {
-        //イベントたちの登録されている日にちのTimeStampをDateTimeに変換
-        DateTime isDay = events[i]['at'].toDate();
-        //イベントたちのDateTimeとカレンダーのDateTimeの比較
-        if (DateTime(date.year, date.month, date.day)
-            .isAtSameMomentAs(DateTime(isDay.year, isDay.month, isDay.day))) {
-          //4月18日と4月18日のように日にちが同じだったらcontentsに追加
-          contents.add(events[i]);
-        }
-      }
+      String dateString = DateFormat('yyyy-MM-dd').format(date);
+      List contents = eventsMap[dateString] ?? [];
 
       //// ここで読んじゃうと、30回くらいこの処理を繰り返してしまうから、どこで呼ぶか考えている
       ////                      ↓　　↓
 
-
-        if (isOn) {
-          ref.watch(NotifyProvider).isNotify(contents,stringTimeData);
-          print(
-              '${_selectedTime.hour.toString()},${_selectedTime.minute.toString()}');
-          print(contents);
-        }
+      // if (isOn) {
+      //   ref.watch(NotifyProvider).isNotify(contents, stringTimeData);
+      //   print(
+      //       '${_selectedTime.hour.toString()},${_selectedTime.minute.toString()}');
+      //   print(contents);
+      // }
 
       return contents;
     }
-
 
     return Scaffold(
       backgroundColor: Theme.of(context).hoverColor,
@@ -242,8 +223,8 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
             child: Card(
               elevation: 3.0,
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
+                borderRadius: BorderRadius.circular(8),
+              ),
               // テーブルカレンダーを実装
               child: TableCalendar(
                 daysOfWeekHeight: deviceSize.height * 0.02,
@@ -382,7 +363,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                         ),
                       );
                     },
-            ),
+                  ),
           ),
         ],
       ),

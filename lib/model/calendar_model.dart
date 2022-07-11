@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_deadline_management/model/fireauth.dart';
 import 'package:flutter_deadline_management/model/firestore.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:intl/intl.dart';
 
 final calendarProvider = Provider((ref) => CalendarModel(ref.read));
 
@@ -12,6 +13,7 @@ class CalendarModel {
   CalendarModel(this._read);
   final Reader _read;
   List eventsList = [];
+  Map calendarList = {};
 
   //以下追加処理
   Future get() async {
@@ -41,6 +43,18 @@ class CalendarModel {
       eventsList = [];
       print(eventsList);
     }
+
+    for (var i = 0; i < eventsList.length; i++) {
+      String date =
+          DateFormat('yyyy-MM-dd').format(eventsList[i]["at"].toDate());
+      List selectList = calendarList[date] ?? [];
+      selectList.add({
+        "title": eventsList[i]["title"].toString(),
+        "detail": eventsList[i]["detail"].toString(),
+        "at": eventsList[i]["at"],
+      });
+      calendarList[date] = selectList;
+    }
   }
 
   //以下投稿処理
@@ -64,11 +78,32 @@ class CalendarModel {
 
     // 追加処理
     eventsList.add(post);
+    String selectDay = DateFormat('yyyy-MM-dd').format(date);
+    List selectList = calendarList[selectDay] ?? [];
+    if (selectList.contains(selectDay)) {
+      (calendarList).putIfAbsent(
+          date,
+          () => [
+                {
+                  "title": title,
+                  "detail": description,
+                  "at": date,
+                }
+              ]);
+    } else {
+      selectList.add({
+        "title": title,
+        "detail": description,
+        "at": date,
+      });
+      calendarList[date] = selectList;
+    }
 
+    print(calendarList);
     //もし、Firestoreの方に値がなければsetしてくれる。
     //すでにFirestoreの方に値が存在していたらupdateをしてくれる。
     await db.set({
-      "events" : eventsList,
+      "events": eventsList,
     }, SetOptions(merge: true));
   }
 
