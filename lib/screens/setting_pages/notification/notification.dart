@@ -111,7 +111,6 @@ class _SettingNotificationScreenState
     });
   }
 
-
   @override
   void initState(){
     super.initState();
@@ -264,42 +263,55 @@ class _SettingNotificationScreenState
                       title: "1週間前に通知", child: _isAWeekAgoSwitch(context))
                   : SizedBox.shrink(),
 
-            //  アプリ内の通知オフかつ、スマホの通知設定がオフなら催促テキストを出す。
-            //   isOn  ? SizedBox.shrink() : _openSettingText(context),
-
+            //
               isOn
                   ? SizedBox.shrink()
-                  : Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  SizedBox(height: deviceSize.height*0.22),
-                  RichText(
-                    maxLines: 2,
-                    text: TextSpan(
-                      style: TextStyle(
-                          color: Theme.of(context).secondaryHeaderColor,
-                          fontSize: deviceSize.height * 0.02
-                      ),
-                      children: [
-                        TextSpan(text: 'アプリの通知をご利用の際は'),
-                        TextSpan(
-                          text: 'こちら',
-                          style: TextStyle(
-                            color: Colors.lightBlueAccent,
-                            decoration: TextDecoration.underline,
-                          ),
-                          recognizer: TapGestureRecognizer()
-                            ..onTap = () async{
-                              await openAppSettings();
-                            },
-                        ),
-                        TextSpan(text: 'から、\n'),
-                        TextSpan(text: 'スマホの通知設定をオンにしてください！'),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
+                  : FutureBuilder(
+                // 別の場所でFUTUREで通知ステータスを取得
+                  future: getNotificationStatus(),
+                  //snapshotにはFUTUREの関数の返り値が入る
+                  builder: (context,snapshot) {
+                    //通知ステータス == isGrantedだったら文字を表示しない
+                    if(snapshot.data == true) {
+                      return  SizedBox.shrink();
+                    }
+                    //通知ステータス == isGrantedじゃない（許可していない）場合は通知オンにしてテキストを表示する
+                    return _openSettingText(context);
+                  })
+
+              // isOn
+              //     ? SizedBox.shrink()
+              //     : Column(
+              //   crossAxisAlignment: CrossAxisAlignment.center,
+              //   children: [
+              //     SizedBox(height: deviceSize.height*0.22),
+              //     RichText(
+              //       maxLines: 2,
+              //       text: TextSpan(
+              //         style: TextStyle(
+              //             color: Theme.of(context).secondaryHeaderColor,
+              //             fontSize: deviceSize.height * 0.02
+              //         ),
+              //         children: [
+              //           TextSpan(text: 'アプリの通知をご利用の際は'),
+              //           TextSpan(
+              //             text: 'こちら',
+              //             style: TextStyle(
+              //               color: Colors.lightBlueAccent,
+              //               decoration: TextDecoration.underline,
+              //             ),
+              //             recognizer: TapGestureRecognizer()
+              //               ..onTap = () async{
+              //                 await openAppSettings();
+              //               },
+              //           ),
+              //           TextSpan(text: 'から、\n'),
+              //           TextSpan(text: 'スマホの通知設定をオンにしてください！'),
+              //         ],
+              //       ),
+              //     ),
+              //   ],
+              // ),
               ],
             ),
           ),
@@ -314,14 +326,17 @@ class _SettingNotificationScreenState
     );
   }
 
+  //line271で使うための通知のステータスを取得する関数
+  Future getNotificationStatus() async{
+    var status = await Permission.notification.status;
+    return status.isGranted;
+  }
 
-  Future<Widget> _openSettingText(BuildContext context) async{
+
+  //　通知をオフにしている人に対しての通知の催促メッセージを出す関数
+  Widget _openSettingText(BuildContext context) {
 
     var deviceSize = MediaQuery.of(context).size;
-    var status = await Permission.notification.status;
-
-    //通知のリクエストを断られているとき
-    if (status != status.isGranted) {
 
       return Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -348,21 +363,12 @@ class _SettingNotificationScreenState
                 ),
                 TextSpan(text: 'から、\n'),
                 TextSpan(text: 'スマホの通知設定をオンにしてください！'),
-                TextSpan(text: status.toString()),
+                // TextSpan(text: status.toString()),
               ],
             ),
           ),
         ],
       );
-    }
-    else if (status == status.isGranted){
-      // return SizedBox.shrink();
-      return Text('status == status.isGranted');
-    }
-    else{
-      // return SizedBox.shrink();
-      return Text(status.toString());
-    }
   }
 
   Widget _menuItem(BuildContext context,

@@ -152,15 +152,5 @@ class notifyProvider {
     print("通知オフ");
   }
 
-  // //通知のリクエストを走らせる
-  // Future<void> requestPermissions() async {
-  //   await FlutterLocalNotificationsPlugin()
-  //       .resolvePlatformSpecificImplementation
-  //        <IOSFlutterLocalNotificationsPlugin>()
-  //       ?.requestPermissions(
-  //     alert: true,
-  //     badge: true,
-  //     sound: true,
-  //   );
-  // }
+
 }

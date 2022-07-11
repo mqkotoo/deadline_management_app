@@ -77,7 +77,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
           actionsPadding: EdgeInsets.fromLTRB(24.0,0,24.0,15.0),
           title: Image.asset(
             'images/ios_startDialog.png',
-            height:320,
+            height:305,
             width: 280,
             fit: BoxFit.cover,
           ),
@@ -193,7 +193,8 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
         if (isOn) {
           ref.watch(NotifyProvider).isNotify(contents,stringTimeData);
           print(
-              '${_selectedTime.hour.toString()},${_selectedTime.minute.toString()}');
+              '${_selectedTime.hour.toString()},${_selectedTime.minute.toString()}',
+          );
           print(contents);
         }
 
