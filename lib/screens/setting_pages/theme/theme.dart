@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 
-//DARK
+//DARK-----------------------------------------------------------------
 ThemeData darkTheme = ThemeData.dark().copyWith(
   //フローティングアクションボタン、選択している日付の丸、カレンダーヘッダーの矢印
   accentColor: Colors.indigo,
@@ -14,14 +14,55 @@ ThemeData darkTheme = ThemeData.dark().copyWith(
 //  add pageのラベルテキストの色
   bottomAppBarColor: Colors.white,
 //  add pageのボタン、テキストの枠、ボタン、日付表示(primarycolorと一緒(lighttheme意外))
-  disabledColor:Color(0xff212121),
+  dividerColor:Color(0xff212121),
+// timePickerの左下のボタンを背景と同化させる
+  disabledColor: Colors.grey.shade800,
+  //通知をオンにしていない場合に通知のページでスマホの通知をオンにするのを促すテキストの色
+  secondaryHeaderColor : Colors.white,
 
     buttonBarTheme: ButtonBarThemeData(
       alignment: MainAxisAlignment.center,
-    )
-);
+    ),
 
-//LIGHT
+  timePickerTheme: TimePickerThemeData(
+
+    dayPeriodColor: MaterialStateColor.resolveWith((states) =>
+    states.contains(MaterialState.selected)
+        ? Colors.tealAccent.shade700
+        : Colors.white38),
+
+    dayPeriodTextColor: MaterialStateColor.resolveWith((states) =>
+    states.contains(MaterialState.selected)
+        ? Colors.white
+        : Colors.black87),
+
+    hourMinuteColor: MaterialStateColor.resolveWith((states) =>
+    states.contains(MaterialState.selected)
+        ? Colors.tealAccent.shade700
+        : Colors.white38),
+
+    hourMinuteTextColor: MaterialStateColor.resolveWith((states) =>
+    states.contains(MaterialState.selected)
+        ? Colors.white
+        : Colors.black),
+
+    dialHandColor: Colors.tealAccent.shade700,
+
+  ),
+
+  textButtonTheme: TextButtonThemeData(
+    style: ButtonStyle(
+      foregroundColor:
+      MaterialStateColor.resolveWith((states) => Colors.white),
+      backgroundColor: MaterialStateColor.resolveWith(
+              (states) => Colors.tealAccent.shade700),
+    ),
+  ),
+
+);
+//------------------------------------------------------------------
+
+//LIGHT-------------------------------------------------------
 ThemeData lightTheme = ThemeData(
   primaryColor: Colors.white,
   // accentColor: Colors.red[300],
@@ -31,10 +72,48 @@ ThemeData lightTheme = ThemeData(
   indicatorColor: Colors.red[300],
   selectedRowColor: Colors.black87,
   bottomAppBarColor: Colors.black,
-  disabledColor: Colors.grey
-);
+  dividerColor: Colors.grey,
+  disabledColor: Colors.white,
+  secondaryHeaderColor : Colors.black87,
 
-//PINK
+  timePickerTheme:TimePickerThemeData(
+
+    dayPeriodColor: MaterialStateColor.resolveWith(
+            (states) => states.contains(MaterialState.selected)
+            ? Colors.indigo
+            : Colors.white),
+
+    dayPeriodTextColor:  MaterialStateColor.resolveWith(
+            (states) => states.contains(MaterialState.selected)
+            ? Colors.white
+            : Colors.grey.shade700),
+
+    hourMinuteColor: MaterialStateColor.resolveWith(
+            (states) => states.contains(MaterialState.selected)
+            ? Colors.indigo
+            : Colors.grey.shade300),
+
+    hourMinuteTextColor: MaterialStateColor.resolveWith(
+            (states) => states.contains(MaterialState.selected)
+            ? Colors.white
+            : Colors.black),
+
+    dialHandColor: Colors.indigo,
+
+  ),
+
+  textButtonTheme: TextButtonThemeData(
+    style: ButtonStyle(
+      foregroundColor: MaterialStateColor.resolveWith((states) => Colors.white),
+      backgroundColor: MaterialStateColor.resolveWith((states) => Colors.indigo),
+    ),
+
+  ),
+
+);
+//---------------------------------------------------------------------
+
+//PINK-----------------------------------------------------------------
 ThemeData pinkTheme = ThemeData(
   primaryColor: Colors.pink[100],
   accentColor: Colors.pink[100],
@@ -42,10 +121,48 @@ ThemeData pinkTheme = ThemeData(
   indicatorColor: Colors.pink[200],
   selectedRowColor: Colors.white,
   bottomAppBarColor:Colors.pink[100],
-  disabledColor: Colors.pink[100]
-);
+  dividerColor: Colors.pink[100],
+  disabledColor: Colors.white,
+  secondaryHeaderColor : Colors.black87,
 
-//BLUE
+  timePickerTheme:TimePickerThemeData(
+
+    dayPeriodColor: MaterialStateColor.resolveWith(
+            (states) => states.contains(MaterialState.selected)
+            ? Colors.pink.shade100
+            : Colors.white),
+
+    dayPeriodTextColor:  MaterialStateColor.resolveWith(
+            (states) => states.contains(MaterialState.selected)
+            ? Colors.white
+            : Colors.grey.shade700),
+
+    hourMinuteColor: MaterialStateColor.resolveWith(
+            (states) => states.contains(MaterialState.selected)
+            ? Colors.pink.shade100
+            : Colors.grey.shade300),
+
+    hourMinuteTextColor: MaterialStateColor.resolveWith(
+            (states) => states.contains(MaterialState.selected)
+            ? Colors.white
+            : Colors.black),
+
+    dialHandColor: Colors.pink.shade100,
+
+  ),
+
+  textButtonTheme: TextButtonThemeData(
+    style: ButtonStyle(
+      foregroundColor: MaterialStateColor.resolveWith((states) => Colors.white),
+      backgroundColor: MaterialStateColor.resolveWith((states) => Colors.pink.shade100),
+    ),
+
+  ),
+
+);
+//--------------------------------------------------------------------------
+
+//BLUE----------------------------------------------------------------------
 ThemeData blueTheme = ThemeData(
   primaryColor: Colors.blue,
   accentColor: Colors.blue,
@@ -53,10 +170,48 @@ ThemeData blueTheme = ThemeData(
   indicatorColor: Colors.red[300],
   selectedRowColor: Colors.white,
   bottomAppBarColor:Colors.blue,
-  disabledColor: Colors.blue
-);
+  dividerColor: Colors.blue,
+  disabledColor: Colors.white,
+  secondaryHeaderColor : Colors.black87,
 
-//orange
+  timePickerTheme:TimePickerThemeData(
+
+    dayPeriodColor: MaterialStateColor.resolveWith(
+            (states) => states.contains(MaterialState.selected)
+            ? Colors.blue
+            : Colors.white),
+
+    dayPeriodTextColor:  MaterialStateColor.resolveWith(
+            (states) => states.contains(MaterialState.selected)
+            ? Colors.white
+            : Colors.grey.shade700),
+
+    hourMinuteColor: MaterialStateColor.resolveWith(
+            (states) => states.contains(MaterialState.selected)
+            ? Colors.blue
+            : Colors.grey.shade300),
+
+    hourMinuteTextColor: MaterialStateColor.resolveWith(
+            (states) => states.contains(MaterialState.selected)
+            ? Colors.white
+            : Colors.black),
+
+    dialHandColor: Colors.blue,
+
+  ),
+
+  textButtonTheme: TextButtonThemeData(
+    style: ButtonStyle(
+      foregroundColor: MaterialStateColor.resolveWith((states) => Colors.white),
+      backgroundColor: MaterialStateColor.resolveWith((states) => Colors.blue),
+    ),
+
+  ),
+
+);
+//-------------------------------------------------------------------------
+
+//orange------------------------------------------------------------------
 ThemeData orangeTheme = ThemeData(
   primaryColor: Colors.orange,
   accentColor: Colors.orange,
@@ -64,10 +219,48 @@ ThemeData orangeTheme = ThemeData(
   indicatorColor: Colors.red[300],
   selectedRowColor: Colors.white,
   bottomAppBarColor:Colors.orange,
-  disabledColor: Colors.orange
-);
+  dividerColor: Colors.orange,
+  disabledColor: Colors.white,
+  secondaryHeaderColor : Colors.black87,
 
-//red
+  timePickerTheme:TimePickerThemeData(
+
+    dayPeriodColor: MaterialStateColor.resolveWith(
+            (states) => states.contains(MaterialState.selected)
+            ? Colors.orange
+            : Colors.white),
+
+    dayPeriodTextColor:  MaterialStateColor.resolveWith(
+            (states) => states.contains(MaterialState.selected)
+            ? Colors.white
+            : Colors.grey.shade700),
+
+    hourMinuteColor: MaterialStateColor.resolveWith(
+            (states) => states.contains(MaterialState.selected)
+            ? Colors.orange
+            : Colors.grey.shade300),
+
+    hourMinuteTextColor: MaterialStateColor.resolveWith(
+            (states) => states.contains(MaterialState.selected)
+            ? Colors.white
+            : Colors.black),
+
+    dialHandColor: Colors.orange,
+
+  ),
+
+  textButtonTheme: TextButtonThemeData(
+    style: ButtonStyle(
+      foregroundColor: MaterialStateColor.resolveWith((states) => Colors.white),
+      backgroundColor: MaterialStateColor.resolveWith((states) => Colors.orange),
+    ),
+
+  ),
+
+);
+//---------------------------------------------------------------------------
+
+//red-------------------------------------------------------------------------
 ThemeData redTheme = ThemeData(
   primaryColor: Colors.red,
   accentColor: Colors.red,
@@ -75,10 +268,48 @@ ThemeData redTheme = ThemeData(
   indicatorColor: Colors.black54,
   selectedRowColor: Colors.white,
   bottomAppBarColor:Colors.red,
-  disabledColor: Colors.red
-);
+  dividerColor: Colors.red,
+  disabledColor: Colors.white,
+  secondaryHeaderColor : Colors.black87,
 
-//green
+  timePickerTheme:TimePickerThemeData(
+
+    dayPeriodColor: MaterialStateColor.resolveWith(
+            (states) => states.contains(MaterialState.selected)
+            ? Colors.red
+            : Colors.white),
+
+    dayPeriodTextColor:  MaterialStateColor.resolveWith(
+            (states) => states.contains(MaterialState.selected)
+            ? Colors.white
+            : Colors.grey.shade700),
+
+    hourMinuteColor: MaterialStateColor.resolveWith(
+            (states) => states.contains(MaterialState.selected)
+            ? Colors.red
+            : Colors.grey.shade300),
+
+    hourMinuteTextColor: MaterialStateColor.resolveWith(
+            (states) => states.contains(MaterialState.selected)
+            ? Colors.white
+            : Colors.black),
+
+    dialHandColor: Colors.red,
+
+  ),
+
+  textButtonTheme: TextButtonThemeData(
+    style: ButtonStyle(
+      foregroundColor: MaterialStateColor.resolveWith((states) => Colors.white),
+      backgroundColor: MaterialStateColor.resolveWith((states) => Colors.red),
+    ),
+
+  ),
+
+);
+//---------------------------------------------------------------------------
+
+//green---------------------------------------------------------------------------
 ThemeData greenTheme = ThemeData(
   primaryColor: Colors.green,
   accentColor: Colors.green,
@@ -86,16 +317,92 @@ ThemeData greenTheme = ThemeData(
   indicatorColor: Colors.red[300],
   selectedRowColor: Colors.white,
   bottomAppBarColor:Colors.green,
-  disabledColor: Colors.green
-);
+  dividerColor: Colors.green,
+  disabledColor: Colors.white,
+  secondaryHeaderColor : Colors.black87,
 
-//yellow
+  timePickerTheme:TimePickerThemeData(
+
+    dayPeriodColor: MaterialStateColor.resolveWith(
+            (states) => states.contains(MaterialState.selected)
+            ? Colors.green
+            : Colors.white),
+
+    dayPeriodTextColor:  MaterialStateColor.resolveWith(
+            (states) => states.contains(MaterialState.selected)
+            ? Colors.white
+            : Colors.grey.shade700),
+
+    hourMinuteColor: MaterialStateColor.resolveWith(
+            (states) => states.contains(MaterialState.selected)
+            ? Colors.green
+            : Colors.grey.shade300),
+
+    hourMinuteTextColor: MaterialStateColor.resolveWith(
+            (states) => states.contains(MaterialState.selected)
+            ? Colors.white
+            : Colors.black),
+
+    dialHandColor: Colors.green,
+
+  ),
+
+  textButtonTheme: TextButtonThemeData(
+    style: ButtonStyle(
+      foregroundColor: MaterialStateColor.resolveWith((states) => Colors.white),
+      backgroundColor: MaterialStateColor.resolveWith((states) => Colors.green),
+    ),
+
+  ),
+
+);
+//---------------------------------------------------------------------------
+
+//yellow---------------------------------------------------------------------------
 ThemeData yellowTheme = ThemeData(
   primaryColor: Color(0xffF3D800),
   accentColor: Color(0xffF3D800),
   hoverColor: Colors.yellow[100],
   indicatorColor: Colors.red[300],
   selectedRowColor: Colors.white,
-    bottomAppBarColor: Color(0xffF3D800),
-  disabledColor: Color(0xffF3D800)
+  bottomAppBarColor: Color(0xffF3D800),
+  dividerColor: Color(0xffF3D800),
+  disabledColor: Colors.white,
+  secondaryHeaderColor : Colors.black87,
+
+  timePickerTheme:TimePickerThemeData(
+
+    dayPeriodColor: MaterialStateColor.resolveWith(
+            (states) => states.contains(MaterialState.selected)
+            ? Color(0xffF3D800)
+            : Colors.white),
+
+    dayPeriodTextColor:  MaterialStateColor.resolveWith(
+            (states) => states.contains(MaterialState.selected)
+            ? Colors.white
+            : Colors.grey.shade700),
+
+    hourMinuteColor: MaterialStateColor.resolveWith(
+            (states) => states.contains(MaterialState.selected)
+            ? Color(0xffF3D800)
+            : Colors.grey.shade300),
+
+    hourMinuteTextColor: MaterialStateColor.resolveWith(
+            (states) => states.contains(MaterialState.selected)
+            ? Colors.white
+            : Colors.black),
+
+    dialHandColor: Color(0xffF3D800),
+
+  ),
+
+  textButtonTheme: TextButtonThemeData(
+    style: ButtonStyle(
+      foregroundColor: MaterialStateColor.resolveWith((states) => Colors.white),
+      backgroundColor: MaterialStateColor.resolveWith((states) => Color(0xffF3D800)),
+    ),
+
+  ),
+
 );
+//---------------------------------------------------------------------------

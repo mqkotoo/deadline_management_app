@@ -54,7 +54,7 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
         child: AppBar(
           backgroundColor: Theme.of(context).primaryColor,
           title: Padding(
-            padding: deviceSize.height > 900 ? EdgeInsets.only(top:25.0) : EdgeInsets.only(),
+            padding: deviceSize.height > 1000 ? EdgeInsets.only(top:25.0) : EdgeInsets.only(),
             child: Text(
               //編集か追加でボタンのテキストを変える
               arguments!.isUpdate ? 'タスクを編集する' : 'タスクを追加する',
@@ -120,15 +120,19 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                         actions: [
                           // キャンセルボタン
 
-                          TextButton(
+                          ElevatedButton(
                             onPressed: () => Navigator.pop(context),
                             child: Text(
                               'キャンセル',
-                              style: TextStyle(fontSize: deviceSize.height * 0.02),
+                              style: TextStyle(fontSize: deviceSize.height * 0.02,color: Colors.blue),
+                            ),
+                            style: ElevatedButton.styleFrom(
+                              primary: Theme.of(context).cardColor,
+                              elevation: 0
                             ),
                           ),
                           // OKボタン
-                          TextButton(
+                          ElevatedButton(
                             onPressed: () async {
                               await ref
                                   .read(calendarProvider)
@@ -144,6 +148,10 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                             child: Text(
                                 '削除',
                                 style: TextStyle(fontSize: deviceSize.height * 0.02,color: Colors.red),
+                            ),
+                            style: ElevatedButton.styleFrom(
+                                primary: Theme.of(context).cardColor,
+                                elevation: 0
                             ),
                           ),
                         ],
@@ -177,7 +185,7 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(8),
                             //テーマによってラベルテキストの色を変える
-                            color: Theme.of(context).disabledColor),
+                            color: Theme.of(context).dividerColor),
                         // alignment: Alignment.centerLeft,
                         width: deviceSize.width,
                         //55↓
@@ -226,14 +234,15 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                           //通常の時のフォームのスタイル
                           enabledBorder: OutlineInputBorder(
                               borderSide:
-                                  BorderSide(color: Theme.of(context).disabledColor),
+                                  BorderSide(color: Theme.of(context).dividerColor),
                               borderRadius: BorderRadius.circular(8),
                           ),
                           //focusした時のフォームのスタイル
                           focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                  width: 2.0, color: Theme.of(context).disabledColor),
-                              borderRadius: BorderRadius.circular(8)),
+                                  width: 2.0, color: Theme.of(context).dividerColor),
+                              borderRadius: BorderRadius.circular(8),
+                          ),
                           labelStyle: TextStyle(
                               fontWeight: FontWeight.w700,
                               //テーマによってラベルテキストの色を変える
@@ -267,12 +276,12 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                           //通常時のフォームのスタイル
                           enabledBorder: OutlineInputBorder(
                               borderSide:
-                                  BorderSide(color: Theme.of(context).disabledColor),
+                                  BorderSide(color: Theme.of(context).dividerColor),
                               borderRadius: BorderRadius.circular(8)),
                           //focusした時のフォームのスタイル
                           focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                  width: 2.0, color: Theme.of(context).disabledColor),
+                                  width: 2.0, color: Theme.of(context).dividerColor),
                               borderRadius: BorderRadius.circular(8)),
                           labelStyle: TextStyle(
                               fontWeight: FontWeight.w700,
@@ -307,7 +316,7 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                         child: TextButton(
                           style: TextButton.styleFrom(
                               //テーマによってbuttonの色を変える
-                              backgroundColor: Theme.of(context).disabledColor,
+                              backgroundColor: Theme.of(context).dividerColor,
                               elevation: 10,
                           ),
                           onPressed: () {

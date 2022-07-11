@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_deadline_management/screens/calendar_screen.dart';
 import 'package:flutter_deadline_management/screens/setting_pages/how_to_use/how_to_use.dart';
 import 'package:flutter_deadline_management/screens/setting_pages/notification/notification.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -21,13 +22,14 @@ class SettingScreen extends StatelessWidget {
         child: AppBar(
             backgroundColor: Theme.of(context).primaryColor,
             title: Padding(
-              padding: deviceSize.height > 900 ? EdgeInsets.only(top: 25.0) : EdgeInsets.only(),
+              padding: deviceSize.height > 1000 ? EdgeInsets.only(top: 25.0) : EdgeInsets.only(),
               child: Text('設定',style: TextStyle(color: Theme.of(context).selectedRowColor,fontSize: deviceSize.height * 0.023)),
             ),
           leading: InkWell(
-            onTap: () => Navigator.pop(context),
+            // onTap: () => Navigator.pop(context),
+            onTap: () => Navigator.pushNamedAndRemoveUntil(context,CalendarScreen.id, (_) => false),
             child: Padding(
-              padding: deviceSize.height > 900 ? EdgeInsets.all(22) : EdgeInsets.only(),
+              padding: deviceSize.height > 1000 ? EdgeInsets.all(22) : EdgeInsets.only(),
               child: Icon(
                 Icons.arrow_back_ios,
                     color: Theme.of(context).selectedRowColor,
