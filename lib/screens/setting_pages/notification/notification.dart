@@ -278,40 +278,7 @@ class _SettingNotificationScreenState
                     //通知ステータス == isGrantedじゃない（許可していない）場合は通知オンにしてテキストを表示する
                     return _openSettingText(context);
                   })
-
-              // isOn
-              //     ? SizedBox.shrink()
-              //     : Column(
-              //   crossAxisAlignment: CrossAxisAlignment.center,
-              //   children: [
-              //     SizedBox(height: deviceSize.height*0.22),
-              //     RichText(
-              //       maxLines: 2,
-              //       text: TextSpan(
-              //         style: TextStyle(
-              //             color: Theme.of(context).secondaryHeaderColor,
-              //             fontSize: deviceSize.height * 0.02
-              //         ),
-              //         children: [
-              //           TextSpan(text: 'アプリの通知をご利用の際は'),
-              //           TextSpan(
-              //             text: 'こちら',
-              //             style: TextStyle(
-              //               color: Colors.lightBlueAccent,
-              //               decoration: TextDecoration.underline,
-              //             ),
-              //             recognizer: TapGestureRecognizer()
-              //               ..onTap = () async{
-              //                 await openAppSettings();
-              //               },
-              //           ),
-              //           TextSpan(text: 'から、\n'),
-              //           TextSpan(text: 'スマホの通知設定をオンにしてください！'),
-              //         ],
-              //       ),
-              //     ),
-              //   ],
-              // ),
+              
               ],
             ),
           ),
