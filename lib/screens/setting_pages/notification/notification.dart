@@ -278,7 +278,7 @@ class _SettingNotificationScreenState
                     //通知ステータス == isGrantedじゃない（許可していない）場合は通知オンにしてテキストを表示する
                     return _openSettingText(context);
                   })
-              
+
               ],
             ),
           ),

@@ -140,15 +140,20 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
   void initState() {
     super.initState();
     _restoreValues();
-    WidgetsBinding.instance!.addPostFrameCallback((_) async {
-      var status = await Permission.notification.status;
-      print(status.toString());
-      //初回の人にダイアログ出す
-      if (status != PermissionStatus.granted) {
-        _showStartDialog();
-        // limitTrueDialog();
-      }
-    });
+
+    //OSがIOSだったら通知催促の最初のダイアログを出す
+    //→ANDROIDの場合は最初のプッシュ通知＝の催促ダイアログを表示しない
+    if(Platform.isIOS) {
+      WidgetsBinding.instance!.addPostFrameCallback((_) async {
+        var status = await Permission.notification.status;
+        print(status.toString());
+        //初回の人にダイアログ出す
+        if (status != PermissionStatus.granted) {
+          _showStartDialog();
+          // limitTrueDialog();
+        }
+      });
+    }
   }
 
 
