@@ -11,7 +11,7 @@ class notifyProvider {
   final Reader _read;
   //ios notification setting
   //android notification setting
-  Future<void> isNotify(content,String stringTimeData) async {
+  Future<void> Notification(content,String stringTimeData) async {
 
     var prefs = await SharedPreferences.getInstance();
     final isThreeDaysAgo = prefs.getBool('isThreeDaysAgo') ?? true;

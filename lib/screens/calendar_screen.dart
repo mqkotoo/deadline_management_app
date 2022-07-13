@@ -196,7 +196,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
 
 
         if (isOn) {
-          ref.watch(NotifyProvider).isNotify(contents,stringTimeData);
+          ref.watch(NotifyProvider).Notification(contents,stringTimeData);
           print(
               '${_selectedTime.hour.toString()},${_selectedTime.minute.toString()}',
           );
