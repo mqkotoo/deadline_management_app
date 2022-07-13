@@ -35,10 +35,6 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
   //var now2 = DateTime
 
   bool isOn = false;
-  // bool isThreeDaysAgo = true;
-  // bool isAWeek = false;
-  // bool isADayAgo = false;
-  // bool isToday = false;
   String stringTimeData = "2022-06-23 10:00:00.000";
   TimeOfDay _selectedTime = const TimeOfDay(hour: 10, minute: 00);
 
@@ -53,10 +49,6 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
     var prefs = await SharedPreferences.getInstance();
     setState(() {
       isOn = prefs.getBool('isOn') ?? false;
-      // isThreeDaysAgo = prefs.getBool('isThreeDaysAgo') ?? true;
-      // isAWeek = prefs.getBool('week') ?? false;
-      // isADayAgo = prefs.getBool('isADayAgo') ?? false;
-      // isToday = prefs.getBool('isToday') ?? false;
       stringTimeData = prefs.getString('time')!;
       _selectedTime =
           TimeOfDay.fromDateTime(DateTime.parse(stringTimeData));
@@ -179,6 +171,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
     List _getEventsfromDay(DateTime date) {
       // 分けられたいい感じのイベントたちが入る変数
       List contents = [];
+
       //一個ずつeventListの中身をスキャンしていく
       for (var i = 0; i < events.length; i++) {
         //イベントたちの登録されている日にちのTimeStampをDateTimeに変換
@@ -195,15 +188,33 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
       ////                      ↓　　↓
 
 
-        if (isOn) {
-          ref.watch(NotifyProvider).Notification(contents,stringTimeData);
-          print(
-              '${_selectedTime.hour.toString()},${_selectedTime.minute.toString()}',
-          );
-          print(contents);
-        }
+        // if (isOn) {
+        //   ref.watch(NotifyProvider).Notification(contents,stringTimeData);
+        // }
 
       return contents;
+    }
+
+    //通知の予定を通知PROVIDERに伝える
+    void notifyContents(DateTime date) {
+      List contents = [];
+
+      //一個ずつeventListの中身をスキャンしていく
+      for (var i = 0; i < events.length; i++) {
+        //イベントたちの登録されている日にちのTimeStampをDateTimeに変換
+        DateTime isDay = events[i]['at'].toDate();
+        //イベントたちのDateTimeとカレンダーのDateTimeの比較
+        if (DateTime(date.year, date.month, date.day)
+            .isAtSameMomentAs(DateTime(isDay.year, isDay.month, isDay.day))) {
+          //4月18日と4月18日のように日にちが同じだったらcontentsに追加
+          contents.add(events[i]);
+        }
+      }
+
+      if (isOn) {
+        ref.watch(NotifyProvider).Notification(contents,stringTimeData);
+        print(contents);
+      }
     }
 
 
@@ -356,7 +367,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                         //cardをタップすると締め切りの詳細が見れるようにする
                         child: GestureDetector(
                           onTap: () async {
-                            await Navigator.pushNamed(
+                            final isUpdate = await Navigator.pushNamed(
                                 context,
                                 // IOSにもPAGE_TRANSITIONを使うとスワイプでポップできなくなるからANDROIDだけ適応
                                 Platform.isAndroid
@@ -364,8 +375,18 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                                     : AddEventScreen.id,
                                 arguments:
                                     Arguments(_selectedDay, true, event));
+
+                            _restoreValues();
+
                             //編集のページから帰ってきてからSETSTATEで更新する
                             setState(() {});
+
+                            if(isUpdate != false) {
+                              //予定を追加したタイミングで通知に情報を送る
+                              notifyContents(_selectedDay);
+                            }
+
+                            print(isUpdate);
                           },
                           child: Card(
                             //影設定
@@ -417,8 +438,13 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
             //締め切りの追加が終わったら、1番下のリスト表示
             // もし締め切りを追加しなかったらスクロールしない
             if (isAdd == true && _getEventsfromDay(_selectedDay).isNotEmpty) {
+
+              _restoreValues();
+
               itemScrollController.jumpTo(
                   index: _getEventsfromDay(_selectedDay).length);
+              //予定を追加したタイミングで通知に情報を送る
+              notifyContents(_selectedDay);
             } else {}
             print(isAdd);
           },

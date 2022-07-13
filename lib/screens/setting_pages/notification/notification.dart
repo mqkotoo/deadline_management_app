@@ -39,6 +39,8 @@ class _SettingNotificationScreenState
   //タイムピッカーデフォルトの変数
   TimeOfDay _selectedTime = TimeOfDay(hour: 10, minute: 00);
 
+  String stringTimeData = '2022-06-22 10:00:00.000';
+
 
   //スイッチのTRUEの制限の時に出すダイアログ
   limitTrueDialog() {
@@ -101,7 +103,9 @@ class _SettingNotificationScreenState
       isAWeekAgo = prefs.getBool('week') ?? false;
       isADayAgo = prefs.getBool('isADayAgo') ?? false;
       isToday = prefs.getBool('isToday') ?? false;
-      String stringTimeData = prefs.getString('time') ?? "2022-06-22 10:00:00.000";
+
+      stringTimeData = prefs.getString('time') ?? "2022-06-22 10:00:00.000";
+
       _selectedTime = TimeOfDay.fromDateTime(
           DateTime.parse(stringTimeData));
 

@@ -26,8 +26,8 @@ class SettingScreen extends StatelessWidget {
               child: Text('設定',style: TextStyle(color: Theme.of(context).selectedRowColor,fontSize: deviceSize.height * 0.023)),
             ),
           leading: InkWell(
-            // onTap: () => Navigator.pop(context),
-            onTap: () => Navigator.pushNamedAndRemoveUntil(context,CalendarScreen.id, (_) => false),
+            onTap: () => Navigator.pop(context),
+            // onTap: () => Navigator.pushNamedAndRemoveUntil(context,CalendarScreen.id, (_) => false),
             child: Padding(
               padding: deviceSize.height > 1000 ? EdgeInsets.all(22) : EdgeInsets.only(),
               child: Icon(
