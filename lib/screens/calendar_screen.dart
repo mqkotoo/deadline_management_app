@@ -367,6 +367,10 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                         //cardをタップすると締め切りの詳細が見れるようにする
                         child: GestureDetector(
                           onTap: () async {
+
+                            //時刻の変更を取り込む
+                            _restoreValues();
+
                             final isUpdate = await Navigator.pushNamed(
                                 context,
                                 // IOSにもPAGE_TRANSITIONを使うとスワイプでポップできなくなるからANDROIDだけ適応
@@ -376,7 +380,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                                 arguments:
                                     Arguments(_selectedDay, true, event));
 
-                            _restoreValues();
+                            // _restoreValues();
 
                             //編集のページから帰ってきてからSETSTATEで更新する
                             setState(() {});
@@ -424,6 +428,10 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
           backgroundColor: Theme.of(context).accentColor,
           // イベント追加ページに遷移
           onPressed: () async {
+
+            //時刻の変更を取り込む
+            _restoreValues();
+
             final isAdd = await Navigator.pushNamed(
               context,
               //add eventにしたからのアニメーションをつけて画面遷移する main.dart L71参照
@@ -439,7 +447,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
             // もし締め切りを追加しなかったらスクロールしない
             if (isAdd == true && _getEventsfromDay(_selectedDay).isNotEmpty) {
 
-              _restoreValues();
+              // _restoreValues();
 
               itemScrollController.jumpTo(
                   index: _getEventsfromDay(_selectedDay).length);

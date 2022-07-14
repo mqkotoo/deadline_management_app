@@ -155,6 +155,17 @@ class _SettingNotificationScreenState
             _selectedTime.minute, //TimeOfDay
           ).toString());
         });
+        // _restoreValues();
+
+        stringTimeData = DateTime(
+          now.year,
+          now.month,
+          now.day,
+          _selectedTime.hour, // TimeOfDay
+          _selectedTime.minute, //TimeOfDay
+        ).toString();
+
+        print(stringTimeData);
       }
     }
 
