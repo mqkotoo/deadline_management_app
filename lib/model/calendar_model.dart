@@ -144,4 +144,5 @@ class CalendarModel {
       "events": eventsList,
     });
   }
+
 }

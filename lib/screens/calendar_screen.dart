@@ -195,7 +195,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
       return contents;
     }
 
-    //通知の予定を通知PROVIDERに伝える
+    //通知の予定を通知PROVIDERに伝える(予定の追加や編集、通知の時刻等が変わった時)
     void notifyContents(DateTime date) {
       List contents = [];
 
@@ -233,7 +233,8 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
               "カレンダー",
               style: TextStyle(
                   color: Theme.of(context).selectedRowColor,
-                  fontSize: deviceSize.height * 0.023),
+                  fontSize: deviceSize.height * 0.023,
+              ),
             ),
           ),
           actions: [
@@ -431,7 +432,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
 
             //時刻の変更を取り込む
             _restoreValues();
-
+            
             final isAdd = await Navigator.pushNamed(
               context,
               //add eventにしたからのアニメーションをつけて画面遷移する main.dart L71参照

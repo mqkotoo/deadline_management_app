@@ -157,13 +157,15 @@ class _SettingNotificationScreenState
         });
         // _restoreValues();
 
-        stringTimeData = DateTime(
-          now.year,
-          now.month,
-          now.day,
-          _selectedTime.hour, // TimeOfDay
-          _selectedTime.minute, //TimeOfDay
-        ).toString();
+        // stringTimeData = DateTime(
+        //   now.year,
+        //   now.month,
+        //   now.day,
+        //   _selectedTime.hour, // TimeOfDay
+        //   _selectedTime.minute, //TimeOfDay
+        // ).toString();
+
+        //ここで通知プロバイダーへの情報送信を行う？↓
 
         print(stringTimeData);
       }
