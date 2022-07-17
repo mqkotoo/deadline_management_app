@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:permission_handler/permission_handler.dart';
 import '../../../ads/adBanner.dart';
 import '../../../component/costom_time_picker.dart';
+import '../../../model/calendar_model.dart';
 
 class SettingNotificationScreen extends StatefulHookConsumerWidget {
   static const String id = 'notification';
@@ -157,15 +158,21 @@ class _SettingNotificationScreenState
         });
         // _restoreValues();
 
-        // stringTimeData = DateTime(
-        //   now.year,
-        //   now.month,
-        //   now.day,
-        //   _selectedTime.hour, // TimeOfDay
-        //   _selectedTime.minute, //TimeOfDay
-        // ).toString();
+        //まず、リアルタイムで更新するようにstringTimeDataを上書きする
+        stringTimeData = DateTime(
+          now.year,
+          now.month,
+          now.day,
+          _selectedTime.hour, // TimeOfDay
+          _selectedTime.minute, //TimeOfDay
+        ).toString();
 
         //ここで通知プロバイダーへの情報送信を行う？↓
+        // final events = ref.read(calendarProvider).eventsList;
+        //
+        // notifyContents(events[0]['at']);
+
+        
 
         print(stringTimeData);
       }
@@ -309,6 +316,31 @@ class _SettingNotificationScreenState
       ),
     );
   }
+
+
+  // //時刻を変更した際にリアルタイムで、通知に知らせる関数
+  // void notifyContents(DateTime date) {
+  //   List contents = [];
+  //
+  //   final events = ref.read(calendarProvider).eventsList;
+  //
+  //   //一個ずつeventListの中身をスキャンしていく
+  //   for (var i = 0; i < events.length; i++) {
+  //     //イベントたちの登録されている日にちのTimeStampをDateTimeに変換
+  //     DateTime isDay = events[i]['at'].toDate();
+  //     //イベントたちのDateTimeとカレンダーのDateTimeの比較
+  //     if (DateTime(date.year, date.month, date.day)
+  //         .isAtSameMomentAs(DateTime(isDay.year, isDay.month, isDay.day))) {
+  //       //4月18日と4月18日のように日にちが同じだったらcontentsに追加
+  //       contents.add(events[i]);
+  //     }
+  //   }
+  //
+  //   if (isOn) {
+  //     ref.watch(NotifyProvider).Notification(contents,stringTimeData);
+  //     print(contents);
+  //   }
+  // }
 
   //line271で使うための通知のステータスを取得する関数
   Future getNotificationStatus() async{
