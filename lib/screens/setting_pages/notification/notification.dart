@@ -301,8 +301,7 @@ class _SettingNotificationScreenState
                     }
                     //通知ステータス == isGrantedじゃない（許可していない）場合は通知オンにしてテキストを表示する
                     return _openSettingText(context);
-                  })
-
+                  }),
               ],
             ),
           ),
@@ -317,6 +316,8 @@ class _SettingNotificationScreenState
     );
   }
 
+  //ここで通知メソッドを送ることについて、
+  //正確にCONTENTSを仕分けしてあげないと、通知の処理の際に困るのではないか？
 
   // //時刻を変更した際にリアルタイムで、通知に知らせる関数
   // void notifyContents(DateTime date) {
