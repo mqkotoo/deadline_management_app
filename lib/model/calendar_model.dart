@@ -55,6 +55,7 @@ class CalendarModel {
       });
       calendarList[date] = selectList;
     }
+    print(calendarList);
   }
 
   //以下投稿処理
